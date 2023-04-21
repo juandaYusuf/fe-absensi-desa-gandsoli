@@ -1,16 +1,27 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import FormLoginKepDes from './FormLoginKepDes'
 import QrCodeScannerKepDes from './QrCodeScannerKepDes'
-import { Card, Alert, Container, Button } from 'react-bootstrap'
+import { Card, Alert, Container } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { LeftToRight, RightToLeft } from '../../../Page-transition/ComponentTransitions'
 
 
 const LoginKepDesCard = () => {
 
+    const [kepdesQrResult, setKepdesQrResult] = useState("")
     const navigateTo = useNavigate()
-    // eslint-disable-next-line
     const [qrCodeValidation, setQrCodeValidation] = useState(false)
+
+
+
+    useEffect(() => {
+        if(kepdesQrResult === ""){
+            setQrCodeValidation(false)
+        }else{
+            setQrCodeValidation(true)
+        }
+    }, [kepdesQrResult])
+    
 
     return (
         <Card className='add-box-shadow rounded-4' style={{ margin: "10px", maxWidth: "400px", minWidth: "300px", border: "solid lightgrey 1px", borderTop: "solid lightgrey 2px", overflow: "hidden" }}>
@@ -27,12 +38,11 @@ const LoginKepDesCard = () => {
                     {
                         (qrCodeValidation === false)
                             ?
-                            <QrCodeScannerKepDes />
+                            <QrCodeScannerKepDes kepdes_qr_result={() => setKepdesQrResult()} />
                             :
                             <FormLoginKepDes />
                     }
                     <hr className='text-danger' />
-                    <Button onClick={() => (!qrCodeValidation) ? setQrCodeValidation(true) : setQrCodeValidation(false)}>Test Validate</Button>
                     <Container className='d-flex justify-content-center align-items-center flex-column gap-2 p-0'>
                         <p className='text-secondary'>Kembali ke login staf pengelola absensi <span className='text-danger cursor-pointer' onClick={() => navigateTo(-1)}>disini</span></p>
                     </Container>

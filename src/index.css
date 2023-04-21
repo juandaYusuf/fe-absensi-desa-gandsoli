@@ -46,6 +46,10 @@ code {
   height: 350px;
   background-color: black;
   border-radius: 15px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .LoginKepDesCard-input-container-shadow {
@@ -79,27 +83,32 @@ code {
 }
 
 .qr-container{
+  height: 400px;
+  width: 400px;
   border-radius: 20px;
   overflow: hidden;
   background-color: rgb(46, 46, 46);
   padding: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 
 .mobile-nav{
   display: none;
 }
 
-.loading-qr-container{
-  width: 100%;
-  height: 400px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 20px;
-  overflow: hidden;
-  background-color: rgb(46, 46, 46);
-  padding: 0px;
-  font-size: 2rem;
+.link-hover{
+  padding: 5px;
+  transition: 300ms;
+  border-radius: 10px;
+}
+
+.link-hover:hover{
+  background-color: lightgrey;
+  padding: 5px;
+  border-radius: 10px;
 }
 
 /* ! ============================== RESPONSIVE ============================== */
@@ -120,12 +129,6 @@ code {
 
   .scanner-container{
     width: 100%;
-  }
-
-  .loading-qr-container{
-    width: 100%;
-    height: 326px;
-    font-size: 1.5rem;
   }
   
   .alpha-container{

@@ -66,7 +66,7 @@ const Generator = () => {
                             <div className='add-item-shadow rounded-4 h5 fw-bold m-0 p-0' style={{ height: "300px", width: "300px", border: "solid 2px lightgrey", display: "flex", justifyContent: "center", alignItems: "center" }} alt=" " >QRCODE Generating . . . </div>
                             :
                             <>
-                                <Alert variant='warning'>
+                                <Alert variant='warning' className='border border-warning add-item-shadow rounded-4 mx-3'>
                                     <h5 className='fw-bold bi bi-stopwatch'> Expiring...</h5>
                                     <hr/>
                                     <p>QRCODE hanya berlaku 10 detik </p>

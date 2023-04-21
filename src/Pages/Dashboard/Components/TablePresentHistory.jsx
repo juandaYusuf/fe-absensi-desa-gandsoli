@@ -1,50 +1,54 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Table } from 'react-bootstrap';
-import { BottomToTop, LeftToRight } from '../../../Page-transition/ComponentTransitions';
+import { BottomToTop, LeftToRight, TopToBottom } from '../../../Page-transition/ComponentTransitions';
 
 
-const TablePresentHistory = () => {
+const TablePresentHistory = (props) => {
+
+
+    const [rowOnClick, setRowOnClick] = useState("")
+
+    const rowOnClickHandler = (result) => {
+        props.name(result)
+        setRowOnClick("bg-secondary text-light")
+    }
+
+
     return (
         <>
             <LeftToRight>
-                <h2 className='text-secondary'>Riwayat Absensi</h2>
             </LeftToRight>
             <BottomToTop>
-                <div className='add-item-shadow overflow-scroll rounded-4 p-3' style={{ backgroundColor: "beige", border: "solid 2px lightgrey" }}>
-                    <Table striped>
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Tanggal</th>
-                                <th>Hadir</th>
-                                <th>Izin</th>
-                                <th>Alpha</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td>@mdo</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                                <td>@fat</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>@twitter</td>
-                                <td>@twitter</td>
-                                <td>@twitter</td>
-                                <td>@twitter</td>
-                            </tr>
-                        </tbody>
-                    </Table>
+                <div className='add-item-shadow overflow-scroll rounded-4 p-2' style={{ backgroundColor: "beige", border: "solid 2px lightgrey", maxHeight: "265px" }}>
+                        <h4>Riwayat Absensi</h4>
+                        <Table className='table-hover' style={{ width: "850px" }}>
+                            <thead >
+                                <tr >
+                                    <th className='bg-secondary text-light' style={{ width: "40px", borderRadius: '10px 0px 0px 0px' }} >No</th>
+                                    <th className='bg-secondary text-light' style={{ width: "100px" }}>Tanggal</th>
+                                    <th className='bg-secondary text-light'>Nama</th>
+                                    <th className='bg-secondary text-center text-light' style={{ width: "40px" }}>Hadir</th>
+                                    <th className='bg-secondary text-center text-light' style={{ width: "40px" }}>Izin</th>
+                                    <th className='bg-secondary text-center text-light' style={{ width: "40px", borderRadius: '0px 10px 0px 0px' }}>Alpha</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    ["Ahmad dzikril", "Dzikri ahmad", "Abenk Skatepunk", "Carli", "Hilman", "Dadang", "Borokokok", "Beben", "Ijal", "Yudi"].map((result, i) => {
+                                        return (
+                                            <tr key={i} className={`cursor-pointer`} onClick={() => { rowOnClickHandler(result) }}>
+                                                    <td className='text-center'>{i + 1}</td>
+                                                    <td>02-des-23</td>
+                                                    <td>{result}</td>
+                                                    <td className='fw-bold text-center text-success h4'> <span className='bi bi-check-circle-fill' /></td>
+                                                    <td className='fw-bold text-center text-warning h4' > <span className='bi bi-arrow-up-left-circle-fill' /></td>
+                                                    <td className='fw-bold text-center text-danger h4'> <span className='bi bi-x-circle-fill' /></td>
+                                            </tr>
+                                        )
+                                    })
+                                }
+                            </tbody>
+                        </Table>
                 </div>
             </BottomToTop>
         </>
