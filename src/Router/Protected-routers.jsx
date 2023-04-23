@@ -4,7 +4,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 const ProtectedRoutesAdmin = () => {
     const obj = JSON.parse(localStorage.getItem('obj'))
     return (
-        (obj.id > 0)
+        (!!obj)
             ?
             <Outlet />
             :

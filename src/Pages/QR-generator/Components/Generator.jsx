@@ -4,14 +4,22 @@ import { Alert, Button, Form, InputGroup } from 'react-bootstrap'
 import { BottomToTop, TopToBottom } from '../../../Page-transition/ComponentTransitions'
 import UserGeoLocated from './GeoLocated'
 
-
 const Generator = () => {
 
     const [onChangeHandler, setOnChangeHandler] = useState("")
     const [qrCodeGenerated, setQrCodeGenerated] = useState("")
     const [countTimeOut, setCountTimeOut] = useState(10)
     const [displayQRCode, setDisplayQRCode] = useState(false)
+    let latitude = null
+    let longitude = null
+    let userCoordinate = UserGeoLocated()
 
+    if (!!userCoordinate) {
+        if (userCoordinate.coordinate !== "please enable locations service" || userCoordinate.coordinate === "please enable locations service") {
+            latitude = userCoordinate.coordinate.latitude
+            longitude = userCoordinate.coordinate.longitude
+        }
+    }
 
     const generateQRCode = async () => {
         if (onChangeHandler !== "") {
@@ -19,7 +27,6 @@ const Generator = () => {
             try {
                 const QRCOdeResponse = await QRCode.toDataURL(onChangeHandler)
                 setQrCodeGenerated(QRCOdeResponse)
-
                 setTimeout(() => {
                     setOnChangeHandler("")
                     setDisplayQRCode(false)
@@ -37,6 +44,7 @@ const Generator = () => {
         const timer = countTimeOut > 0 && setInterval(() => setCountTimeOut(countTimeOut - 1), 1000)
         return () => clearInterval(timer);
     }, [countTimeOut])
+
 
 
 
@@ -78,8 +86,11 @@ const Generator = () => {
                                     <img src={qrCodeGenerated} className='add-item-shadow rounded-4' style={{ height: "300px", width: "300px", border: "solid 2px lightgrey" }} alt=" " />
                                 </>
                         }
-                        <UserGeoLocated />
                     </>
+                    {
+                        (!!latitude || !!longitude) &&
+                        <a href={`https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`}>Lihat pada Gooogle Maps</a>
+                    }
                 </BottomToTop>
             </div>
         </>
@@ -87,3 +98,4 @@ const Generator = () => {
     )
 }
 export default Generator
+
