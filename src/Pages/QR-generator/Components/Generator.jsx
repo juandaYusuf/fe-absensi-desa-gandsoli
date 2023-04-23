@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import QRCode from 'qrcode'
 import { Alert, Button, Form, InputGroup } from 'react-bootstrap'
 import { BottomToTop, TopToBottom } from '../../../Page-transition/ComponentTransitions'
-
+import UserGeoLocated from './GeoLocated'
 
 
 const Generator = () => {
@@ -11,6 +11,7 @@ const Generator = () => {
     const [qrCodeGenerated, setQrCodeGenerated] = useState("")
     const [countTimeOut, setCountTimeOut] = useState(10)
     const [displayQRCode, setDisplayQRCode] = useState(false)
+
 
     const generateQRCode = async () => {
         if (onChangeHandler !== "") {
@@ -38,6 +39,7 @@ const Generator = () => {
     }, [countTimeOut])
 
 
+
     return (
         <>
             <div className='d-flex justify-content-center overflow-hidden p-3'>
@@ -60,21 +62,24 @@ const Generator = () => {
             </div>
             <div className='w-100 d-flex justify-content-center overflow-hidden p-3'>
                 <BottomToTop>
-                    {
-                        (!displayQRCode)
-                            ?
-                            <div className='add-item-shadow rounded-4 h5 fw-bold m-0 p-0' style={{ height: "300px", width: "300px", border: "solid 2px lightgrey", display: "flex", justifyContent: "center", alignItems: "center" }} alt=" " >QRCODE Generating . . . </div>
-                            :
-                            <>
-                                <Alert variant='warning' className='border border-warning add-item-shadow rounded-4 mx-3'>
-                                    <h5 className='fw-bold bi bi-stopwatch'> Expiring...</h5>
-                                    <hr/>
-                                    <p>QRCODE hanya berlaku 10 detik </p>
-                                    <h1 className='fw-bold w-100 text-center text-danger'> {countTimeOut}</h1>
-                                </Alert>
-                                <img src={qrCodeGenerated} className='add-item-shadow rounded-4' style={{ height: "300px", width: "300px", border: "solid 2px lightgrey" }} alt=" " />
-                            </>
-                    }
+                    <>
+                        {
+                            (!displayQRCode)
+                                ?
+                                <div className='add-item-shadow rounded-4 h5 fw-bold m-0 p-0' style={{ height: "300px", width: "300px", border: "solid 2px lightgrey", display: "flex", justifyContent: "center", alignItems: "center" }} alt=" " >QRCODE Generating . . . </div>
+                                :
+                                <>
+                                    <Alert variant='warning' className='border border-warning add-item-shadow rounded-4 mx-3'>
+                                        <h5 className='fw-bold bi bi-stopwatch'> Expiring...</h5>
+                                        <hr />
+                                        <p>QRCODE hanya berlaku 10 detik </p>
+                                        <h1 className='fw-bold w-100 text-center text-danger'> {countTimeOut}</h1>
+                                    </Alert>
+                                    <img src={qrCodeGenerated} className='add-item-shadow rounded-4' style={{ height: "300px", width: "300px", border: "solid 2px lightgrey" }} alt=" " />
+                                </>
+                        }
+                        <UserGeoLocated />
+                    </>
                 </BottomToTop>
             </div>
         </>

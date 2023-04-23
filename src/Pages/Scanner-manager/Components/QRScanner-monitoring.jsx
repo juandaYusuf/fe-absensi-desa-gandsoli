@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-
-// import UserContext from '../../../Context/Context'
 import { Button, Container } from 'react-bootstrap'
 import { QrReader } from "react-qr-reader";
 
@@ -12,34 +10,6 @@ const QRScannerMonitoring = () => {
     const [startScan, setStartScan] = useState(false);
 
 
-    // const scanner = (act) => {
-    //     const video = document.getElementById('qr-video')
-    //     let qrScanner = new QrScanner(video, result => setData(result))
-    //     if(act === "on"){
-    //         qrScanner.start()
-    //         setIsScanning(true)
-    //     }
-    //     if(act === "off"){
-    //         qrScanner.stop()
-    //         qrScanner.destroy()
-    //         qrScanner = null
-    //         setIsScanning(false)
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     scanner("on")
-    // }, [])
-
-    // useEffect(() => {
-    //     if (turnOnCameraOnQRScannerPage !== "turnOnCamera") {
-    //         startScanner("destroy")
-    //     }
-    //     return () => {
-    //         console.clear()
-    //     }
-    // }, [turnOnCameraOnQRScannerPage])
-
     return (
         <>
             <div className=' d-flex justify-content-center align-items-center w-100 flex-column'>
@@ -49,10 +19,7 @@ const QRScannerMonitoring = () => {
                             <Container className='' style={{ width: '400px' }}>
                                 <Button className='w-100'  onClick={() => { setStartScan(!startScan) }}>Tututp kamera</Button>
                                 {
-                                    // (isScanning === true)&&
-                                    // <video id="qr-video" />
                                     startScan && (
-                                        <>
                                             <QrReader
                                                 delay={1000}
                                                 onResult={(result, error) => {
@@ -63,10 +30,8 @@ const QRScannerMonitoring = () => {
                                                         console.log(error);
                                                     }
                                                 }}
-                                                style={{ width: '100%', scale: "1.5" }}
-                                            />
-                                        </>
-                                    )
+                                                style={{ width: '100%'}}
+                                            />)
                                 }
                             </Container>
                         </div>

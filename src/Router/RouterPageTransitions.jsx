@@ -27,11 +27,11 @@ const RouterPageTransitions = () => {
                             {/* //! Unprotected Routes */}
                             <Route path="/" element={<Login />} />
                             <Route path="/LoginKepDes" element={<LoginKepdes />} />
+                            <Route path="/QRGenerator" element={<QRCodeGenerator />} />
                             {/* //! Protected Routes */}
                             <Route element={<ProtectedRoutes />}>
                                 <Route path="/Dashboard" element={<Dashboard />} />
                                 <Route path="/ScannerManager" element={<ScannerManager />} />
-                                <Route path="/QRGenerator" element={<QRCodeGenerator />} />
                             </Route>
                         </Routes>
                     </AnimatePresence>
@@ -42,12 +42,12 @@ const RouterPageTransitions = () => {
                                 {/* //! Unprotected Routes */}
                                 <Route path="/" element={<Login />} />
                                 <Route path="/LoginKepDes" element={<LoginKepdes />} />
-                                 {/* //! Protected Routes */}
+                                <Route path="/QRGenerator" element={<QRCodeGenerator />} />
+                                {/* //! Protected Routes */}
                                 <Route element={<ProtectedRoutes />}>
                                     <Route path="/RegistarsiAdmin" element={<RegistarsiAdmin />} />
                                     <Route path="/Dashboard" element={<Dashboard />} />
                                     <Route path="/ScannerManager" element={<ScannerManager />} />
-                                    <Route path="/QRGenerator" element={<QRCodeGenerator />} />
                                 </Route>
                             </Routes>
                         </AnimatePresence>
