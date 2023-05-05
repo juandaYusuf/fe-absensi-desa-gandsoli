@@ -29,7 +29,7 @@ const PresentStatistic = () => {
         </div>
       </BottomToTop>
       <BottomToTop>
-        <Card className='bg-custom-gradient-color add-item-shadow   p-3 rounded-4 mt-3 d-flex align-items-center' style={{ width: "100%", height: "280px", margin: "5px", overflow: "scroll", borderTop: "solid 2px white", borderBottom: "solid 1px lightgrey", borderLeft: "solid 2px whitesmoke", borderRight: "solid 2px whitesmoke" }}>
+        <Card className='bg-custom-gradient-color add-item-shadow hide-scrollbar  p-3 rounded-4 mt-3 d-flex align-items-center' style={{ width: "100%", height: "280px", margin: "5px", overflow: "scroll", borderTop: "solid 2px white", borderBottom: "solid 1px lightgrey", borderLeft: "solid 2px whitesmoke", borderRight: "solid 2px whitesmoke" }}>
           <h3 className='w-100'>Daftar staf</h3>
           {
             [1, 2, 4, 5, 6, 7, 8, 9].map((result) => (

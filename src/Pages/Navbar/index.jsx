@@ -28,7 +28,7 @@ const NavigationsBar = ({ children }) => {
   }, [])
 
   return (
-    <div style={{ width: "100%", padding: "10px", height: "100vh", overflow: "scroll" }}>
+    <div className='hide-scrollbar' style={{ width: "100%", padding: "10px", height: "100vh", overflow: "scroll" }}>
       <div className='position-relative d-flex justify-content-center w-100'>
         <Container className={`add-box-shadow p-3 rounded-4 overflow-hidden position-fixed`} style={{ transition: "1", zIndex: "9999", width: "94%", backdropFilter: "blur(15px)", backgroundColor: " #ffffff69", borderTop: "solid 2px white", borderBottom: "solid 1px lightgrey", borderLeft: "solid 2px whitesmoke", borderRight: "solid 2px whitesmoke" }}>
           <section className='desk-nav'>

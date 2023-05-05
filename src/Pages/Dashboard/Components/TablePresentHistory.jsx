@@ -64,7 +64,7 @@ const TablePresentHistory = (props) => {
 
   return (
     <>
-      <Card className='bg-custom-gradient-color add-item-shadow overflow-scroll rounded-4 p-0' style={{ border: "solid 1px lightgrey", height: "570px", borderTop: "solid 2px white", borderBottom: "solid 1px lightgrey", borderLeft: "solid 2px whitesmoke", borderRight: "solid 2px whitesmoke" }}>
+      <Card className='bg-custom-gradient-color add-item-shadow overflow-scroll hide-scrollbar rounded-4 p-0' style={{ border: "solid 1px lightgrey", height: "570px", borderTop: "solid 2px white", borderBottom: "solid 1px lightgrey", borderLeft: "solid 2px whitesmoke", borderRight: "solid 2px whitesmoke" }}>
         <h3 className='m-3'>Riwayat Absensi</h3>
         <Table hover style={{ width: "850px", margin: "10px" }}>
           <thead >

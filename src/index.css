@@ -11,18 +11,27 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.container-main::-webkit-scrollbar{
+    display: none;
+  }
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
+.hide-scrollbar{
+  -ms-overflow-style: none;  
+  scrollbar-width: none;
+}
+
 .container-main {
-  height: 100vh;
+  /* height: 100vh; */
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: scroll;
+
 }
 
 .add-box-shadow {

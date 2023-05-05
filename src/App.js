@@ -6,7 +6,7 @@ import PageRouter from './Router'
 const App = () => {
 	return (
 		<UserContextProvider>
-			<div className='container-main'>
+			<div className='container-main hide-scrollbar'>
 				<PageRouter />
 			</div>
 		</UserContextProvider>
