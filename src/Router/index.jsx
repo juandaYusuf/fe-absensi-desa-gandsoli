@@ -4,11 +4,11 @@ import RouterPageTransitions from './RouterPageTransitions';
 
 const PageRouter = () => {
 
-    return (
-        <Router>
-            <RouterPageTransitions />
-        </Router>
-    )
+  return (
+    <Router>
+      <RouterPageTransitions />
+    </Router>
+  )
 }
 
 export default PageRouter

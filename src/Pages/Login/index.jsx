@@ -6,18 +6,18 @@ import LoginCard from './Components/LoginCard';
 
 const Login = () => {
 
-    useEffect(() => {
-        localStorage.clear()
-    }, [])
-    
+  useEffect(() => {
+    localStorage.clear()
+  }, [])
 
-    return (
-        <>
-            <ZoomInSlide>
-                <LoginCard />
-            </ZoomInSlide>
-        </>
-    )
+
+  return (
+    <>
+      <ZoomInSlide>
+        <LoginCard />
+      </ZoomInSlide>
+    </>
+  )
 }
 
 export default Login

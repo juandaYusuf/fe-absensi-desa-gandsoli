@@ -37,6 +37,12 @@ code {
   -moz-box-shadow: 2px 2px 3px -1px rgba(0, 0, 0, 0.300);
 }
 
+.list-shadow {
+  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.171);
+  -webkit-box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.171);
+  -moz-box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.171);
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
@@ -64,25 +70,25 @@ code {
   -moz-box-shadow: -1px -20px 35px 0px rgba(0, 206, 235, 0.2);
 }
 
-.dashboard-content-container{
+.dashboard-content-container {
   display: flex;
   gap: 10px;
 }
 
-.present-container{
+.present-container {
   width: 50%;
 }
 
-.alpha-container{
+.alpha-container {
   height: 245px;
 }
 
-.scanner-container{
+.scanner-container {
   height: 400px;
   width: 400px;
 }
 
-.qr-container{
+.qr-container {
   height: 400px;
   width: 400px;
   border-radius: 20px;
@@ -95,61 +101,73 @@ code {
 }
 
 
-.mobile-nav{
+.mobile-nav {
   display: none;
 }
 
-.link-hover{
+.link-hover {
   padding: 5px;
   transition: 300ms;
   border-radius: 10px;
 }
 
-.link-hover:hover{
+.link-hover:hover {
   background-color: lightgrey;
   padding: 5px;
   border-radius: 10px;
 }
 
+
+.bg-custom-gradient-color {
+  background: rgb(247, 236, 255);
+  background: -moz-linear-gradient(144deg, rgba(247, 236, 255, 1) 0%, rgba(236, 254, 255, 1) 50%, rgba(255, 246, 228, 1) 100%);
+  background: -webkit-linear-gradient(144deg, rgba(247, 236, 255, 1) 0%, rgba(236, 254, 255, 1) 50%, rgba(255, 246, 228, 1) 100%);
+  background: linear-gradient(144deg, rgba(247, 236, 255, 1) 0%, rgba(236, 254, 255, 1) 50%, rgba(255, 246, 228, 1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f7ecff", endColorstr="#fff6e4", GradientType=1);
+}
+
 /* ! ============================== RESPONSIVE ============================== */
 @media only screen and (max-width: 772px) {
   .container-main {
-    height: 100%;
+    height: 100vh;
   }
-  
-  .dashboard-content-container{
+
+  .dashboard-content-container {
     display: flex;
     flex-direction: column;
   }
-  
-  .present-container{
+
+  .present-container {
     width: 100%;
     height: 100%;
   }
 
-  .scanner-container{
+  .scanner-container {
     width: 100%;
   }
-  
-  .alpha-container{
+
+  .alpha-container {
     height: 100%;
   }
-  .mobile-nav{
+
+  .mobile-nav {
     display: flex;
     flex-direction: column;
   }
-  .desk-nav{
+
+  .desk-nav {
     display: none;
   }
-  .mobile-link{
+
+  .mobile-link {
     display: flex;
     margin-top: 10px;
     flex-direction: column;
     gap: 10px;
   }
 
-  .mobile-link-collapse{
+  .mobile-link-collapse {
     display: none;
   }
-  
+
 }
