@@ -28,10 +28,14 @@ const LoginCard = () => {
     }
     setIsLoading(true)
     axios.post(url, user_data).then((response) => {
+      const dataForLocalStirage = {
+        "id": response.data.id,
+        "role": response.data.role 
+      }
       bcrypt.compare(password, response.data.encpass, (err, res) => {
         if (res === true) {
           if (!!response.data.id) {
-            localStorage.setItem('obj', JSON.stringify(response.data))
+            localStorage.setItem('obj', JSON.stringify(dataForLocalStirage))
             navigateTo("/dashboard")
             setShowNavbar("/dashboard")
             setIsLoading(false)

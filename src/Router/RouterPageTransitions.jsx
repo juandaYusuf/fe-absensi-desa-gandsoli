@@ -27,10 +27,10 @@ const RouterPageTransitions = () => {
               <Route path="/" element={<Login />} />
               {/* //! Protected Routes */}
               <Route element={<ProtectedRoutes />}>
+                <Route path="/registrasi" element={<RegistarsiAdmin />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/scanner-manager" element={<ScannerManager />} />
                 <Route path="/qr-generator" element={<QRCodeGenerator />} />
-                <Route path="/registrasi" element={<RegistarsiAdmin />} />
               </Route>
             </Routes>
           </AnimatePresence>)
@@ -42,10 +42,10 @@ const RouterPageTransitions = () => {
                 <Route path="/" element={<Login />} />
                 {/* //! Protected Routes */}
                 <Route element={<ProtectedRoutes />}>
+                  <Route path="/registrasi" element={<RegistarsiAdmin />} />
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/scanner-manager" element={<ScannerManager />} />
                   <Route path="/qr-generator" element={<QRCodeGenerator />} />
-                  <Route path="/registrasi" element={<RegistarsiAdmin />} />
                 </Route>
               </Routes>
             </AnimatePresence>
