@@ -61,7 +61,7 @@ const DashboardHeader = () => {
 
 
   const popover = (
-    <Popover id="popover-basic" className='add-box-shadow' style={{ borderTop: "solid 2px white", borderBottom: "solid 1px lightgrey", borderLeft: "solid 2px whitesmoke", borderRight: "solid 2px whitesmoke" }}>
+    <Popover id="popover-basic" className='add-box-shadow overlay-bg-custom-gradient-color' style={{ borderTop: "solid 2px white", borderBottom: "solid 1px lightgrey", borderLeft: "solid 2px whitesmoke", borderRight: "solid 2px whitesmoke" }}>
       <div className='overflow-hidden'>
         <Popover.Header as="h2" className='fw-bold '>Profile Menu</Popover.Header>
         <SlideLeft>
