@@ -6,14 +6,16 @@ const UserContext = createContext()
 export const UserContextProvider = (props) => {
   const [showNavbar, setShowNavbar] = useState("")
   const [turnOnCameraOnQRScannerPage, setTurnOnCameraOnQRScannerPage] = useState("")
-
+  const [themeChanger, setThemeChanger] = useState("normal");
 
   return (
     <UserContext.Provider value={{
       showNavbar,
       setShowNavbar,
       turnOnCameraOnQRScannerPage,
-      setTurnOnCameraOnQRScannerPage
+      setTurnOnCameraOnQRScannerPage,
+      themeChanger,
+      setThemeChanger
     }}>
       {props.children}
     </UserContext.Provider>

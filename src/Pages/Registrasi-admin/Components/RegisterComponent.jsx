@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Alert, Button, Container, FloatingLabel, Form, Spinner } from 'react-bootstrap'
 import API_URL from '../../../API/API_URL'
 import bcrypt from 'bcryptjs'
-
+import ThemingCangerFunc from '../../../Theme'
 
 const RegisterComponent = () => {
 
@@ -57,7 +57,7 @@ const RegisterComponent = () => {
   }
 
   return (
-    <Container className='bg-custom-gradient-color add-box-shadow p-3 rounded-4 overflow-hidden d-flex justify-content-center' style={{ borderTop: "solid 2px white", borderBottom: "solid 1px lightgrey", borderLeft: "solid 2px whitesmoke", borderRight: "solid 2px whitesmoke" }}>
+    <Container className={` ${ThemingCangerFunc().gradient} add-box-shadow p-3 rounded-4 overflow-hidden d-flex justify-content-center`} style={ThemingCangerFunc("white").style} >
       <div className='w-50'>
         <h3 className='bi bi-person-add'> Registrasi admin </h3>
         <hr />

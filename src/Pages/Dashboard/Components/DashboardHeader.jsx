@@ -1,25 +1,31 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { LeftToRight, RightToLeft, BottomToTop } from '../../../Page-transition/ComponentTransitions'
-import { Button, OverlayTrigger, Placeholder, Popover, Spinner } from 'react-bootstrap'
+import { Button, Collapse, OverlayTrigger, Placeholder, Popover, Spinner } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { SlideLeft } from '../../../Page-transition/PageTransitions'
 import { useNavigate } from 'react-router-dom'
 import API_URL from '../../../API/API_URL'
 import axios from 'axios'
+import UserContext from '../../../Context/Context'
+import ThemingCangerFunc from '../../../Theme'
 
 const DashboardHeader = () => {
 
-  const [imageData, setImageData] = useState(null);
-  const [userDatas, setUserDatas] = useState({});
-  const [dateNow, setDateNow] = useState("");
+  const [imageData, setImageData] = useState(null)
+  const [userDatas, setUserDatas] = useState({})
+  const [dateNow, setDateNow] = useState("")
+  const [openCollapse, setOpenCollapse] = useState(false)
   const navigateTo = useNavigate()
-  const src = 'data:image/jpeg;base64,' + imageData
-  let getLocalData = JSON.parse(localStorage.getItem('obj'));
+  const {setThemeChanger, themeChanger} = useContext(UserContext)
 
+
+  const src = 'data:image/jpeg;base64,' + imageData
+  let getLocalData = JSON.parse(localStorage.getItem('obj'))
   const logOut = () => {
     localStorage.clear()
     navigateTo('/')
   }
+
 
 
   useEffect(() => {
@@ -61,13 +67,20 @@ const DashboardHeader = () => {
 
 
   const popover = (
-    <Popover id="popover-basic" className='add-box-shadow overlay-bg-custom-gradient-color' style={{ borderTop: "solid 2px white", borderBottom: "solid 1px lightgrey", borderLeft: "solid 2px whitesmoke", borderRight: "solid 2px whitesmoke" }}>
-      <div className='overflow-hidden'>
+    <Popover id="popover-basic" className='add-box-shadow bg-transparent rounded-4 '>
+      <div className='overflow-hidden overlay-bg-custom-color rounded-4 '>
         <Popover.Header as="h2" className='fw-bold '>Profile Menu</Popover.Header>
         <SlideLeft>
-          <Popover.Body className='d-flex flex-column p-2'>
+          <Popover.Body className='d-flex flex-column p-2' style={{ width: "150px" }}>
             <Link className='text-dark text-decoration-none bi bi-person link-hover'> Profile</Link>
-            <Link className='text-dark text-decoration-none bi bi-gear link-hover'> Setting</Link>
+            <Link className='text-dark text-decoration-none bi bi-palette link-hover' onMouseEnter={() => { setOpenCollapse(true) }} onMouseLeave={() => { setOpenCollapse(false) }}> Tema
+              <Collapse in={openCollapse}>
+                <div id="example-collapse-text" className='mt-1'>
+                  <p className='bi bi-caret-right m-0 p-1 rounded-2 sub-menu-hover' onClick={() => {setThemeChanger("normal")}}> Normal</p>
+                  <p className='bi bi-caret-right m-0 p-1 rounded-2 sub-menu-hover' onClick={() => {setThemeChanger("gradasi")}}> Gradasi</p>
+                </div>
+              </Collapse>
+            </Link>
           </Popover.Body>
           <hr className='mx-2 my-0 p-0' />
         </SlideLeft>
@@ -81,7 +94,7 @@ const DashboardHeader = () => {
   );
 
   return (
-    <div className='add-item-shadow bg-custom-gradient-color rounded-4 p-3 d-flex justify-content-between' style={{ borderTop: "solid 2px white", borderBottom: "solid 1px lightgrey", borderLeft: "solid 2px whitesmoke", borderRight: "solid 2px whitesmoke" }} >
+    <div className={` ${ThemingCangerFunc().gradient} add-item-shadow rounded-4 p-3 d-flex justify-content-between`} style={ThemingCangerFunc("white").style} >
       <LeftToRight>
         <div>
           <h2 className='fw-bold m-0 p-0'>Dashboard</h2>
@@ -94,7 +107,7 @@ const DashboardHeader = () => {
             ?
             <h6 className='text-secondary mt-0 text-uppercase'>{`${userDatas.first_name} ${userDatas.last_name} (${userDatas.role})`}</h6>
             :
-            <div  style={{ width: "200px" }}>
+            <div style={{ width: "200px" }}>
               <Placeholder as="h6" animation="glow">
                 <Placeholder xs={10} />
               </Placeholder>

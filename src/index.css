@@ -15,16 +15,17 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.container-main::-webkit-scrollbar{
-    display: none;
-  }
+.container-main::-webkit-scrollbar {
+  display: none;
+}
+
 
 code {
   font-family: 'Roboto', sans-serif;
 }
 
-.hide-scrollbar{
-  -ms-overflow-style: none;  
+.hide-scrollbar {
+  -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
@@ -124,9 +125,13 @@ code {
 }
 
 .link-hover:hover {
-  background-color: lightgrey;
+  background-color: rgba(211, 211, 211, 0.575);
   padding: 5px;
   border-radius: 10px;
+}
+
+.sub-menu-hover:hover {
+  background-color: whitesmoke;
 }
 
 
@@ -138,16 +143,13 @@ code {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f7ecff", endColorstr="#fff6e4", GradientType=1);
 }
 
-.overlay-bg-custom-gradient-color {
-  background: rgba(247, 236, 255, 0.315);
-  background: -moz-linear-gradient(144deg, rgba(247, 236, 255, 0.5) 0%, rgba(236, 254, 255, 0.5) 50%, rgba(255, 246, 228, 0.5) 100%);
-  background: -webkit-linear-gradient(144deg, rgba(247, 236, 255,  0.5) 0%, rgba(236, 254, 255,  0.5) 50%, rgba(255, 246, 228,  0.5) 100%);
-  background: linear-gradient(144deg, rgba(247, 236, 255,  0.5) 0%, rgba(236, 254, 255,  0.5) 50%, rgba(255, 246, 228,  0.5) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f7ecff", endColorstr="#fff6e4", GradientType=1);
+.overlay-bg-custom-color {
+  background-color: #ffffff8e;
+  backdrop-filter: blur(20px);
 }
 
 .dropdown-toggle::after {
-  display: none !important; 
+  display: none !important;
 }
 
 
@@ -157,7 +159,7 @@ code {
     height: 100vh;
   }
 
-  .dh-name-container{
+  .dh-name-container {
     display: none;
   }
 

@@ -1,14 +1,19 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { Button, Collapse, Container, Dropdown } from 'react-bootstrap'
+import { Button, Container, Dropdown } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import logo from '../../Assets/Logo/logo.png'
 import UserContext from '../../Context/Context'
+import { useNavigate } from 'react-router-dom'
+
 
 const NavigationsBar = ({ children }) => {
 
   const [isNavbarCollapse, setIsNavbarCollapse] = useState(false)
   const { setTurnOnCameraOnQRScannerPage } = useContext(UserContext)
   const [localData, setLocalData] = useState("")
+  const navigateTo = useNavigate()
+
+
 
   const navCollapse = () => {
     if (!isNavbarCollapse) {
@@ -40,38 +45,39 @@ const NavigationsBar = ({ children }) => {
                   <Link to="/dashboard" className='m-0 fw-bold bi bi-tv cursor-pointer text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Dashboard</Link>
                   {
                     localData === "kepdes" && (
-                      // <Link to="/registrasi" className='m-0 fw-bold bi bi-person-add text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Registrasi admin</Link>
                       <Dropdown>
                         <Dropdown.Toggle className='cursor-pointer' id="dropdown-basic" as="b">
                           <span className='bi bi-person-add h5' /> Registrasi
                         </Dropdown.Toggle>
-                        <Dropdown.Menu className='add-box-shadow p-2 overlay-bg-custom-gradient-color p-0'>
-                          <Dropdown.Item className='rounded-3'>
-                            <div className='d-flex flex-column'>
-                              <p className='bi bi-person-video3 m-0 p-0'> Kepala desa</p>
-                              <div style={{ fontSize: "12px", marginLeft: "21px", marginBottom: "0px", whiteSpace: "normal" }}>
-                                Halman ini khusus mengganti kepala desa, gunakan halaman ini jika kepala desa berpindah tangan
+                        <Dropdown.Menu className='add-box-shadow p-0 bg-transparent rounded-4 overflow-hidden'>
+                          <div className='overlay-bg-custom-color p-2'>
+                            <Dropdown.Item className='rounded-3'>
+                              <div className='d-flex flex-column'>
+                                <p className='bi bi-person-video3 m-0 p-0'> Kepala desa</p>
+                                <div style={{ fontSize: "12px", marginLeft: "21px", marginBottom: "0px", whiteSpace: "normal" }}>
+                                  Halman ini khusus mengganti kepala desa, gunakan halaman ini jika kepala desa berpindah tangan
+                                </div>
                               </div>
-                            </div>
-                          </Dropdown.Item>
-                          <hr className='m-1 p-0' />
-                          <Dropdown.Item className='rounded-3'>
-                            <div className='d-flex flex-column'>
-                              <p className='bi bi-clipboard-data m-0 p-0'> Pengelola absen</p>
-                              <div style={{ fontSize: "12px", marginLeft: "21px", marginBottom: "0px", whiteSpace: "normal" }}>
-                                Halaman ini khusus mendaftarkan pengelola absensi
+                            </Dropdown.Item>
+                            <hr className='m-1 p-0' />
+                            <Dropdown.Item className='rounded-3' onClick={() => {navigateTo('/registrasi-admin')}}>
+                              <div className='d-flex flex-column'>
+                                <p className='bi bi-clipboard-data m-0 p-0'> Pengelola absen</p>
+                                <div style={{ fontSize: "12px", marginLeft: "21px", marginBottom: "0px", whiteSpace: "normal" }}>
+                                  Halaman ini khusus mendaftarkan pengelola absensi
+                                </div>
                               </div>
-                            </div>
-                          </Dropdown.Item>
-                          <hr className='m-1 p-0' />
-                          <Dropdown.Item className='rounded-3'>
-                            <div className='d-flex flex-column'>
-                              <p className='bi bi-person-check m-0 p-0'> Staf desa</p>
-                              <div style={{ fontSize: "12px", marginLeft: "21px", marginBottom: "0px" }}>
-                                Halaman ini khusus mendaftarkan staf desa
+                            </Dropdown.Item>
+                            <hr className='m-1 p-0' />
+                            <Dropdown.Item className='rounded-3'>
+                              <div className='d-flex flex-column'>
+                                <p className='bi bi-person-check m-0 p-0'> Staf desa</p>
+                                <div style={{ fontSize: "12px", marginLeft: "21px", marginBottom: "0px" }}>
+                                  Halaman ini khusus mendaftarkan staf desa
+                                </div>
                               </div>
-                            </div>
-                          </Dropdown.Item>
+                            </Dropdown.Item>
+                          </div>
                         </Dropdown.Menu>
                       </Dropdown>
                     )
@@ -94,7 +100,41 @@ const NavigationsBar = ({ children }) => {
                 <div className={(isNavbarCollapse === true) ? "mobile-link" : "mobile-link-collapse"}>
                   <Link to="/dashboard" className='m-0 fw-bold bi bi-tv cursor-pointer text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Dashboard</Link>
                   {
-                    (localData === "kepdes") && <Link to="/registrasi" className='m-0 fw-bold bi bi-person-add text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Registrasi admin</Link>
+                    localData === "kepdes" && (
+                      <Dropdown>
+                        <Dropdown.Toggle className='cursor-pointer' id="dropdown-basic" as="b">
+                          <span className='bi bi-person-add h5' /> Registrasi
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu className='add-box-shadow p-2 overlay-bg-custom-gradient-color p-0' style={{width: "300px"}}>
+                          <Dropdown.Item className='rounded-3'>
+                            <div className='d-flex flex-column'>
+                              <p className='bi bi-person-video3 m-0 p-0'> Kepala desa</p>
+                              <div style={{ fontSize: "12px", marginLeft: "21px", marginBottom: "0px", whiteSpace: "normal" }}>
+                                Halman ini khusus mengganti kepala desa, gunakan halaman ini jika kepala desa berpindah tangan
+                              </div>
+                            </div>
+                          </Dropdown.Item>
+                          <hr className='m-1 p-0' />
+                          <Dropdown.Item className='rounded-3' onClick={() => {navigateTo('/registrasi-admin')}}>
+                            <div className='d-flex flex-column'>
+                              <p className='bi bi-clipboard-data m-0 p-0'> Pengelola absen</p>
+                              <div style={{ fontSize: "12px", marginLeft: "21px", marginBottom: "0px", whiteSpace: "normal" }}>
+                                Halaman ini khusus mendaftarkan pengelola absensi
+                              </div>
+                            </div>
+                          </Dropdown.Item>
+                          <hr className='m-1 p-0' />
+                          <Dropdown.Item className='rounded-3'>
+                            <div className='d-flex flex-column'>
+                              <p className='bi bi-person-check m-0 p-0'> Staf desa</p>
+                              <div style={{ fontSize: "12px", marginLeft: "21px", marginBottom: "0px" }}>
+                                Halaman ini khusus mendaftarkan staf desa
+                              </div>
+                            </div>
+                          </Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    )
                   }
                   <Link to="/scanner-manager" className='m-0 fw-bold bi bi-qr-code-scan cursor-pointer text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOnCamera")}> QR Scanner</Link>
                   <Link to="/qr-generator" className='m-0 fw-bold bi bi-qr-code cursor-pointer text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> QR Generator</Link>
