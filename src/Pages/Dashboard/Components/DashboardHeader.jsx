@@ -16,27 +16,34 @@ const DashboardHeader = () => {
   const [dateNow, setDateNow] = useState("")
   const [openCollapse, setOpenCollapse] = useState(false)
   const navigateTo = useNavigate()
-  const {setThemeChanger, themeChanger} = useContext(UserContext)
+  const { setThemeChanger } = useContext(UserContext)
 
 
   const src = 'data:image/jpeg;base64,' + imageData
   let getLocalData = JSON.parse(localStorage.getItem('obj'))
+
   const logOut = () => {
     localStorage.clear()
     navigateTo('/')
   }
 
 
+  const visitStafProfileByAdmin = (userID) => {
+    localStorage.setItem('visit', JSON.stringify({ "id":  userID}))
+    navigateTo('/profile')
+  }
+
+
 
   useEffect(() => {
     const getUserProfilePicture = () => {
-      axios.get(API_URL(getLocalData.id).USER.GET_PROFILE_PICTURE).then((result) => {
+      axios.get(API_URL(getLocalData.id).USER.GET_SINGLE_PROFILE_PICTURE).then((result) => {
         setImageData(result.data.picture)
       })
     }
 
     const getUserDetail = () => {
-      axios.get(API_URL(getLocalData.id).USER.GET_USER_DETAIL).then((result) => {
+      axios.get(API_URL(getLocalData.id).USER.GET_SINGLE_USER).then((result) => {
         setUserDatas({
           "id": result.data.id,
           "first_name": result.data.first_name,
@@ -62,22 +69,19 @@ const DashboardHeader = () => {
     getDateForNow()
     getUserDetail()
     getUserProfilePicture()
-  }, []);
-
-
+  }, [])
 
   const popover = (
     <Popover id="popover-basic" className='add-box-shadow bg-transparent rounded-4 '>
       <div className='overflow-hidden overlay-bg-custom-color rounded-4 '>
-        <Popover.Header as="h2" className='fw-bold '>Profile Menu</Popover.Header>
         <SlideLeft>
           <Popover.Body className='d-flex flex-column p-2' style={{ width: "150px" }}>
-            <Link className='text-dark text-decoration-none bi bi-person link-hover'> Profile</Link>
+            <div className='text-dark text-decoration-none bi bi-person link-hover cursor-pointer' onClick={() => {visitStafProfileByAdmin(getLocalData.id)}}> Profile</div>
             <Link className='text-dark text-decoration-none bi bi-palette link-hover' onMouseEnter={() => { setOpenCollapse(true) }} onMouseLeave={() => { setOpenCollapse(false) }}> Tema
               <Collapse in={openCollapse}>
                 <div id="example-collapse-text" className='mt-1'>
-                  <p className='bi bi-caret-right m-0 p-1 rounded-2 sub-menu-hover' onClick={() => {setThemeChanger("normal")}}> Normal</p>
-                  <p className='bi bi-caret-right m-0 p-1 rounded-2 sub-menu-hover' onClick={() => {setThemeChanger("gradasi")}}> Gradasi</p>
+                  <p className='bi bi-caret-right m-0 p-1 rounded-2 sub-menu-hover' onClick={() => { setThemeChanger("normal") }}> Normal</p>
+                  <p className='bi bi-caret-right m-0 p-1 rounded-2 sub-menu-hover' onClick={() => { setThemeChanger("gradasi") }}> Gradasi</p>
                 </div>
               </Collapse>
             </Link>
@@ -91,7 +95,8 @@ const DashboardHeader = () => {
         </BottomToTop>
       </div>
     </Popover>
-  );
+  )
+
 
   return (
     <div className={` ${ThemingCangerFunc().gradient} add-item-shadow rounded-4 p-3 d-flex justify-content-between`} style={ThemingCangerFunc("white").style} >

@@ -20,7 +20,7 @@ const LoginCard = () => {
   const salt = bcrypt.genSaltSync(10)
 
   const login = () => {
-    const encPass = bcrypt.hashSync(password, salt);
+    const encPass = bcrypt.hashSync(password, salt)
     const url = API_URL().USER.LOGIN_STAF
     const user_data = {
       "email": email,

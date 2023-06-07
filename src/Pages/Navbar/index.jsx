@@ -1,9 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { Button, Container, Dropdown } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import logo from '../../Assets/Logo/logo.png'
 import UserContext from '../../Context/Context'
 import { useNavigate } from 'react-router-dom'
+
 
 
 const NavigationsBar = ({ children }) => {
@@ -12,7 +13,8 @@ const NavigationsBar = ({ children }) => {
   const { setTurnOnCameraOnQRScannerPage } = useContext(UserContext)
   const [localData, setLocalData] = useState("")
   const navigateTo = useNavigate()
-
+  const location = useLocation()
+  const currentUrl = location.pathname
 
 
   const navCollapse = () => {
@@ -23,6 +25,29 @@ const NavigationsBar = ({ children }) => {
     }
   }
 
+
+  const registerOptions = (options) => {
+    if(options === "kepdes"){
+      navigateTo('/register-kepdes')
+    }
+    if(options === "admin"){
+      navigateTo('/register-admin')
+    }
+    if(options === "staf"){
+      navigateTo('/register-staf')
+    }
+    
+  }
+
+
+  useEffect(() => {
+    // CLear LocalStorage from visit (card-list-of-user)
+    if (currentUrl !== '/profile') {
+      localStorage.removeItem('visit')
+    }
+  }, [currentUrl])
+  
+
   useEffect(() => {
     const obj = JSON.parse(localStorage.getItem('obj'))
     if (!!obj) {
@@ -31,9 +56,9 @@ const NavigationsBar = ({ children }) => {
   }, [])
 
   return (
-    <div className='hide-scrollbar' style={{ width: "100%", padding: "10px", height: "100vh", overflow: "scroll" }}>
+    <div className='hide-scrollbar' style={{ width: "100%", padding: "10px", height: "100vh", overflow: "auto" }}>
       <div className='position-relative d-flex justify-content-center w-100'>
-        <Container className={`add-box-shadow p-3 rounded-4 position-fixed`} style={{ transition: "1", zIndex: "9999", width: "94%", backdropFilter: "blur(15px)", backgroundColor: " #ffffff69", borderTop: "solid 2px white", borderBottom: "solid 1px lightgrey", borderLeft: "solid 2px whitesmoke", borderRight: "solid 2px whitesmoke" }}>
+        <Container className={`add-box-shadow p-3 rounded-4 position-fixed`} style={{ transition: "1", zIndex: "9999", width: "94%", backdropFilter: "blur(15px)", backgroundColor: "#ffffffc0", borderTop: "solid 2px white", borderBottom: "solid 1px lightgrey", borderLeft: "solid 2px whitesmoke", borderRight: "solid 2px whitesmoke" }}>
           <section className='desk-nav'>
             <div className='d-flex justify-content-between align-items-center'>
               <div className='d-flex align-items-center gap-3'>
@@ -42,7 +67,7 @@ const NavigationsBar = ({ children }) => {
               </div>
               <div className='d-flex gap-4 align-items-center'>
                 <div className='d-flex gap-3'>
-                  <Link to="/dashboard" className='m-0 fw-bold bi bi-tv cursor-pointer text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Dashboard</Link>
+                  <Link to="/dashboard" className={`m-0 fw-bold bi bi-tv cursor-pointer text-dark text-decoration-none ${currentUrl === "/dashboard"?"border-2 border-secondary border-bottom":"border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Dashboard</Link>
                   {
                     localData === "kepdes" && (
                       <Dropdown>
@@ -51,7 +76,7 @@ const NavigationsBar = ({ children }) => {
                         </Dropdown.Toggle>
                         <Dropdown.Menu className='add-box-shadow p-0 bg-transparent rounded-4 overflow-hidden'>
                           <div className='overlay-bg-custom-color p-2'>
-                            <Dropdown.Item className='rounded-3'>
+                            <Dropdown.Item className='rounded-3'onClick={() => { registerOptions('kepdes')}}>
                               <div className='d-flex flex-column'>
                                 <p className='bi bi-person-video3 m-0 p-0'> Kepala desa</p>
                                 <div style={{ fontSize: "12px", marginLeft: "21px", marginBottom: "0px", whiteSpace: "normal" }}>
@@ -60,7 +85,7 @@ const NavigationsBar = ({ children }) => {
                               </div>
                             </Dropdown.Item>
                             <hr className='m-1 p-0' />
-                            <Dropdown.Item className='rounded-3' onClick={() => {navigateTo('/registrasi-admin')}}>
+                            <Dropdown.Item className='rounded-3' onClick={() => { registerOptions('admin')}}>
                               <div className='d-flex flex-column'>
                                 <p className='bi bi-clipboard-data m-0 p-0'> Pengelola absen</p>
                                 <div style={{ fontSize: "12px", marginLeft: "21px", marginBottom: "0px", whiteSpace: "normal" }}>
@@ -69,7 +94,7 @@ const NavigationsBar = ({ children }) => {
                               </div>
                             </Dropdown.Item>
                             <hr className='m-1 p-0' />
-                            <Dropdown.Item className='rounded-3'>
+                            <Dropdown.Item className='rounded-3'onClick={() => { registerOptions('staf')}}>
                               <div className='d-flex flex-column'>
                                 <p className='bi bi-person-check m-0 p-0'> Staf desa</p>
                                 <div style={{ fontSize: "12px", marginLeft: "21px", marginBottom: "0px" }}>
@@ -82,8 +107,8 @@ const NavigationsBar = ({ children }) => {
                       </Dropdown>
                     )
                   }
-                  <Link to="/scanner-manager" className='m-0 fw-bold bi bi-qr-code-scan cursor-pointer text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOnCamera")}> QR Scanner</Link>
-                  <Link to="/qr-generator" className='m-0 fw-bold bi bi-qr-code cursor-pointer text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> QR Generator</Link>
+                  <Link to="/scanner-manager" className={`m-0 fw-bold bi bi-qr-code-scan cursor-pointer text-dark text-decoration-none ${currentUrl === "/scanner-manager"?"border-2 border-secondary border-bottom":"border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOnCamera")}> QR Scanner</Link>
+                  <Link to="/qr-generator" className={`m-0 fw-bold bi bi-qr-code cursor-pointer text-dark text-decoration-none ${currentUrl === "/qr-generator"?"border-2 border-secondary border-bottom":"border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> QR Generator</Link>
                 </div>
               </div>
             </div>
@@ -115,7 +140,7 @@ const NavigationsBar = ({ children }) => {
                             </div>
                           </Dropdown.Item>
                           <hr className='m-1 p-0' />
-                          <Dropdown.Item className='rounded-3' onClick={() => {navigateTo('/registrasi-admin')}}>
+                          <Dropdown.Item className='rounded-3' onClick={() => {navigateTo('/register')}}>
                             <div className='d-flex flex-column'>
                               <p className='bi bi-clipboard-data m-0 p-0'> Pengelola absen</p>
                               <div style={{ fontSize: "12px", marginLeft: "21px", marginBottom: "0px", whiteSpace: "normal" }}>
@@ -144,7 +169,7 @@ const NavigationsBar = ({ children }) => {
           </section>
         </Container>
       </div>
-      <div style={{ marginTop: "95px" }}>
+      <div style={{ marginTop: "95px"}}>
         {children}
       </div>
     </div>

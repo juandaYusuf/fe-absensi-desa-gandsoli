@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion';
-import { Dashboard, Login, NavigationsBar, QRCodeGenerator, ScannerManager, RegistarsiAdmin } from '../Pages';
+import { Dashboard, Login, NavigationsBar, QRCodeGenerator, ScannerManager, RegistarsiAdmin, Profile } from '../Pages';
 import ProtectedRoutes from './Protected-routers';
 
 const RouterPageTransitions = () => {
@@ -27,10 +27,11 @@ const RouterPageTransitions = () => {
               <Route path="/" element={<Login />} />
               {/* //! Protected Routes */}
               <Route element={<ProtectedRoutes />}>
-                <Route path="/registrasi-admin" element={<RegistarsiAdmin />} />
+                <Route path="/register" element={<RegistarsiAdmin />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/scanner-manager" element={<ScannerManager />} />
                 <Route path="/qr-generator" element={<QRCodeGenerator />} />
+                <Route path="/profile" element={<Profile />} />
               </Route>
             </Routes>
           </AnimatePresence>)
@@ -42,10 +43,13 @@ const RouterPageTransitions = () => {
                 <Route path="/" element={<Login />} />
                 {/* //! Protected Routes */}
                 <Route element={<ProtectedRoutes />}>
-                  <Route path="/registrasi-admin" element={<RegistarsiAdmin />} />
+                  <Route path="/register-kepdes" element={<RegistarsiAdmin regOptions="kepdes"/>} />
+                  <Route path="/register-admin" element={<RegistarsiAdmin regOptions="admin"/>} />
+                  <Route path="/register-staf" element={<RegistarsiAdmin regOptions="staf"/>} />
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/scanner-manager" element={<ScannerManager />} />
                   <Route path="/qr-generator" element={<QRCodeGenerator />} />
+                  <Route path="/profile" element={<Profile />} />
                 </Route>
               </Routes>
             </AnimatePresence>
