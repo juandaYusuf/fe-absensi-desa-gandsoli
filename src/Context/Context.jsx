@@ -11,6 +11,7 @@ export const UserContextProvider = (props) => {
   const [contextPresenceCounterIsLoading, setContextPresenceCounterIsLoading] = useState(false)
   const [contextUserFullNameOfTable, setContextUserFullNameOfTable] = useState("")
   const [contextPresenceCounter, setContextPresenceCounter] = useState({})
+  const [contextRefreshDraftList, setContextRefreshDraftList] = useState(false)
 
 
   return (
@@ -35,6 +36,9 @@ export const UserContextProvider = (props) => {
 
       contextPresenceCounter,
       setContextPresenceCounter,
+
+      contextRefreshDraftList,
+      setContextRefreshDraftList
 
     }}>
       {props.children}

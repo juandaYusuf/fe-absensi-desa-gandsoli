@@ -370,9 +370,9 @@ const UserDetailPresence = (props) => {
         <tr key={no}>
           <td style={{ backgroundColor: `${getNameOfCurrenMonth() === resultMonth ? "Moccasin" : ""}` }}>{no} {getNameOfCurrenMonth() === resultMonth && <span className="text-muted bi bi-pin-angle" />}</td>
           <td style={{ borderLeft: "solid 1px lightgrey", backgroundColor: `${getNameOfCurrenMonth() === resultMonth ? "Moccasin" : ""}` }}>{resultMonth}</td>
-          <td style={{ borderLeft: "solid 1px lightgrey", backgroundColor: `${getNameOfCurrenMonth() === resultMonth ? "Moccasin" : ""}` }}>{month[presenceData.month_created_at - 1] === resultMonth && presenceData.year_created_at === parseInt(valueOfYear)? presenceData.hadir : "-"}</td>
-          <td style={{ borderLeft: "solid 1px lightgrey", backgroundColor: `${getNameOfCurrenMonth() === resultMonth ? "Moccasin" : ""}` }}>{month[presenceData.month_created_at - 1] === resultMonth && presenceData.year_created_at === parseInt(valueOfYear)? presenceData.izin : "-"}</td>
-          <td style={{ borderLeft: "solid 1px lightgrey", backgroundColor: `${getNameOfCurrenMonth() === resultMonth ? "Moccasin" : ""}` }}>{month[presenceData.month_created_at - 1] === resultMonth && presenceData.year_created_at === parseInt(valueOfYear)? presenceData.alfa : "-"}</td>
+          <td style={{ borderLeft: "solid 1px lightgrey", backgroundColor: `${getNameOfCurrenMonth() === resultMonth ? "Moccasin" : ""}` }}>{month[presenceData.month_created_at - 1] === resultMonth && presenceData.year_created_at === parseInt(valueOfYear) ? presenceData.hadir : "-"}</td>
+          <td style={{ borderLeft: "solid 1px lightgrey", backgroundColor: `${getNameOfCurrenMonth() === resultMonth ? "Moccasin" : ""}` }}>{month[presenceData.month_created_at - 1] === resultMonth && presenceData.year_created_at === parseInt(valueOfYear) ? presenceData.izin : "-"}</td>
+          <td style={{ borderLeft: "solid 1px lightgrey", backgroundColor: `${getNameOfCurrenMonth() === resultMonth ? "Moccasin" : ""}` }}>{month[presenceData.month_created_at - 1] === resultMonth && presenceData.year_created_at === parseInt(valueOfYear) ? presenceData.alfa : "-"}</td>
           <td style={{ borderLeft: "solid 1px lightgrey", borderRight: "solid 1px lightgrey", backgroundColor: `${getNameOfCurrenMonth() === resultMonth ? "Moccasin" : ""}` }}>
             {
               efectiveWorking.map((resultOfEfectiveWorking) => {
@@ -452,14 +452,18 @@ const UserDetailPresence = (props) => {
     const getUserDetail = () => {
       const url = API_URL(currentUserIdFromVisitor.id).USER.GET_SINGLE_USER
       axios.get(url).then((response) => {
-        props.user_detail({
-          first_name: response.data.first_name,
-          last_name: response.data.last_name,
-          email: response.data.email,
-          alamat: response.data.alamat,
-          jk: response.data.j_kelamin,
-          pp: response.data.profile_picture
-        })
+
+        if (props.current_user !== "my-self") {
+          props.user_detail({
+            first_name: response.data.first_name,
+            last_name: response.data.last_name,
+            email: response.data.email,
+            alamat: response.data.alamat,
+            jk: response.data.j_kelamin,
+            pp: response.data.profile_picture
+          })
+        }
+
         setUserDetail({
           first_name: response.data.first_name,
           last_name: response.data.last_name,
@@ -481,35 +485,41 @@ const UserDetailPresence = (props) => {
         let izin = []
         let alfa = []
 
-        let splitDayFromMonthAndYearAtIn = null
-        let splitYearFromDayAndMonthAtIn = null
-        let splitDayFromMonthAndYearAtOut = null
+        // let splitDayFromMonthAndYearAtIn = null
+        // let splitYearFromDayAndMonthAtIn = null
+        // let splitDayFromMonthAndYearAtOut = null
 
-        let monthHasBeenSplit = null
-        let yearHasBeenSplit = null
-        let hourInHasBeenSplit = null
-        let hourOutHasBeenSplit = null
+        let monthHasBeenSplitIn = null
+        let yearHasBeenSplitIn = null
+
+        // let monthHasBeenSplitOut = null
+        // let yearHasBeenSplitOut = null
+        // let hourInHasBeenSplit = null
+        // let hourOutHasBeenSplit = null
 
         response.data.presence.forEach((items) => {
 
           const dateFromDBAtIn = items.created_at_in
-          const dateFromDBAtOut = items.created_at_out
+          // const dateFromDBAtOut = items.created_at_out
+
           const presenceStatus = items.presence_status
           const splitTimeFromDateAtIn = dateFromDBAtIn.split("T")[0]
-          const splitTimeFromDate = dateFromDBAtOut.split("T")[0]
-          const timePartsIn = dateFromDBAtIn.split("T")[1].split(":")
-          const timePartsOut = dateFromDBAtOut.split("T")[1].split(":")
+          // const splitTimeFromDateAtOut = dateFromDBAtOut.split("T")[0]
+          // const timePartsIn = dateFromDBAtIn.split("T")[1].split(":")
+          // const timePartsOut = dateFromDBAtOut.split("T")[1].split(":")
 
-          splitDayFromMonthAndYearAtOut = parseInt(splitTimeFromDate.split("-")[2])
-          splitYearFromDayAndMonthAtIn = parseInt(splitTimeFromDateAtIn.split("-")[0])
-          splitDayFromMonthAndYearAtIn = parseInt(splitTimeFromDateAtIn.split("-")[2])
+          // splitDayFromMonthAndYearAtOut = parseInt(splitTimeFromDateAtOut.split("-")[2])
+          // splitYearFromDayAndMonthAtIn = parseInt(splitTimeFromDateAtIn.split("-")[0])
+          // splitDayFromMonthAndYearAtIn = parseInt(splitTimeFromDateAtIn.split("-")[2])
 
 
-          monthHasBeenSplit = parseInt(splitTimeFromDate.split("-")[1])
-          yearHasBeenSplit = parseInt(splitTimeFromDate.split("-")[0])
+          // monthHasBeenSplitOut = parseInt(splitTimeFromDateAtOut.split("-")[1])
+          // yearHasBeenSplitOut = parseInt(splitTimeFromDateAtOut.split("-")[0])
+          monthHasBeenSplitIn = parseInt(splitTimeFromDateAtIn.split("-")[1])
+          yearHasBeenSplitIn = parseInt(splitTimeFromDateAtIn.split("-")[0])
 
-          hourInHasBeenSplit = parseInt(timePartsIn[0])
-          hourOutHasBeenSplit = parseInt(timePartsOut[0])
+          // hourInHasBeenSplit = parseInt(timePartsIn[0])
+          // hourOutHasBeenSplit = parseInt(timePartsOut[0])
 
           if (presenceStatus === "hadir") {
             hadir.push(items)
@@ -526,10 +536,10 @@ const UserDetailPresence = (props) => {
           "hadir": hadir.length,
           "izin": izin.length,
           "alfa": alfa.length,
-          "hours_created_at_in": hourInHasBeenSplit,
-          "hours_created_at_out": hourOutHasBeenSplit,
-          "month_created_at": monthHasBeenSplit,
-          "year_created_at": yearHasBeenSplit
+          // "hours_created_at_in": hourInHasBeenSplit,
+          // "hours_created_at_out": hourOutHasBeenSplit,
+          "month_created_at": monthHasBeenSplitIn,
+          "year_created_at": yearHasBeenSplitIn
         })
       })
     }
@@ -567,11 +577,11 @@ const UserDetailPresence = (props) => {
 
 
   return (
-    <Container className="p-0 m-0">
+    <Container className="p-0 py-2 m-0">
       {
         props.current_user === "visitor"
         &&
-        <div className='mb-4 rounded-4 w-100 border add-item-shadow py-1' style={{ backgroundColor: "GhostWhite" }}>
+        <div className='mb-4 rounded-4 w-100 border add-item-shadow py-1'>
           <Container>
             <Row>
               <Col className='mx-2 my-1 rounded-4 d-flex align-items-center border tex-center justify-content-center' style={{ height: "50px", backgroundColor: "cornsilk" }}> <span className="bi bi-person px-2 h4 m-0 p-0" /> <span className="fw-bold h4 m-0 p-0"> PROFILE </span></Col>
@@ -594,7 +604,7 @@ const UserDetailPresence = (props) => {
         </div>
       }
 
-      <div className='mb-4 rounded-4 w-100 border add-item-shadow py-1' style={{ backgroundColor: "GhostWhite" }}>
+      <div className='mb-4 rounded-4 w-100 border add-item-shadow py-1'>
         <Container>
           <Row>
             <Col className='mx-2 my-1 rounded-4 d-flex align-items-center border tex-center justify-content-center' style={{ height: "50px", backgroundColor: "HoneyDew" }}>

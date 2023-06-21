@@ -38,12 +38,12 @@ code {
   align-items: center;
 }
 
-.hover-card-list:hover{
+.hover-card-list:hover {
   border: solid 1px grey;
   background-color: FloralWhite;
 }
 
-.hover-card-list{
+.hover-card-list {
   background-color: cornsilk;
   border: solid 1px lightgrey;
 }
@@ -57,9 +57,45 @@ code {
 }
 
 .add-item-shadow {
-  box-shadow: 2px 2px 3px -1px rgba(0, 0, 0, 0.300);
-  -webkit-box-shadow: 2px 2px 3px -1px rgba(0, 0, 0, 0.300);
-  -moz-box-shadow: 2px 2px 3px -1px rgba(0, 0, 0, 0.300);
+  box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.300);
+  -webkit-box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.300);
+  -moz-box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.300);
+}
+
+.add-item-shadow-success {
+  box-shadow: 1px 13px 17px -17px rgba(9, 143, 69, 0.75);
+  -webkit-box-shadow: 1px 13px 17px -17px rgba(9, 143, 69, 0.75);
+  -moz-box-shadow: 1px 13px 17px -17px rgba(9, 143, 69, 0.75);
+}
+
+.add-item-shadow-primary {
+  box-shadow: 1px 13px 17px -17px rgba(9, 51, 143, 0.75);
+  -webkit-box-shadow: 1px 13px 17px -17px rgba(9, 51, 143, 0.75);
+  -moz-box-shadow: 1px 13px 17px -17px rgba(9, 51, 143, 0.75);
+}
+
+.add-item-shadow-danger {
+  box-shadow: 1px 13px 17px -17px rgba(220, 56, 72, 0.75);
+  -webkit-box-shadow: 1px 13px 17px -17px rgb(220, 53, 75);
+  -moz-box-shadow: 1px 13px 17px -17px rgb(220, 53, 75);
+}
+
+.add-item-shadow-info {
+  box-shadow: 1px 13px 17px -17px rgb(0, 213, 255);
+  -webkit-box-shadow: 1px 13px 17px -17px rgb(0, 212, 254);
+  -moz-box-shadow: 1px 13px 17px -17px rgb(0, 213, 255);
+}
+
+.scanning-shadow {
+  box-shadow: 0px 0px 22px -14px rgba(0,255,101,0.75);
+  -webkit-box-shadow: 0px 0px 22px -14px rgba(0,255,101,0.75);
+  -moz-box-shadow: 0px 0px 22px -14px rgba(0,255,101,0.75);
+}
+
+.add-item-shadow-secondary {
+  box-shadow: 1px 13px 17px -17px rgba(124, 124, 124, 0.75);
+  -webkit-box-shadow: 1px 13px 17px -17px rgba(124, 124, 124, 0.75);
+  -moz-box-shadow: 1px 13px 17px -17px rgba(124, 124, 124, 0.75);
 }
 
 .list-shadow {

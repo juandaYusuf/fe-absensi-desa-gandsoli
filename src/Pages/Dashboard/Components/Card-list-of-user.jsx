@@ -35,16 +35,16 @@ const CardListOfUser = () => {
 
   return (
     <div>
-      <Card className={`${ThemingCangerFunc().gradient} add-item-shadow overflow-hidden rounded-4 mt-3 d-flex align-items-center`} style={ThemingCangerFunc("light").style}>
-        <h3 className='p-2 w-100  border-bottom m-0' style={{ backdropFilter: "blur(20px)" }}> Daftar staf</h3>
+      <Card className={`${ThemingCangerFunc().gradient}  add-item-shadow overflow-hidden rounded-4 mt-3 d-flex align-items-center`} style={ThemingCangerFunc("light").style}>
+        <h3 className='p-2 w-100  border-bottom m-0 add-item-shadow' style={{ backdropFilter: "blur(20px)" }}> Daftar staf</h3>
         <div className=' py-3 w-100' style={{ overflow: "auto" }}>
-          <div className='px-3' style={{ width: "100%", height: "200px" }}>
+          <div className='px-3 ' style={{ width: "100%", height: "350px" }}>
             {
               !!listOfUser.length
                 ?
                 (listOfUser.map((resultListOfUser) => {
                   return (
-                    <div key={resultListOfUser.id} className='cursor-pointer w-100 mb-3 p-2 rounded-4 d-flex align-items-center justify-content-between gap-2 hover-card-list'  onClick={() => {visitStafProfileByAdmin(resultListOfUser.id)}} >
+                    <div key={resultListOfUser.id} className='add-item-shadow cursor-pointer w-100 mb-3 p-2 rounded-4 d-flex align-items-center justify-content-between gap-2 hover-card-list'  onClick={() => {visitStafProfileByAdmin(resultListOfUser.id)}} >
                       <div className='d-flex align-items-center gap-2'>
                         <div className='bg-light border border-2 border-secodary border-secondary overflow-hidden rounded-circle d-flex justify-content-center align-items-center' style={{ height: "40px", width: "40px" }}>
                           {

@@ -27,16 +27,16 @@ const NavigationsBar = ({ children }) => {
 
 
   const registerOptions = (options) => {
-    if(options === "kepdes"){
+    if (options === "kepdes") {
       navigateTo('/register-kepdes')
     }
-    if(options === "admin"){
+    if (options === "admin") {
       navigateTo('/register-admin')
     }
-    if(options === "staf"){
+    if (options === "staf") {
       navigateTo('/register-staf')
     }
-    
+
   }
 
 
@@ -46,7 +46,7 @@ const NavigationsBar = ({ children }) => {
       localStorage.removeItem('visit')
     }
   }, [currentUrl])
-  
+
 
   useEffect(() => {
     const obj = JSON.parse(localStorage.getItem('obj'))
@@ -65,36 +65,49 @@ const NavigationsBar = ({ children }) => {
                 <img src={logo} style={{ height: "40px" }} alt=" " />
                 <h4 className='fw-bold m-0'>Desa Gandasoli</h4>
               </div>
+
+              <div className='border border-success scanning-shadow rounded-4 px-3 py-2'>
+                <span className='mx-2 m-0 text-success bi bi-circle-fill' />
+                {/* <span className='mx-2 m-0 text-secondary bi bi-circle' /> */}
+                <b className='p-0 m-0 text-success'>Scanning .... </b>
+              </div>
+
               <div className='d-flex gap-4 align-items-center'>
                 <div className='d-flex gap-3'>
-                  <Link to="/dashboard" className={`m-0 fw-bold bi bi-tv cursor-pointer text-dark text-decoration-none ${currentUrl === "/dashboard"?"border-2 border-secondary border-bottom":"border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Dashboard</Link>
+                  <Link to="/dashboard" className={`m-0 fw-bold bi bi-tv cursor-pointer text-dark text-decoration-none ${currentUrl === "/dashboard" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Dashboard</Link>
                   {
-                    localData === "kepdes" && (
-                      <Dropdown>
-                        <Dropdown.Toggle className='cursor-pointer' id="dropdown-basic" as="b">
+                    localData === "kepdes" || localData === "admin"
+                      ? (<Dropdown>
+                        <Dropdown.Toggle className={`cursor-pointer ${currentUrl === "/register-kepdes" || currentUrl === "/register-admin" || currentUrl === "/register-staf" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} id="dropdown-basic" as="b">
                           <span className='bi bi-person-add h5' /> Registrasi
                         </Dropdown.Toggle>
                         <Dropdown.Menu className='add-box-shadow p-0 bg-transparent rounded-4 overflow-hidden'>
                           <div className='overlay-bg-custom-color p-2'>
-                            <Dropdown.Item className='rounded-3'onClick={() => { registerOptions('kepdes')}}>
-                              <div className='d-flex flex-column'>
-                                <p className='bi bi-person-video3 m-0 p-0'> Kepala desa</p>
-                                <div style={{ fontSize: "12px", marginLeft: "21px", marginBottom: "0px", whiteSpace: "normal" }}>
-                                  Halman ini khusus mengganti kepala desa, gunakan halaman ini jika kepala desa berpindah tangan
-                                </div>
-                              </div>
-                            </Dropdown.Item>
-                            <hr className='m-1 p-0' />
-                            <Dropdown.Item className='rounded-3' onClick={() => { registerOptions('admin')}}>
-                              <div className='d-flex flex-column'>
-                                <p className='bi bi-clipboard-data m-0 p-0'> Pengelola absen</p>
-                                <div style={{ fontSize: "12px", marginLeft: "21px", marginBottom: "0px", whiteSpace: "normal" }}>
-                                  Halaman ini khusus mendaftarkan pengelola absensi
-                                </div>
-                              </div>
-                            </Dropdown.Item>
-                            <hr className='m-1 p-0' />
-                            <Dropdown.Item className='rounded-3'onClick={() => { registerOptions('staf')}}>
+                            {
+                              localData === "kepdes" || localData === "admin"
+                              &&
+                              <>
+                                <Dropdown.Item className='rounded-3' onClick={() => { registerOptions('kepdes') }}>
+                                  <div className='d-flex flex-column'>
+                                    <p className='bi bi-person-video3 m-0 p-0'> Kepala desa</p>
+                                    <div style={{ fontSize: "12px", marginLeft: "21px", marginBottom: "0px", whiteSpace: "normal" }}>
+                                      Halman ini khusus mengganti kepala desa, gunakan halaman ini jika kepala desa berpindah tangan
+                                    </div>
+                                  </div>
+                                </Dropdown.Item>
+                                <hr className='m-1 p-0' />
+                                <Dropdown.Item className='rounded-3' onClick={() => { registerOptions('admin') }}>
+                                  <div className='d-flex flex-column'>
+                                    <p className='bi bi-clipboard-data m-0 p-0'> Pengelola absen</p>
+                                    <div style={{ fontSize: "12px", marginLeft: "21px", marginBottom: "0px", whiteSpace: "normal" }}>
+                                      Halaman ini khusus mendaftarkan pengelola absensi
+                                    </div>
+                                  </div>
+                                </Dropdown.Item>
+                                <hr className='m-1 p-0' />
+                              </>
+                            }
+                            <Dropdown.Item className='rounded-3' onClick={() => { registerOptions('staf') }}>
                               <div className='d-flex flex-column'>
                                 <p className='bi bi-person-check m-0 p-0'> Staf desa</p>
                                 <div style={{ fontSize: "12px", marginLeft: "21px", marginBottom: "0px" }}>
@@ -105,10 +118,19 @@ const NavigationsBar = ({ children }) => {
                           </div>
                         </Dropdown.Menu>
                       </Dropdown>
-                    )
+                      )
+                      :
+                      null
                   }
-                  <Link to="/scanner-manager" className={`m-0 fw-bold bi bi-qr-code-scan cursor-pointer text-dark text-decoration-none ${currentUrl === "/scanner-manager"?"border-2 border-secondary border-bottom":"border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOnCamera")}> QR Scanner</Link>
-                  <Link to="/qr-generator" className={`m-0 fw-bold bi bi-qr-code cursor-pointer text-dark text-decoration-none ${currentUrl === "/qr-generator"?"border-2 border-secondary border-bottom":"border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> QR Generator</Link>
+                  {/* <Link to="/scanner-manager" className={`m-0 fw-bold bi bi-qr-code-scan cursor-pointer text-dark text-decoration-none ${currentUrl === "/scanner-manager" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOnCamera")}> QR Scanner</Link> */}
+                  {/* <Link to="/qr-generator" className={`m-0 fw-bold bi bi-qr-code cursor-pointer text-dark text-decoration-none ${currentUrl === "/qr-generator" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> QR Generator</Link> */}
+                  {
+                    localData === "admin" || localData === "kepdes"
+                      ?
+                      <Link to="/setting" className={`m-0 fw-bold bi bi-gear cursor-pointer text-dark text-decoration-none ${currentUrl === "/setting" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Setting</Link>
+                      :
+                      null
+                  }
                 </div>
               </div>
             </div>
@@ -130,7 +152,7 @@ const NavigationsBar = ({ children }) => {
                         <Dropdown.Toggle className='cursor-pointer' id="dropdown-basic" as="b">
                           <span className='bi bi-person-add h5' /> Registrasi
                         </Dropdown.Toggle>
-                        <Dropdown.Menu className='add-box-shadow p-2 overlay-bg-custom-gradient-color p-0' style={{width: "300px"}}>
+                        <Dropdown.Menu className='add-box-shadow p-2 overlay-bg-custom-gradient-color p-0' style={{ width: "300px" }}>
                           <Dropdown.Item className='rounded-3'>
                             <div className='d-flex flex-column'>
                               <p className='bi bi-person-video3 m-0 p-0'> Kepala desa</p>
@@ -140,7 +162,7 @@ const NavigationsBar = ({ children }) => {
                             </div>
                           </Dropdown.Item>
                           <hr className='m-1 p-0' />
-                          <Dropdown.Item className='rounded-3' onClick={() => {navigateTo('/register')}}>
+                          <Dropdown.Item className='rounded-3' onClick={() => { navigateTo('/register') }}>
                             <div className='d-flex flex-column'>
                               <p className='bi bi-clipboard-data m-0 p-0'> Pengelola absen</p>
                               <div style={{ fontSize: "12px", marginLeft: "21px", marginBottom: "0px", whiteSpace: "normal" }}>
@@ -161,15 +183,22 @@ const NavigationsBar = ({ children }) => {
                       </Dropdown>
                     )
                   }
-                  <Link to="/scanner-manager" className='m-0 fw-bold bi bi-qr-code-scan cursor-pointer text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOnCamera")}> QR Scanner</Link>
-                  <Link to="/qr-generator" className='m-0 fw-bold bi bi-qr-code cursor-pointer text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> QR Generator</Link>
+                  {/* <Link to="/scanner-manager" className='m-0 fw-bold bi bi-qr-code-scan cursor-pointer text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOnCamera")}> QR Scanner</Link> */}
+                  {/* <Link to="/qr-generator" className='m-0 fw-bold bi bi-qr-code cursor-pointer text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> QR Generator</Link> */}
+                  {
+                    localData === "admin" || localData === "kepdes"
+                      ?
+                      <Link to="/setting" className='m-0 fw-bold bi bi-qr-code cursor-pointer text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Setting</Link>
+                      :
+                      null
+                  }
                 </div>
               </div>
             </div>
           </section>
         </Container>
       </div>
-      <div style={{ marginTop: "95px"}}>
+      <div style={{ marginTop: "95px" }}>
         {children}
       </div>
     </div>

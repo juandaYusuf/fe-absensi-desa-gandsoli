@@ -85,9 +85,8 @@ function FormEditProfile(props) {
 
   return (
     <>
-      <div style={{width: "700px"}}>
-        <h3 className='bi bi-pencil-square'> Update profile </h3>
-        <hr />
+      <div style={{width: "700px", marginTop: "15px"}}>
+        <h3 className='bi bi-pencil-square mb-3'> Update profile </h3>
         {
           isServerErr === true
             ?

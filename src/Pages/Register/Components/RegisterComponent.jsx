@@ -94,7 +94,7 @@ const RegisterComponent = ({ regOptions, title }) => {
                     <h4 className='bi bi-info-circle'> Info... </h4>
                     <hr className='text-success' />
                     <span> Gunakan halaman ini untuk <b className='text-decoration-underline text-capitalize'>{title}</b> </span><br /><br />
-                    <i class="bi bi-journal-text text-muted" style={{ fontSize: "0.85rem" }}> Selalu perhatikan title form untuk menghidari kesalahan dalam menentukan role atau bagian.</i>
+                    <i className="bi bi-journal-text text-muted" style={{ fontSize: "0.85rem" }}> Selalu perhatikan title form untuk menghidari kesalahan dalam menentukan role atau bagian.</i>
                   </Alert>
                 </LeftToRight>)
                 :
@@ -170,12 +170,6 @@ const RegisterComponent = ({ regOptions, title }) => {
                 <option value="wanita">wanita</option>
               </Form.Select>
             </FloatingLabel>
-            {/* <FloatingLabel
-                        controlId="floatingInput"
-                        label="Pass foto"
-                        className="mb-3">
-                        <Form.Control className='rounded-4' type="file" size="sm" style={{ padding: "35px 0px 25px 20px" }} required/>
-                    </FloatingLabel> */}
             {
               !isLoading
                 ?

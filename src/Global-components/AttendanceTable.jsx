@@ -56,29 +56,31 @@ const AttendanceTable = ({ year, month }) => {
     const tableData = []
 
     const dataPresence = presence.map((result) => {
-      // const dateFromDB = result.created_at
-      // const presenceStatus = result.presence_status
-      // const splitTimeFromDate = dateFromDB.split("T")[0]
-      // const splitDayFromMonthAndYear = parseInt(splitTimeFromDate.split("-")[2])
-      // const splitMonthFromDayAndYeare = parseInt(splitTimeFromDate.split("-")[1])
-      // const splitYearFromDayAndMonth = parseInt(splitTimeFromDate.split("-")[0])
+      let dateFromDBAtIn = result.created_at_in
+      let dateFromDBAtOut = result.created_at_out
+      let presenceStatus = result.presence_status
+      let splitTimeFromDateAtIn = dateFromDBAtIn.split("T")[0]
+      let splitTimeFromDateAtOut = null
 
-      const dateFromDBAtIn = result.created_at_in
-      const dateFromDBAtOut = result.created_at_out
-      const presenceStatus = result.presence_status
-      const splitTimeFromDateAtIn = dateFromDBAtIn.split("T")[0]
-      const splitTimeFromDateAtOut = dateFromDBAtOut.split("T")[0]
+      if (result.created_at_out !== null) {
+        dateFromDBAtOut = result.created_at_out
+        splitTimeFromDateAtOut = dateFromDBAtOut.split("T")[0]
+      }
 
-      const splitDayFromMonthAndYearAtIn = parseInt(splitTimeFromDateAtIn.split("-")[2])
-      const splitMonthFromDayAndYearAtIn = parseInt(splitTimeFromDateAtIn.split("-")[1])
-      const splitYearFromDayAndMonthAtIn = parseInt(splitTimeFromDateAtIn.split("-")[0])
+      let splitDayFromMonthAndYearAtIn = parseInt(splitTimeFromDateAtIn.split("-")[2])
+      let splitMonthFromDayAndYearAtIn = parseInt(splitTimeFromDateAtIn.split("-")[1])
+      let splitYearFromDayAndMonthAtIn = parseInt(splitTimeFromDateAtIn.split("-")[0])
 
-      const splitDayFromMonthAndYearAtOut = parseInt(splitTimeFromDateAtOut.split("-")[2])
-      const splitMonthFromDayAndYearAtOut = parseInt(splitTimeFromDateAtOut.split("-")[1])
-      const splitYearFromDayAndMonthAtOut = parseInt(splitTimeFromDateAtOut.split("-")[0])
+      let splitDayFromMonthAndYearAtOut = null
+      // let splitMonthFromDayAndYearAtOut = parseInt(splitTimeFromDateAtOut.split("-")[1])
+      // let splitYearFromDayAndMonthAtOut = parseInt(splitTimeFromDateAtOut.split("-")[0])
+
+      if (splitTimeFromDateAtOut !== null) {
+        splitDayFromMonthAndYearAtOut = parseInt(splitTimeFromDateAtOut.split("-")[2])
+      }
 
 
-      if (splitDayFromMonthAndYearAtIn === splitDayFromMonthAndYearAtOut) {
+      if (splitDayFromMonthAndYearAtIn) {
         return {
           "presence_status": presenceStatus,
           "day_in": splitDayFromMonthAndYearAtIn,
@@ -104,9 +106,14 @@ const AttendanceTable = ({ year, month }) => {
           {
             dataPresence.map((result, i) => {
               let iconsChanger = ""
+
               if (result.presence_status === 'hadir' && result.day_in === result.day_out) {
                 iconsChanger = "bi bi-check-circle-fill text-success"
               }
+              if (result.day_out === null) {
+                iconsChanger = "bi bi-person-workspace text-success"
+              }
+
               if (result.presence_status === 'izin') {
                 iconsChanger = "bi bi-arrow-up-left-circle-fill text-warning "
               }
@@ -116,7 +123,7 @@ const AttendanceTable = ({ year, month }) => {
 
               if (localMonthAndYear.year === result.year && localMonthAndYear.month === result.month) {
                 return (
-                  day === result.day_out
+                  day === result.day_in
                   &&
                   (<span key={i} className={iconsChanger} style={{ textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black" }} />)
                 )
@@ -141,19 +148,25 @@ const AttendanceTable = ({ year, month }) => {
     const url = API_URL(attendanceId).ATTENDANCE.SINGLE_USER_ATTENDANCE
 
     const dataPresence = presenceData.presence.map((result) => {
-      const dateFromDBAtIn = result.created_at_in
-      const dateFromDBAtOut = result.created_at_out
-      const presenceStatus = result.presence_status
-      const splitTimeFromDateAtIn = dateFromDBAtIn.split("T")[0]
-      const splitTimeFromDateAtOut = dateFromDBAtOut.split("T")[0]
+      let dateFromDBAtIn = result.created_at_in
+      let dateFromDBAtOut = null
+      let presenceStatus = result.presence_status
+      let splitTimeFromDateAtIn = dateFromDBAtIn.split("T")[0]
+      let splitTimeFromDateAtOut = null
 
-      const splitDayFromMonthAndYearAtIn = parseInt(splitTimeFromDateAtIn.split("-")[2])
-      const splitMonthFromDayAndYearAtIn = parseInt(splitTimeFromDateAtIn.split("-")[1])
-      const splitYearFromDayAndMonthAtIn = parseInt(splitTimeFromDateAtIn.split("-")[0])
+      if (result.created_at_out !== null) {
+        dateFromDBAtOut = result.created_at_out
+        splitTimeFromDateAtOut = dateFromDBAtOut.split("T")[0]
+      }
 
-      const splitDayFromMonthAndYearAtOut = parseInt(splitTimeFromDateAtOut.split("-")[2])
-      const splitMonthFromDayAndYearAtOut = parseInt(splitTimeFromDateAtOut.split("-")[1])
-      const splitYearFromDayAndMonthAtOut = parseInt(splitTimeFromDateAtOut.split("-")[0])
+      let splitDayFromMonthAndYearAtIn = parseInt(splitTimeFromDateAtIn.split("-")[2])
+      let splitMonthFromDayAndYearAtIn = parseInt(splitTimeFromDateAtIn.split("-")[1])
+      let splitYearFromDayAndMonthAtIn = parseInt(splitTimeFromDateAtIn.split("-")[0])
+
+      // let splitDayFromMonthAndYearAtOut = parseInt(splitTimeFromDateAtOut.split("-")[2])
+      // let splitMonthFromDayAndYearAtOut = parseInt(splitTimeFromDateAtOut.split("-")[1])
+      // let splitYearFromDayAndMonthAtOut = parseInt(splitTimeFromDateAtOut.split("-")[0])
+
 
       return {
         "day": splitDayFromMonthAndYearAtIn,
@@ -229,8 +242,8 @@ const AttendanceTable = ({ year, month }) => {
 
 
   return (
-    <div className='overflow-hidden mb-3 border' style={{ borderBottomLeftRadius: "15px", borderBottomRightRadius: "15px", backgroundColor: "Cornsilk" }}>
-      <div style={{ height: "390px", overflow: `${!!tableDataIsLoading ? "hidden" : "auto"}` }}>
+    <div className='overflow-hidden mb-3 border add-item-shadow' style={{ borderBottomLeftRadius: "15px", borderBottomRightRadius: "15px", backgroundColor: "Cornsilk" }}>
+      <div style={{ height: "540px", overflow: `${!!tableDataIsLoading ? "hidden" : "auto"}` }}>
         <Table hover className='m-0 p-0' style={{ backgroundColor: "Cornsilk" }}>
           <thead className='text-light' style={{ backgroundColor: "DarkSlateGrey" }}>
             <tr>

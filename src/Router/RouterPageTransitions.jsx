@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion';
-import { Dashboard, Login, NavigationsBar, QRCodeGenerator, ScannerManager, RegistarsiAdmin, Profile } from '../Pages';
+import { Dashboard, Login, NavigationsBar, QRCodeGenerator, ScannerManager, RegistarsiAdmin, Profile, UserSettings } from '../Pages';
 import ProtectedRoutes from './Protected-routers';
 
 const RouterPageTransitions = () => {
@@ -32,6 +32,7 @@ const RouterPageTransitions = () => {
                 <Route path="/scanner-manager" element={<ScannerManager />} />
                 <Route path="/qr-generator" element={<QRCodeGenerator />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/setting" element={<UserSettings />} />
               </Route>
             </Routes>
           </AnimatePresence>)
@@ -50,6 +51,7 @@ const RouterPageTransitions = () => {
                   <Route path="/scanner-manager" element={<ScannerManager />} />
                   <Route path="/qr-generator" element={<QRCodeGenerator />} />
                   <Route path="/profile" element={<Profile />} />
+                  <Route path="/setting" element={<UserSettings />} />
                 </Route>
               </Routes>
             </AnimatePresence>
