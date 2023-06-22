@@ -16,7 +16,7 @@ const QRScannerMonitoring = () => {
         <div className=' scanner-container'>
           <div className=' qr-container add-item-shadow border border-2 border-secondary'>
             <div className='w-100 d-flex justify-content-center'>
-              <Container className='' style={{ width: '400px' }}>
+              <Container style={{scale: "1.5"}}>
                 <Button className='w-100' onClick={() => { setStartScan(!startScan) }}>Tututp kamera</Button>
                 {
                   startScan && (
