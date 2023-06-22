@@ -66,11 +66,11 @@ const NavigationsBar = ({ children }) => {
                 <h4 className='fw-bold m-0'>Desa Gandasoli</h4>
               </div>
 
-              <div className='border border-success scanning-shadow rounded-4 px-3 py-2'>
+              {/* <div className='border border-success scanning-shadow rounded-4 px-3 py-2'>
                 <span className='mx-2 m-0 text-success bi bi-circle-fill' />
-                {/* <span className='mx-2 m-0 text-secondary bi bi-circle' /> */}
+                <span className='mx-2 m-0 text-secondary bi bi-circle' />
                 <b className='p-0 m-0 text-success'>Scanning .... </b>
-              </div>
+              </div> */}
 
               <div className='d-flex gap-4 align-items-center'>
                 <div className='d-flex gap-3'>
@@ -85,7 +85,7 @@ const NavigationsBar = ({ children }) => {
                           <div className='overlay-bg-custom-color p-2'>
                             {
                               localData === "kepdes" || localData === "admin"
-                              &&
+                              ?
                               <>
                                 <Dropdown.Item className='rounded-3' onClick={() => { registerOptions('kepdes') }}>
                                   <div className='d-flex flex-column'>
@@ -106,6 +106,7 @@ const NavigationsBar = ({ children }) => {
                                 </Dropdown.Item>
                                 <hr className='m-1 p-0' />
                               </>
+                              :null
                             }
                             <Dropdown.Item className='rounded-3' onClick={() => { registerOptions('staf') }}>
                               <div className='d-flex flex-column'>
@@ -122,8 +123,8 @@ const NavigationsBar = ({ children }) => {
                       :
                       null
                   }
-                  {/* <Link to="/scanner-manager" className={`m-0 fw-bold bi bi-qr-code-scan cursor-pointer text-dark text-decoration-none ${currentUrl === "/scanner-manager" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOnCamera")}> QR Scanner</Link> */}
-                  {/* <Link to="/qr-generator" className={`m-0 fw-bold bi bi-qr-code cursor-pointer text-dark text-decoration-none ${currentUrl === "/qr-generator" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> QR Generator</Link> */}
+                  <Link to="/scanner-manager" className={`m-0 fw-bold bi bi-qr-code-scan cursor-pointer text-dark text-decoration-none ${currentUrl === "/scanner-manager" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOnCamera")}> QR Scanner</Link>
+                  <Link to="/qr-generator" className={`m-0 fw-bold bi bi-qr-code cursor-pointer text-dark text-decoration-none ${currentUrl === "/qr-generator" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> QR Generator</Link>
                   {
                     localData === "admin" || localData === "kepdes"
                       ?

@@ -57,7 +57,7 @@ const LoginCard = () => {
   }
 
   return (
-    <Card className='add-box-shadow rounded-4 my-4' style={{ margin: "10px", maxWidth: "400px", minWidth: "300px", border: "solid lightgrey 1px", borderTop: "solid lightgrey 2px", overflow: "hidden" }}>
+    <Card className='add-box-shadow rounded-4 my-4 login-card-layout' style={{ }}>
       <Card.Body className=' p-0'>
         <Card.Title className='d-flex justify-content-center align-items-center flex-column m-0'>
           <LeftToRight>
@@ -67,7 +67,7 @@ const LoginCard = () => {
             <span className='fw-bold m-0 text-secondary mx-4' style={{ fontSize: "2rem", zIndex: "999" }}>LOGIN</span>
           </RightToLeft>
         </Card.Title>
-        <Alert variant="info rounded-4 my-0 mt-3 border border-info LoginStaf-input-container-shadow overflow-hidden" style={{ width: "395px" }}>
+        <Alert variant="info rounded-4 my-0 mt-3 border border-info LoginStaf-input-container-shadow overflow-hidden login-alert">
           <TopToBottom>
             {
               isServerErr === true

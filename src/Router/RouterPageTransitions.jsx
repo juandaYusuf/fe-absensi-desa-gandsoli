@@ -25,11 +25,11 @@ const RouterPageTransitions = () => {
             <Routes key={location.pathname} location={location}>
               {/* //! Unprotected Routes */}
               <Route path="/" element={<Login />} />
+                <Route path="/scanner-manager" element={<ScannerManager />} />
               {/* //! Protected Routes */}
               <Route element={<ProtectedRoutes />}>
                 <Route path="/register" element={<RegistarsiAdmin />} />
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/scanner-manager" element={<ScannerManager />} />
                 <Route path="/qr-generator" element={<QRCodeGenerator />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/setting" element={<UserSettings />} />
@@ -41,6 +41,7 @@ const RouterPageTransitions = () => {
             <AnimatePresence mode='wait'>
               <Routes key={location.pathname} location={location}>
                 {/* //! Unprotected Routes */}
+                  <Route path="/scanner-manager" element={<ScannerManager />} />
                 <Route path="/" element={<Login />} />
                 {/* //! Protected Routes */}
                 <Route element={<ProtectedRoutes />}>
@@ -48,7 +49,6 @@ const RouterPageTransitions = () => {
                   <Route path="/register-admin" element={<RegistarsiAdmin regOptions="admin"/>} />
                   <Route path="/register-staf" element={<RegistarsiAdmin regOptions="staf"/>} />
                   <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/scanner-manager" element={<ScannerManager />} />
                   <Route path="/qr-generator" element={<QRCodeGenerator />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/setting" element={<UserSettings />} />
