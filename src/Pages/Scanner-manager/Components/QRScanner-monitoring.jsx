@@ -21,6 +21,7 @@ const QRScannerMonitoring = () => {
                 {
                   startScan && (
                     <QrReader
+                    constraints={{facingMode: 'environment'}}
                       delay={1000}
                       onResult={(result, error) => {
                         if (!!result) {
