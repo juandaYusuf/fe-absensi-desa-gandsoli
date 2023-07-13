@@ -2,39 +2,113 @@
   background-color: var(--bs-gray-300);
 }
 
+@font-face {
+  font-family: Roboto;
+  src: url('./Assets/Font/Roboto-Regular.ttf');
+}
+
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+.container-main::-webkit-scrollbar {
+  display: none;
+}
+
+
+
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: 'Roboto', sans-serif;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .container-main {
-  height: 100vh;
+  /* height: 100vh; */
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: scroll;
+  background-image: url("https://www.transparenttextures.com/patterns/egg-shell.png");
 }
 
+.hover-card-list:hover {
+  border: solid 1px grey;
+  background-color: FloralWhite;
+}
+
+.hover-card-list {
+  background-color: cornsilk;
+  border: solid 1px lightgrey;
+}
+
+
+
 .add-box-shadow {
-  box-shadow: 5px 5px 7px -1px rgba(0, 0, 0, 0.300);
-  -webkit-box-shadow: 5px 5px 7px -1px rgba(0, 0, 0, 0.300);
   -moz-box-shadow: 5px 5px 7px -1px rgba(0, 0, 0, 0.300);
+  -webkit-box-shadow: 5px 5px 7px -1px rgba(0, 0, 0, 0.300);
+  box-shadow: 5px 5px 7px -1px rgba(0, 0, 0, 0.300);
 }
 
 .add-item-shadow {
-  box-shadow: 2px 2px 3px -1px rgba(0, 0, 0, 0.300);
-  -webkit-box-shadow: 2px 2px 3px -1px rgba(0, 0, 0, 0.300);
-  -moz-box-shadow: 2px 2px 3px -1px rgba(0, 0, 0, 0.300);
+  box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.300);
+  -webkit-box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.300);
+  -moz-box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.300);
+}
+
+.add-item-shadow-success {
+  box-shadow: 1px 13px 17px -17px rgba(9, 143, 69, 0.75);
+  -webkit-box-shadow: 1px 13px 17px -17px rgba(9, 143, 69, 0.75);
+  -moz-box-shadow: 1px 13px 17px -17px rgba(9, 143, 69, 0.75);
+}
+
+.add-item-shadow-warning {
+  box-shadow: 1px 13px 17px -17px rgb(255, 193, 7);
+  -webkit-box-shadow: 1px 13px 17px -17px rgb(255, 193, 7);
+  -moz-box-shadow: 1px 13px 17px -17px rgb(255, 193, 7);
+}
+
+.add-item-shadow-primary {
+  box-shadow: 1px 13px 17px -17px rgba(9, 51, 143, 0.75);
+  -webkit-box-shadow: 1px 13px 17px -17px rgba(9, 51, 143, 0.75);
+  -moz-box-shadow: 1px 13px 17px -17px rgba(9, 51, 143, 0.75);
+}
+
+.add-item-shadow-danger {
+  box-shadow: 1px 13px 17px -17px rgba(220, 56, 72, 0.75);
+  -webkit-box-shadow: 1px 13px 17px -17px rgb(220, 53, 75);
+  -moz-box-shadow: 1px 13px 17px -17px rgb(220, 53, 75);
+}
+
+.add-item-shadow-info {
+  box-shadow: 1px 13px 17px -17px rgb(0, 213, 255);
+  -webkit-box-shadow: 1px 13px 17px -17px rgb(0, 212, 254);
+  -moz-box-shadow: 1px 13px 17px -17px rgb(0, 213, 255);
+}
+
+.scanning-shadow {
+  box-shadow: 0px 0px 22px -14px rgba(255, 0, 0, 0.75);
+  -webkit-box-shadow: 0px 0px 22px -14px rgba(255, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 22px -14px rgba(255, 0, 0, 0.75);
+}
+
+.verified-shadow {
+  box-shadow: 0px 0px 22px -14px rgb(0, 213, 255);
+  -webkit-box-shadow: 0px 0px 22px -14px rgb(0, 213, 255);
+  -moz-box-shadow: 0px 0px 22px -14px rgb(0, 213, 255);
+}
+
+.add-item-shadow-secondary {
+  box-shadow: 1px 13px 17px -17px rgba(124, 124, 124, 0.75);
+  -webkit-box-shadow: 1px 13px 17px -17px rgba(124, 124, 124, 0.75);
+  -moz-box-shadow: 1px 13px 17px -17px rgba(124, 124, 124, 0.75);
 }
 
 .list-shadow {
@@ -45,6 +119,34 @@ code {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+
+.login-card-layout {
+  /* margin: 10px; */
+  /* max-width: 400px;
+  min-width: 200px; */
+  width: 400px;
+  border: solid lightgrey 1px;
+  border-top: solid lightgrey 2px;
+  overflow: hidden;
+  box-shadow: 0px 1px 32px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 0px 1px 32px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 1px 32px 0px rgba(0, 0, 0, 0.75);
+}
+
+
+.login-container {
+  width: 100vw;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('../src/Assets/Background/login-bg.jpg');
+  background-position: center;
+  background-size: cover;
+  backdrop-filter: brightness(10%);
 }
 
 .qr-scanner-container {
@@ -62,12 +164,6 @@ code {
   box-shadow: -1px -20px 35px 0px rgba(235, 0, 0, 0.2);
   -webkit-box-shadow: -1px -20px 35px 0px rgba(235, 0, 0, 0.2);
   -moz-box-shadow: -1px -20px 35px 0px rgba(235, 0, 0, 0.2);
-}
-
-.LoginStaf-input-container-shadow {
-  box-shadow: -1px -20px 35px 0px rgba(0, 206, 235, 0.2);
-  -webkit-box-shadow: -1px -20px 35px 0px rgba(0, 206, 235, 0.2);
-  -moz-box-shadow: -1px -20px 35px 0px rgba(0, 206, 235, 0.2);
 }
 
 .dashboard-content-container {
@@ -112,9 +208,13 @@ code {
 }
 
 .link-hover:hover {
-  background-color: lightgrey;
+  background-color: rgba(211, 211, 211, 0.575);
   padding: 5px;
   border-radius: 10px;
+}
+
+.sub-menu-hover:hover {
+  background-color: whitesmoke;
 }
 
 
@@ -126,10 +226,59 @@ code {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f7ecff", endColorstr="#fff6e4", GradientType=1);
 }
 
+.overlay-bg-custom-color {
+  background-color: #ffffff8e;
+  backdrop-filter: blur(50px);
+}
+
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+.profile-header {
+  width: 100%;
+  height: 50vh;
+  position: relative;
+}
+
+
+.profile-picture-container {
+  /* width: 80%; */
+  display: flex;
+  height: 200px;
+  position: absolute;
+  top: 28vh;
+  /* border-radius: 100%; */
+  overflow: hidden;
+  left: 8%;
+}
+
+.modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  color: var(--bs-modal-color);
+  pointer-events: auto;
+  background-color: #ffffff40;
+  background-clip: padding-box;
+  border: var(--bs-modal-border-width) solid var(--bs-modal-border-color);
+  border-radius: var(--bs-modal-border-radius);
+  outline: 0;
+  box-shadow: 5px 5px 7px -1px rgba(0, 0, 0, 0.300);
+  -webkit-box-shadow: 5px 5px 7px -1px rgba(0, 0, 0, 0.300);
+  -moz-box-shadow: 5px 5px 7px -1px rgba(0, 0, 0, 0.300);
+}
+
+
 /* ! ============================== RESPONSIVE ============================== */
-@media only screen and (max-width: 772px) {
+@media only screen and (max-width: 1196px) {
   .container-main {
     height: 100vh;
+  }
+
+  .dh-name-container {
+    display: none;
   }
 
   .dashboard-content-container {
@@ -168,6 +317,14 @@ code {
 
   .mobile-link-collapse {
     display: none;
+  }
+
+  .login-card-layout {
+    width: 100%;
+  }
+
+  .qr-container {
+    width: 100%;
   }
 
 }

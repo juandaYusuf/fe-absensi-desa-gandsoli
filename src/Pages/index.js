@@ -4,6 +4,8 @@ import Dashboard from '../Pages/Dashboard'
 import QRCodeGenerator from '../Pages/QR-generator/'
 import NavigationsBar from './Navbar'
 import ScannerManager from './Scanner-manager'
-import RegistarsiAdmin from './Registrasi-admin'
+import RegistarsiAdmin from './Register'
+import Profile from './Profile'
+import UserSettings from './User-settings'
 
-export {React, Login, Dashboard, NavigationsBar, ScannerManager, QRCodeGenerator, RegistarsiAdmin }
+export {React, Login, Dashboard, NavigationsBar, ScannerManager, QRCodeGenerator, RegistarsiAdmin, Profile, UserSettings }

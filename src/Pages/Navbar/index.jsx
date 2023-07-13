@@ -1,15 +1,36 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { Button, Container } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Button, Container, Dropdown, Spinner } from 'react-bootstrap'
+import { Link, useLocation } from 'react-router-dom'
 import logo from '../../Assets/Logo/logo.png'
-import { ZoomOut } from '../../Page-transition/PageTransitions'
 import UserContext from '../../Context/Context'
+import { useNavigate } from 'react-router-dom'
+import ToastForNotif from '../../Global-components/Toast-for-notif'
+import axios from 'axios'
+import API_URL from '../../API/API_URL'
+
+
+
 
 const NavigationsBar = ({ children }) => {
 
+  let only24Hourse = new Date().getHours().toString().padStart(2, '0')
+  let onlyMinutes = new Date().getMinutes()
+
   const [isNavbarCollapse, setIsNavbarCollapse] = useState(false)
-  const { setTurnOnCameraOnQRScannerPage } = useContext(UserContext)
+  const { setTurnOnCameraOnQRScannerPage, contextShowToast, contextToastTXT, setContextShowToast } = useContext(UserContext)
   const [localData, setLocalData] = useState("")
+  const [showTime, setShowTime] = useState(new Date().toLocaleTimeString())
+  const [animationGreenDot, setAnimationGreenDot] = useState(false)
+  const [showToast, setShowToast] = useState(false)
+  const [combineTimes, setCombineTimes] = useState("")
+  const [isTimeLoading, setIsTimeLoading] = useState(true)
+  const obj = JSON.parse(localStorage.getItem('obj'))
+
+
+
+  const navigateTo = useNavigate()
+  const location = useLocation()
+  const currentUrl = location.pathname
 
 
   const navCollapse = () => {
@@ -20,33 +41,154 @@ const NavigationsBar = ({ children }) => {
     }
   }
 
+
+  const registerOptions = (options) => {
+    if (options === "kepdes") {
+      navigateTo('/register-kepdes')
+    }
+    if (options === "admin") {
+      navigateTo('/register-admin')
+    }
+    if (options === "staf") {
+      navigateTo('/register-staf')
+    }
+  }
+
+
+  const logOut = () => {
+    localStorage.clear()
+    navigateTo('/')
+  }
+
+  const goToProfile = () => {
+    navigateTo('/profile')
+    localStorage.setItem('visit', JSON.stringify({ "id": obj.id }))
+    setTurnOnCameraOnQRScannerPage("turnOffCamera")
+  }
+
   useEffect(() => {
-    const obj = JSON.parse(localStorage.getItem('obj'))
+    // CLear LocalStorage from visit (card-list-of-user)
+    if (currentUrl !== '/profile') {
+      localStorage.removeItem('visit')
+    }
+  }, [currentUrl])
+
+
+  useEffect(() => {
     if (!!obj) {
       setLocalData(obj.role)
     }
   }, [])
 
+
+  useEffect(() => {
+    // Get attendance data (mendapatkan waktu terlambat kerja)
+    const url = API_URL().ATTENDANCE_RULES.SHOW_ALL_ATTENDANCE_RULES
+    axios.get(url).then((response) => {
+      response.data.map((result) => {
+        if (!!result.usage) {
+          let times = String(result.work_start_time)
+          let minutes = String(result.late_deadline)
+          setCombineTimes(times.substring(0, 2) + ":" + minutes + ":" + times.substring(3, 5))
+        }
+      })
+    })
+  }, [])
+
+
+  useEffect(() => {
+    const timerID = setInterval(() => {
+      let localTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })
+      let dayName = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu']
+      let day = new Date().getDay()
+      // NOTIFIKASI untuk kondisi dimana sudah melebihi estimasi terlmabat kerja, user akan di anggap tidak hadir
+      if (!!combineTimes) {
+        setIsTimeLoading(false)
+      } else {
+        setIsTimeLoading(true)
+      }
+      setShowTime(`${localTime} - ${dayName[day]}`)
+    }, 1000)
+
+    const animate = setInterval(() => {
+      setAnimationGreenDot(prevState => !prevState)
+    }, 500)
+
+    return () => {
+      clearInterval(timerID)
+      clearInterval(animate)
+    }
+  }, [combineTimes])
+
+
+
   return (
-    <div style={{ width: "100%", padding: "10px", height: "100vh", overflow: "scroll" }}>
+    <div className='hide-scrollbar' style={{ width: "100%", padding: "10px", height: "100vh", overflow: "auto" }}>
       <div className='position-relative d-flex justify-content-center w-100'>
-        <Container className={`add-box-shadow p-3 rounded-4 overflow-hidden position-fixed`} style={{ transition: "1", zIndex: "9999", width: "94%", backdropFilter: "blur(15px)", backgroundColor: " #ffffff69", borderTop: "solid 2px white", borderBottom: "solid 1px lightgrey", borderLeft: "solid 2px whitesmoke", borderRight: "solid 2px whitesmoke" }}>
+        <Container className={`add-box-shadow p-3 rounded-4 position-fixed`} style={{ transition: "1", zIndex: "9999", width: "94%", backdropFilter: "blur(15px)", backgroundColor: "#ffffffc0", borderTop: "solid 2px white", borderBottom: "solid 1px lightgrey", borderLeft: "solid 2px whitesmoke", borderRight: "solid 2px whitesmoke" }}>
           <section className='desk-nav'>
             <div className='d-flex justify-content-between align-items-center'>
               <div className='d-flex align-items-center gap-3'>
                 <img src={logo} style={{ height: "40px" }} alt=" " />
                 <h4 className='fw-bold m-0'>Desa Gandasoli</h4>
               </div>
+              <div
+                className='border border-danger scanning-shadow rounded-4 px-3 py-2 d-flex justify-content-center align-items-center'
+                style={{ width: "210px" }}>
+                {
+                  !!isTimeLoading
+                    ?
+                    (<><Spinner variant='secondaty' size='sm' /> <span className='mx-2'>Memuat...</span></>)
+                    :
+                    animationGreenDot === false
+                      ?
+                      (<span className='mx-2 m-0 text-success bi bi-circle-fill' />)
+                      :
+                      (<span className='mx-2 m-0 text-secondary bi bi-circle' />)
+                }
+                {
+                  isTimeLoading === false
+                  &&
+                  <b className='p-0 m-0 text-danger'>{showTime}</b>
+                }
+              </div>
               <div className='d-flex gap-4 align-items-center'>
                 <div className='d-flex gap-3'>
-                  <Link to="/dashboard" className='m-0 fw-bold bi bi-tv cursor-pointer text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Dashboard</Link>
                   {
-                    (localData === "kepdes") && <Link to="/registrasi" className='m-0 fw-bold bi bi-person-add text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Registrasi admin</Link>
+                    localData === "KAUR Keuangan" 
+                    &&
+                    <>
+                      <Link to="/dashboard" className={`m-0 fw-bold bi bi-tv cursor-pointer text-dark text-decoration-none ${currentUrl === "/dashboard" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Dashboard</Link>
+                      <Link to="/register" className={`m-0 fw-bold bi bi-person-add cursor-pointer text-dark text-decoration-none ${currentUrl === "/register" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOnCamera")}> Registrasi</Link>
+                    </>
                   }
-                  <Link to="/scanner-manager" className='m-0 fw-bold bi bi-qr-code-scan cursor-pointer text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOnCamera")}> QR Scanner</Link>
-                  <Link to="/qr-generator" className='m-0 fw-bold bi bi-qr-code cursor-pointer text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> QR Generator</Link>
+                  <Link to="/scanner-manager" className={`m-0 fw-bold bi bi-qr-code-scan cursor-pointer text-dark text-decoration-none ${currentUrl === "/scanner-manager" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOnCamera")}> QR Scanner</Link>
+                  {
+                    localData === "KAUR Keuangan"
+                      ?
+                      <>
+                        <Link to="/qr-generator" className={`m-0 fw-bold bi bi-qr-code cursor-pointer text-dark text-decoration-none ${currentUrl === "/qr-generator" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> QR Generator</Link>
+                        <Link to="/setting" className={`m-0 fw-bold bi bi-gear cursor-pointer text-dark text-decoration-none ${currentUrl === "/setting" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Pengaturan</Link>
+                      </>
+                      :
+                      <>
+                        <div className={`m-0 fw-bold bi bi-person cursor-pointer text-dark text-decoration-none ${currentUrl === "/profile" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => goToProfile()}> Profile</div>
+                        <Button className='rounded-4 mx-3' variant='outline-danger' onClick={() => logOut()}> Log Out</Button>
+                      </>
+
+                  }
                 </div>
               </div>
+            </div>
+            <div className='d-flex justify-content-end w-100 px-5' style={{ position: 'absolute' }}>
+              <ToastForNotif
+                onShowHandler={contextShowToast}
+                onCloseHandler={() => setContextShowToast(false)}
+                txtTitle={contextToastTXT.title}
+                txtBody={contextToastTXT.body}
+                themes={contextToastTXT.themes}
+                times={contextToastTXT.times}
+              />
             </div>
           </section>
           {/* MOBILE MODE NAVBAR */}
@@ -61,10 +203,51 @@ const NavigationsBar = ({ children }) => {
                 <div className={(isNavbarCollapse === true) ? "mobile-link" : "mobile-link-collapse"}>
                   <Link to="/dashboard" className='m-0 fw-bold bi bi-tv cursor-pointer text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Dashboard</Link>
                   {
-                    (localData === "kepdes") && <Link to="/registrasi" className='m-0 fw-bold bi bi-person-add text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Registrasi admin</Link>
+                    localData === "kepdes" && (
+                      <Dropdown>
+                        <Dropdown.Toggle className='cursor-pointer' id="dropdown-basic" as="b">
+                          <span className='bi bi-person-add h5' /> Registrasi
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu className='add-box-shadow p-2 overlay-bg-custom-gradient-color p-0' style={{ width: "300px" }}>
+                          <Dropdown.Item className='rounded-3'>
+                            <div className='d-flex flex-column'>
+                              <p className='bi bi-person-video3 m-0 p-0'> Kepala desa</p>
+                              <div style={{ fontSize: "12px", marginLeft: "21px", marginBottom: "0px", whiteSpace: "normal" }}>
+                                Halman ini khusus mengganti kepala desa, gunakan halaman ini jika kepala desa berpindah tangan
+                              </div>
+                            </div>
+                          </Dropdown.Item>
+                          <hr className='m-1 p-0' />
+                          <Dropdown.Item className='rounded-3' onClick={() => { navigateTo('/register') }}>
+                            <div className='d-flex flex-column'>
+                              <p className='bi bi-clipboard-data m-0 p-0'> Pengelola absen</p>
+                              <div style={{ fontSize: "12px", marginLeft: "21px", marginBottom: "0px", whiteSpace: "normal" }}>
+                                Halaman ini khusus mendaftarkan pengelola absensi
+                              </div>
+                            </div>
+                          </Dropdown.Item>
+                          <hr className='m-1 p-0' />
+                          <Dropdown.Item className='rounded-3'>
+                            <div className='d-flex flex-column'>
+                              <p className='bi bi-person-check m-0 p-0'> Staf desa</p>
+                              <div style={{ fontSize: "12px", marginLeft: "21px", marginBottom: "0px" }}>
+                                Halaman ini khusus mendaftarkan staf desa
+                              </div>
+                            </div>
+                          </Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    )
                   }
-                  <Link to="/scanner-manager" className='m-0 fw-bold bi bi-qr-code-scan cursor-pointer text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOnCamera")}> QR Scanner</Link>
-                  <Link to="/qr-generator" className='m-0 fw-bold bi bi-qr-code cursor-pointer text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> QR Generator</Link>
+                  {/* <Link to="/scanner-manager" className='m-0 fw-bold bi bi-qr-code-scan cursor-pointer text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOnCamera")}> QR Scanner</Link> */}
+                  {/* <Link to="/qr-generator" className='m-0 fw-bold bi bi-qr-code cursor-pointer text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> QR Generator</Link> */}
+                  {
+                    localData === "admin" || localData === "kepdes"
+                      ?
+                      <Link to="/setting" className='m-0 fw-bold bi bi-qr-code cursor-pointer text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Setting</Link>
+                      :
+                      null
+                  }
                 </div>
               </div>
             </div>
@@ -74,6 +257,7 @@ const NavigationsBar = ({ children }) => {
       <div style={{ marginTop: "95px" }}>
         {children}
       </div>
+
     </div>
   )
 }

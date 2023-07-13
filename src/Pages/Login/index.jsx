@@ -13,9 +13,11 @@ const Login = () => {
 
   return (
     <>
-      <ZoomInSlide>
-        <LoginCard />
-      </ZoomInSlide>
+      <div className='login-container'>
+        <ZoomInSlide>
+          <LoginCard />
+        </ZoomInSlide>
+      </div>
     </>
   )
 }
