@@ -18,30 +18,30 @@ const LoginCard = () => {
   const [isServerErr, setIsServerErr] = useState(false)
   const [isLoginFailed, setIsLoginFailed] = useState(false)
   const [isDeviceValidated, setIsDeviceValidated] = useState('no-activity')
+  const reloadPage = () => window.location.reload()
   const salt = bcrypt.genSaltSync(10)
 
 
 
   // ++++++++ Get UserAgent ++++++++
-  const userDevice =  () => {
+  const userDevice = () => {
     const glReport = qpuReport()
     const userAgent = navigator.userAgent
     const userDeviceDatas = `${glReport.vendor}${glReport.version}${glReport.extensions}${userAgent}${glReport.unMaskedVendor}${glReport.unMaskedRenderer}${glReport.renderer}`
     return userDeviceDatas
   }
-  
-  
-  const login =  () => {
+
+
+  const login = () => {
     const userDeviceData = userDevice()
-    
+
     const encPass = bcrypt.hashSync(password, salt)
     const url = API_URL().USER.LOGIN_STAF
     const user_data = {
       "email": email,
       "encpass": encPass,
-      "user_device":  userDeviceData.replace('/\s/g', "")
+      "user_device": userDeviceData.replace('/\s/g', "")
     }
-
     setIsLoading(true)
     axios.post(url, user_data).then((response) => {
       if (response.data.message === "device not vaidated") {
@@ -86,10 +86,10 @@ const LoginCard = () => {
 
 
 
-  
+
 
   return (
-    <div className='position-relative px-2' style={{ height: "100vh"}}>
+    <div className='position-relative px-2' style={{ height: "100vh" }}>
       <div className='position-absolute d-flex justify-content-center pt-1' style={{ zIndex: "2", width: "96.5%" }}>
         <img src={logo} style={{ width: "150px", height: "150px", objectFit: "contain", filter: "drop-shadow(0 3mm 1mm rgb(0, 0, 0, 0.40))", marginBottom: "15px" }} />
       </div>
@@ -179,24 +179,22 @@ const LoginCard = () => {
                           <span> Login</span>
                         </Button>)
                         :
-                        <>
-                          <Button className="add-item-shadow rounded-4" variant={(isServerErr === true) ? "danger" : "warning"} style={{ width: "50%" }} disabled>
-                            {
-                              isServerErr === true
+                        (<Button className="add-item-shadow rounded-4" variant={(isServerErr === true) ? "danger" : "warning"} style={{ width: "50%" }} disabled={!isServerErr} onClick={() => reloadPage()}>
+                          {
+                            isServerErr === true
+                              ?
+                              (<span>Muan ulang</span>)
+                              :
+                              isLoginFailed === true
                                 ?
-                                (<span>Tidak dapat login</span>)
+                                (<span> Login</span>)
                                 :
-                                isLoginFailed === true
-                                  ?
-                                  (<span> Login staf</span>)
-                                  :
-                                  (<>
-                                    <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
-                                    <span> Loading...</span>
-                                  </>)
-                            }
-                          </Button>
-                        </>
+                                (<>
+                                  <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+                                  <span> Loading...</span>
+                                </>)
+                          }
+                        </Button>)
                     }
                   </Container>
                 </>
