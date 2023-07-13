@@ -84,6 +84,10 @@ const LoginCard = () => {
     })
   }
 
+  useEffect(() => {
+    axios.get('https://bedesagandasoli-2-j0924938.deta.app/').then(res => console.log(res))
+  }, [])
+  
 
 
 

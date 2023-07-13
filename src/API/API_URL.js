@@ -21,7 +21,7 @@ const API_URL = (apiParam,apiParam2) => {
       LIST_OF_USER_ATTENDANCE: `${baseUrl}/api/attendance/multi/user-presence-data`,
       // USER_NOT_SCAN_IN: 'http://127.0.0.1:8000/api/attendance/multi/auto-set-user-as-alfa/',
       SINGLE_USER_ATTENDANCE_DETAIL: `${baseUrl}/api/attendance/single/detail-presence/${apiParam}/${apiParam2}`,
-      MULTI_USER_ATTENDANCE_DETAIL: `http://127.0.0.1:8000/api/attendance/multi/detail-presence/${apiParam}/${apiParam2}`,
+      MULTI_USER_ATTENDANCE_DETAIL: `${baseUrl}/api/attendance/multi/detail-presence/${apiParam}/${apiParam2}`,
     },
     ATTENDANCE_RULES : {
       SHOW_ALL_ATTENDANCE_RULES: `${baseUrl}/api/attendance_rule/show-all-attendance-rules`,
