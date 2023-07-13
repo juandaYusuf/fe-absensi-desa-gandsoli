@@ -4982,6 +4982,11 @@ get-symbol-description@^1.0.0:
     call-bind "^1.0.2"
     get-intrinsic "^1.1.1"
 
+gl-info@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/gl-info/-/gl-info-0.1.0.tgz#1860cef65627a8eb892450f7916fae2dea30b4ad"
+  integrity sha512-/dYBR1pRiif429PhoCh18QOCGv6+boksUkWL+cuhJ7p1j5IMwvdWaOgtSfeJVlswBCo+1/MQDHdty7+t3/28yg==
+
 glob-parent@^5.1.2, glob-parent@~5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-5.1.2.tgz#869832c58034fe68a4093c17dc15e8340d8401c4"

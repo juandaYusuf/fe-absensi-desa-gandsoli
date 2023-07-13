@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Alert, Button, Collapse, Container, Form, InputGroup, Spinner, Table } from 'react-bootstrap'
+import { Button, Collapse, Form, InputGroup, Spinner } from 'react-bootstrap'
 import CardAttendanceRules from '../../../Global-components/Card-attendance-rules'
 import axios from 'axios'
 import API_URL from '../../../API/API_URL'
@@ -16,6 +16,7 @@ const AttendanceRules = () => {
   const [alert, setAlert] = useState(false)
   const [showAlerIfItemNoOneEnable, setshowAlerIfItemNoOneEnable] = useState(false)
   const [showTableInItemNoOneEnableAlert, setshowTableInItemNoOneEnableAlert] = useState(false)
+  const [isFormShow, setIsFormShow] = useState(true)
   // const hasTrueValue = data.some(item => item.usage === true);
 
 
@@ -69,158 +70,117 @@ const AttendanceRules = () => {
 
 
   return (
-    <div className='border add-item-shadow p-3 rounded-4'>
+    <div className='p-3 rounded-4'>
+      <h3 className='bi bi-file-earmark-ruled'> Aturan absensi</h3>
+      <div className="d-flex">
+        <Button className={`p-1 me-2 add-item-shadow ${isFormShow ? 'bi bi-caret-left-fill': 'bi bi-caret-right-fill'}`} variant='dark' style={{height: "40px"}} onClick={() => setIsFormShow(prev => !prev)}/>
+        <div className='d-flex flex-wrap gap-4'>
+          <Collapse in={isFormShow} dimension="width">
+            <div id="example-collapse-text" className='overflow-hidden'>
+              <div className=' overflow-hidden' style={{ width: "400px" }}>
+                <div>
+                  <Form onSubmit={insertAttendanceRulsData} className='p-2' style={{ width: '400px' }}>
+                    <Form.Group
+                      className="mb-3 add-item"
+                      controlId="title">
+                      <Form.Label
+                        className='bi bi-clipboard2-minus'> Judul aturan
+                      </Form.Label>
+                      <InputGroup className='add-item-shadow rounded-4'>
+                        <Form.Control
+                          aria-describedby="basic-addon2"
+                          placeholder="Masukan judul aturan"
+                          type="text"
+                          style={{ borderRadius: '15px 0px 0px 15px' }}
+                          onChange={(e) => { setLengthOfTitleChar(e.target.value.length) }}
+                        />
+                        <InputGroup.Text
+                          style={{ borderRadius: '0px 15px 15px 0px' }}
+                          className='text-muted'>
+                          <span className={`${lengthOfTitleChar > 15 && "text-danger"}`}>
+                            {lengthOfTitleChar}/15
+                          </span>
+                        </InputGroup.Text>
+                      </InputGroup>
+                      {
+                        lengthOfTitleChar > 15
+                        &&
+                        <Form.Text className='m-0 p-0 text-danger'>Judul tidak boleh lebih dari 15 karakter ! </Form.Text>
+                      }
+                    </Form.Group>
 
+                    <Form.Group
+                      className="mb-3"
+                      controlId="work_start_time">
+                      <Form.Label
+                        className='bi bi-clock-fill'> Jam masuk
+                      </Form.Label>
+                      <Form.Control
+                        className='rounded-4 add-item-shadow'
+                        type="time" />
+                    </Form.Group>
 
-      <div className="d-flex gap-2">
-        <div className='p-2 w-50 overflow-hidden'>
+                    <Form.Group
+                      className="mb-3"
+                      controlId="work_times_up">
+                      <Form.Label
+                        className='bi bi-clock'> Jam keluar
+                      </Form.Label>
+                      <Form.Control
+                        className='rounded-4 add-item-shadow'
+                        type="time" />
+                    </Form.Group>
 
-          <Form onSubmit={insertAttendanceRulsData}>
-            <h3>Aturan absensi</h3>
+                    <Form.Group
+                      className="mb-3"
+                      controlId="late_deadline">
+                      <Form.Label
+                        className='bi bi-clock-history'> Batas terlambat
+                      </Form.Label>
+                      <Form.Select
+                        className='add-item-shadow rounded-4'
+                        aria-label="Default select example">
+                        <option>Pilih batas keterlambatan</option>
+                        <option value="10">10 menit</option>
+                        <option value="20">20 menit</option>
+                        <option value="30">30 menit</option>
+                        <option value="40">40 menit</option>
+                      </Form.Select>
+                    </Form.Group>
 
-            <Form.Group
-              className="mb-3 add-item"
-              controlId="title">
-              <Form.Label
-                className='bi bi-clipboard2-minus'> Judul aturan
-              </Form.Label>
-              <InputGroup className='add-item-shadow rounded-4'>
-                <Form.Control
-                  aria-describedby="basic-addon2"
-                  placeholder="Masukan judul aturan"
-                  type="text"
-                  style={{ borderRadius: '15px 0px 0px 15px' }}
-                  onChange={(e) => { setLengthOfTitleChar(e.target.value.length) }}
-                />
-                <InputGroup.Text
-                  style={{ borderRadius: '0px 15px 15px 0px' }}
-                  className='text-muted'>
-                  <span className={`${lengthOfTitleChar > 15 && "text-danger"}`}>
-                    {lengthOfTitleChar}/15
-                  </span>
-                </InputGroup.Text>
-              </InputGroup>
-              {
-                lengthOfTitleChar > 15
-                &&
-                <Form.Text className='m-0 p-0 text-danger'>Judul tidak boleh lebih dari 15 karakter ! </Form.Text>
-              }
-            </Form.Group>
-
-            <Form.Group
-              className="mb-3"
-              controlId="work_start_time">
-              <Form.Label
-                className='bi bi-clock-fill'> Jam masuk
-              </Form.Label>
-              <Form.Control
-                className='rounded-4 add-item-shadow'
-                type="time" />
-            </Form.Group>
-
-            <Form.Group
-              className="mb-3"
-              controlId="work_times_up">
-              <Form.Label
-                className='bi bi-clock'> Jam keluar
-              </Form.Label>
-              <Form.Control
-                className='rounded-4 add-item-shadow'
-                type="time" />
-            </Form.Group>
-
-            <Form.Group
-              className="mb-3"
-              controlId="late_deadline">
-              <Form.Label
-                className='bi bi-clock-history'> Batas terlambat
-              </Form.Label>
-              <Form.Select
-                className='add-item-shadow rounded-4'
-                aria-label="Default select example">
-                <option>Pilih batas keterlambatan</option>
-                <option value="10">10 menit</option>
-                <option value="20">20 menit</option>
-                <option value="30">30 menit</option>
-                <option value="40">40 menit</option>
-              </Form.Select>
-            </Form.Group>
-
-            <Form.Group
-              controlId="description">
-              <Form.Label
-                className='bi bi-journal-text'> Deskripsi
-              </Form.Label>
-              <Form.Control
-                className='add-item-shadow rounded-4'
-                type="text"
-                placeholder="Deskripsi" />
-            </Form.Group>
-            {
-              !!alert
-              &&
-              <Form.Text className='text-danger'>Tidak boleh ada form yang kosong</Form.Text>
-            }
-            <Button
-              className='w-100 rounded-4 add-item-shadow-success mt-3'
-              type='submit'
-              disabled={!!isLoading ? true : false}
-              variant="success">
-              <span className='bi bi-clipboard-plus mx-1' />
-              {
-                !!isLoading
-                &&
-                (<Spinner className='mx-2' variant='light' size='sm' />)
-              }
-              Tambahkan item aturan
-            </Button>
-          </Form>
-
-        </div>
-        <Container
-          className='d-flex flex-wrap w-100 gap-2'
-          style={{ height: "540px", overflowY: "auto" }}>
-          {
-            attendanceRulesDatas.length > 0
-            &&
-            <Collapse in={!showAlerIfItemNoOneEnable}>
-              <div className='w-100'>
-                <Alert
-                  className=' w-100 rounded-4 p-2 d-flex align-items-center  flex-column'
-                  variant='warning'
-                  style={{ margin: "0px 0px 0px 7px" }}>
-                  <Alert.Heading className='bi bi-info-circle '> Info</Alert.Heading>
-                  <div className='m-0 p-0'>
-                    <span>Tidak ada aturan yang di aktifkan, Sistem menjalankan aturan default</span>
-                    <span className={`${!!showTableInItemNoOneEnableAlert ? "bi bi-caret-up-fill" : "bi bi-caret-down-fill"} mx-2 cursor-pointer text-secondary`} onClick={() => { setshowTableInItemNoOneEnableAlert(!showTableInItemNoOneEnableAlert) }} />
-                  </div>
-                  <Collapse in={showTableInItemNoOneEnableAlert}>
-                    <div>
-                      <table className=''>
-                        <tbody>
-                          <tr>
-                            <td className='bi bi-clock-fill fw-bold'> Jam masuk</td>
-                            <td className='px-2'> :</td>
-                            <td> 7:00:00</td>
-                          </tr>
-                          <tr>
-                            <td className='bi bi-clock fw-bold'> Jam keluar</td>
-                            <td className='px-2'> :</td>
-                            <td> 15:00:00</td>
-                          </tr>
-                          <tr>
-                            <td className='bi bi-clock-history fw-bold'> Keterlambatan</td>
-                            <td className='px-2'> :</td>
-                            <td> 30 menit</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </Collapse>
-                </Alert>
+                    <Form.Group
+                      controlId="description">
+                      <Form.Label
+                        className='bi bi-journal-text'> Deskripsi
+                      </Form.Label>
+                      <Form.Control
+                        className='add-item-shadow rounded-4'
+                        type="text"
+                        placeholder="Deskripsi" />
+                    </Form.Group>
+                    {
+                      !!alert
+                      &&
+                      <Form.Text className='text-danger'>Tidak boleh ada form yang kosong</Form.Text>
+                    }
+                    <Button
+                      className='w-100 rounded-4 add-item-shadow-success mt-3'
+                      type='submit'
+                      disabled={!!isLoading ? true : false}
+                      variant="success">
+                      <span className='bi bi-clipboard-plus mx-1' />
+                      {
+                        !!isLoading
+                        &&
+                        (<Spinner className='mx-2' variant='light' size='sm' />)
+                      }
+                      Tambahkan item aturan
+                    </Button>
+                  </Form>
+                </div>
               </div>
-            </Collapse>
-          }
+            </div>
+          </Collapse>
           {
             attendanceRulesDatas.map((result) => {
               return (
@@ -237,36 +197,7 @@ const AttendanceRules = () => {
                   created_at={result.created_at} />)
             })
           }
-          {attendanceRulesDatas.length <= 0
-            &&
-            <div
-              className='w-100 rounded-4 d-flex align-items-center justify-content-center flex-column text-muted'
-              style={{ marginLeft: "17px" }}>
-              <span className="bi bi-journal-x h1 m-0 p-0" />
-              Tidak ada item ! Sistem menjalankan aturan default
-              <table className='mt-2'>
-                <tbody>
-                  <tr>
-                    <td className='bi bi-clock-fill fw-bold'> Jam masuk</td>
-                    <td className='px-2'> :</td>
-                    <td> 7:00:00</td>
-                  </tr>
-                  <tr>
-                    <td className='bi bi-clock fw-bold'> Jam keluar</td>
-                    <td className='px-2'> :</td>
-                    <td> 15:00:00</td>
-                  </tr>
-                  <tr>
-                    <td className='bi bi-clock-history fw-bold'> Keterlambatan</td>
-                    <td className='px-2'> :</td>
-                    <td> 30 menit</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          }
-        </Container>
-
+        </div>
       </div>
     </div >
   )

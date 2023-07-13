@@ -21,43 +21,23 @@ const PresentStatistic = ({ month, year }) => {
               {
                 Object.keys(contextPresenceCounter).length === 0
                   ?
-                  !!contextPresenceCounterIsLoading
-                    ?
-                    <Spinner variant='secondary' />
-                    :
-                    (<BottomToTop>
-                      <div className='w-100 h-100 my-3'>
-                        <p className='bi bi-check-circle-fill w-100 text-center text-success h6 p-0 m-0' style={{ textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black" }} />
-                        <p className=' w-100 text-center' style={{fontSize: ".8rem"}}>Pilih nama pada tabel untuk menampilkan <b>kehadiran</b></p>
-                      </div>
-                    </BottomToTop>)
+                  (<BottomToTop>
+                    <div className='w-100 h-100 my-3'>
+                      <p className='bi bi-check-circle-fill w-100 text-center text-success h6 p-0 m-0' style={{ textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black" }} />
+                      <p className=' w-100 text-center' style={{ fontSize: ".8rem" }}>Pilih nama pada tabel untuk menampilkan <b>kehadiran</b></p>
+                    </div>
+                  </BottomToTop>)
                   :
                   (<>
                     <div className='d-flex justify-content-center align-items-center' style={{ height: "52px" }}>
-                      {
-                        !!contextPresenceCounterIsLoading
-                          ?
-                          (<Spinner variant='secondary' />)
-                          :
-                          contextPresenceCounter.hadir === "belum ada data"
-                            ?
-                            <TopToBottom>
-                              <p className='fw-bold  m-0 p-0 text-center' style={{fontSize: ".8rem"}}>Belum ada data hadir pada bulan {month} - {year}</p>
-                            </TopToBottom>
-                            :
-                            <TopToBottom>
-                              <h1 className='fw-bold  m-0 p-0'>{contextPresenceCounter.hadir}</h1>
-                            </TopToBottom>
-                      }
+                      <TopToBottom>
+                        <h1 className='fw-bold  m-0 p-0'>{contextPresenceCounter.total_hadir}</h1>
+                      </TopToBottom>
                     </div>
-                    {
-                      contextPresenceCounter.hadir !== "belum ada data"
-                      &&
-                      <BottomToTop>
-                        <p className=' fw-bold h4 m-0 p-0 text-center'>Hadir</p>
-                        <p style={{ fontSize: "0.8rem" }}>{month} - {year}</p>
-                      </BottomToTop>
-                    }
+                    <BottomToTop>
+                      <p className=' fw-bold h4 m-0 p-0 text-center'>Hadir</p>
+                      <p style={{ fontSize: "0.8rem" }}>{month} - {year}</p>
+                    </BottomToTop>
                   </>)
               }
             </div>
@@ -67,44 +47,24 @@ const PresentStatistic = ({ month, year }) => {
               {
                 Object.keys(contextPresenceCounter).length === 0
                   ?
-                  !!contextPresenceCounterIsLoading
-                    ?
-                    <Spinner variant='secondary' />
-                    :
-                    (<BottomToTop>
-                      <div className='w-100 h-100'>
-                        <p className='bi bi-arrow-up-left-circle-fill w-100 text-center text-warning h6  p-0 m-0' style={{ textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black" }} />
-                        <p className=' w-100 text-center' style={{fontSize: ".8rem"}}>Pilih nama pada tabel untuk menampilkan <b>izin</b></p>
-                      </div>
-                    </BottomToTop>
-                    )
+                  (<BottomToTop>
+                    <div className='w-100 h-100'>
+                      <p className='bi bi-arrow-up-left-circle-fill w-100 text-center text-warning h6  p-0 m-0' style={{ textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black" }} />
+                      <p className=' w-100 text-center' style={{ fontSize: ".8rem" }}>Pilih nama pada tabel untuk menampilkan <b>izin</b></p>
+                    </div>
+                  </BottomToTop>
+                  )
                   :
                   (<>
                     <div className='d-flex justify-content-center align-items-center' style={{ height: "52px" }}>
-                      {
-                        !!contextPresenceCounterIsLoading
-                          ?
-                          (<Spinner variant='secondary' />)
-                          :
-                          contextPresenceCounter.hadir === "belum ada data"
-                            ?
-                            <TopToBottom>
-                              <p className='fw-bold  m-0 p-0 text-center' style={{fontSize: ".8rem"}}>Belum ada data izin pada bulan {month} - {year}</p>
-                            </TopToBottom>
-                            :
-                            <TopToBottom>
-                              <h1 className='fw-bold  m-0 p-0'>{contextPresenceCounter.izin}</h1>
-                            </TopToBottom>
-                      }
+                      <TopToBottom>
+                        <h1 className='fw-bold  m-0 p-0'>{contextPresenceCounter.total_izin}</h1>
+                      </TopToBottom>
                     </div>
-                    {
-                      contextPresenceCounter.hadir !== "belum ada data"
-                      &&
-                      <BottomToTop>
-                        <p className=' fw-bold h4 m-0 p-0 text-center'>Izin</p>
-                        <p style={{ fontSize: "0.8rem" }}>{month} - {year}</p>
-                      </BottomToTop>
-                    }
+                    <BottomToTop>
+                      <p className=' fw-bold h4 m-0 p-0 text-center'>Izin</p>
+                      <p style={{ fontSize: "0.8rem" }}>{month} - {year}</p>
+                    </BottomToTop>
                   </>)
               }
             </div>
@@ -118,43 +78,23 @@ const PresentStatistic = ({ month, year }) => {
               {
                 Object.keys(contextPresenceCounter).length === 0
                   ?
-                  !!contextPresenceCounterIsLoading
-                    ?
-                    <Spinner className=' mt-3' variant='secondary' />
-                    :
-                    (<BottomToTop>
-                      <div className='w-100 h-100 my-3'>
-                        <p className='bi bi-x-circle-fill w-100 text-center text-danger h6 p-0 m-0' style={{ textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black" }} />
-                        <p className=' w-100 text-center'>Pilih nama pada tabel untuk menampilkan <b>Alfa</b></p>
-                      </div>
-                    </BottomToTop>)
+                  (<BottomToTop>
+                    <div className='w-100 h-100 my-3'>
+                      <p className='bi bi-x-circle-fill w-100 text-center text-danger h6 p-0 m-0' style={{ textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black" }} />
+                      <p className=' w-100 text-center'>Pilih nama pada tabel untuk menampilkan <b>Alfa</b></p>
+                    </div>
+                  </BottomToTop>)
                   :
                   (<>
                     <div className='d-flex justify-content-center align-items-center' style={{ height: "52px" }}>
-                      {
-                        !!contextPresenceCounterIsLoading
-                          ?
-                          (<Spinner className=' mt-3' variant='secondary' />)
-                          :
-                          contextPresenceCounter.hadir === "belum ada data"
-                            ?
-                            <TopToBottom>
-                              <p className='fw-bold  m-0 p-0 text-center'>Belum ada data alfa pada bulan {month} - {year}</p>
-                            </TopToBottom>
-                            :
-                            <TopToBottom>
-                              <h1 className='fw-bold  m-0 p-0'>{contextPresenceCounter.alfa}</h1>
-                            </TopToBottom>
-                      }
+                      <TopToBottom>
+                        <h1 className='fw-bold  m-0 p-0'>{contextPresenceCounter.total_alfa}</h1>
+                      </TopToBottom>
                     </div>
-                    {
-                      contextPresenceCounter.hadir !== "belum ada data"
-                      &&
-                      <BottomToTop>
-                        <p className=' fw-bold h4 m-0 p-0 text-center'>Alfa</p>
-                        <p style={{ fontSize: "0.8rem" }}>{month} - {year}</p>
-                      </BottomToTop>
-                    }
+                    <BottomToTop>
+                      <p className=' fw-bold h4 m-0 p-0 text-center'>Alfa</p>
+                      <p style={{ fontSize: "0.8rem" }}>{month} - {year}</p>
+                    </BottomToTop>
                   </>)
               }
             </div>

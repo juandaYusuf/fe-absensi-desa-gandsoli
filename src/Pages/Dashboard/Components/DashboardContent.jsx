@@ -4,8 +4,10 @@ import { TopToBottom } from '../../../Page-transition/ComponentTransitions'
 import DashboardHeader from './DashboardHeader'
 import PresentStatistic from './PresentStatistic'
 import ThemingCangerFunc from '../../../Theme'
-import AttendanceTable from '../../../Global-components/AttendanceTable'
 import UserContext from '../../../Context/Context'
+import TableUserPresenceHistory from '../../../Global-components/Table-user-presence-history'
+// import PresenceHistoryTable from '../../../Global-components/Presence-history-table'
+// import AttendanceTable from '../../../Global-components/AttendanceTable'
 
 
 
@@ -19,7 +21,7 @@ const DashboardContent = () => {
   const yearOptions = []
   const [indexOfMonth, setIndexOfMonth] = useState(currentMonth)
   const [valueOfYear, setValueOfYear] = useState(currentYear)
-  const { contextUserFullNameOfTable } = useContext(UserContext)
+  const { contextPresenceCounter } = useContext(UserContext)
 
   const yearOptionValue = () => {
     for (let year = currentYear; year <= currentYear + 10; year++) {
@@ -48,7 +50,7 @@ const DashboardContent = () => {
         <div className='w-100'>
           <TopToBottom>
             <Card className={`${ThemingCangerFunc().gradient} add-item-shadow p-3 rounded-4 mt-3 d-flex justify-content-center w-100`} style={ThemingCangerFunc("DarkOrange").style}>
-              <h3 className='fw-bold text-dark text-capitalize'>Absensi <span className='bi bi-caret-right-fill' /> {month[indexOfMonth]} - {valueOfYear}  <span className='bi bi-caret-right-fill' /> {contextUserFullNameOfTable} </h3>
+              <h3 className='fw-bold text-dark text-capitalize'>Absensi <span className='bi bi-caret-right-fill' /> {month[indexOfMonth]} - {valueOfYear}  <span className='bi bi-caret-right-fill' /> {contextPresenceCounter.full_name} </h3>
             </Card>
           </TopToBottom>
           <br />
@@ -81,23 +83,33 @@ const DashboardContent = () => {
                 </OverlayTrigger>
               </div>
               <div className='add-item-shadow d-flex gap-2 px-4 mb-2 align-items-center border rounded-4' style={{ backgroundColor: "Cornsilk", height: "43px" }}>
+                <span className='bi bi-check-circle-fill text-success h6 p-0 m-0' style={{ textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black" }} />
+                <p className='text-success h5 p-0 m-0 fw-bold'>Hadir</p>
+                <p className='text-muted h5 p-0 m-0 fw-bold'>|</p>
+                <p className='text-warning h5 p-0 m-0 fw-bold'>Izin</p>
+                <span className='bi bi-arrow-up-left-circle-fill text-warning h6  p-0 m-0' style={{ textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black" }} />
+                <p className='text-muted h5 p-0 m-0 fw-bold'>|</p>
                 <span className='bi bi-x-circle-fill text-danger h6 p-0 m-0' style={{ textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black" }} />
                 <p className='text-danger h5 p-0 m-0 fw-bold'>Alfa</p>
                 <p className='text-muted h5 p-0 m-0 fw-bold'>|</p>
-                <span className='bi bi-arrow-up-left-circle-fill text-warning h6  p-0 m-0' style={{ textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black" }} />
-                <p className='text-warning h5 p-0 m-0 fw-bold'>Izin</p>
-                <p className='text-muted h5 p-0 m-0 fw-bold'>|</p>
-                <span className='bi bi-check-circle-fill text-success h6 p-0 m-0' style={{ textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black" }} />
-                <p className='text-success h5 p-0 m-0 fw-bold'>Hadir</p>
+                <span className='bi bi-door-open-fill text-success h6 p-0 m-0' style={{ textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black" }} />
+                <p className='text-success h5 p-0 m-0 fw-bold'>Cuti</p>
               </div>
             </div>
             <div className='d-flex mx-3 justify-content-center border' style={{ borderBottom: "solid 1px lightgrey", width: "inherith", backgroundColor: "DarkSlateGrey", borderTopLeftRadius: "15px", borderTopRightRadius: "15px" }}>
               <h2 className='bi bi-calendar2-week text-light text-uppercase my-1 w-100 text-center'> {month[indexOfMonth]} - {valueOfYear}</h2>
             </div>
-
+{/* 
             <div className='hide-scrollbar mx-3 ' style={{ width: "850px" }}>
               <AttendanceTable year={valueOfYear} month={indexOfMonth} />
+            </div> */}
+            <div className='hide-scrollbar mx-3 ' style={{ width: "850px" }}>
+              <TableUserPresenceHistory year={valueOfYear} month={parseInt(indexOfMonth)} />
             </div>
+
+            {/* <div className='hide-scrollbar mx-3 ' style={{ width: "850px" }}>
+              <PresenceHistoryTable year={valueOfYear} month={indexOfMonth} />
+            </div> */}
           </Card>
         </div>
         <PresentStatistic month={month[indexOfMonth]} year={valueOfYear}/>

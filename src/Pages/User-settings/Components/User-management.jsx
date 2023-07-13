@@ -6,7 +6,7 @@ import ProgresBarLoadingVisual from '../../../Global-components/Progres-bar-load
 import { useNavigate } from 'react-router-dom'
 
 
-const WorkingHours = () => {
+const UserManagement = () => {
 
   const navigateTo = useNavigate()
   const [category, setCategory] = useState("semua")
@@ -21,6 +21,8 @@ const WorkingHours = () => {
   const [refreshUserList, setrefreshUserList] = useState(false)
   const [updateUserRole, setUpdateUserRole] = useState({ "id": 0, "show": false })
   const [roleSelected, setRoleSelected] = useState("")
+  const [userRoleLists, setuserRoleLists] = useState([])
+  const userRole = ['KAUR Keuangan', 'KAUR Perencanaan', 'KAUR TU/Umum', 'KASI Pemerintahan', 'KASI Kesejahteraan', 'KASI Pelayanan']
 
   const visitStafProfileByAdmin = (userID) => {
     localStorage.setItem('visit', JSON.stringify({ "id": userID }))
@@ -61,7 +63,7 @@ const WorkingHours = () => {
   }
 
   const updateRole = (id) => {
-    if (roleSelected === "") return 
+    if (roleSelected === "") return
     const data = {
       "id": id,
       "role": roleSelected
@@ -110,19 +112,23 @@ const WorkingHours = () => {
                 style={{ borderRadius: '15px 0px 0px 15px' }}
                 onChange={(e) => { setRoleSelected(e.target.value) }}>
                 <option> Pilih role</option>
-                <option value="kepdes"> Kepala desa {data.role === "kepdes" && "📌"}</option>
-                <option value="admin">Admin {data.role === "admin" && "📌"}</option>
-                <option value="staf">Staf {data.role === "staf" && "📌"}</option>
+                {
+                  userRoleLists.map(result => {
+                    return (
+                      <option value={result.id}> {result.role} {data.role_id === result.role && "📌"}</option>
+                    )
+                  })
+                }
               </Form.Select>
               <Button
-                className='bi bi-arrow-repeat'
-                variant='secondary'
+                className='bi bi-arrow-down-up'
+                variant='warning'
                 disabled={!!roleSelected ? false : true}
                 style={{ borderRadius: '0px 15px 15px 0px' }}
                 onClick={() => { updateRole(data.id) }} />
             </InputGroup>
             :
-            data.role
+            data.role_id
 
         }</td>
         <td className='text-center text-muted align-middle' style={{ borderRadius: '0px 15px 15px 0px' }}>
@@ -253,14 +259,25 @@ const WorkingHours = () => {
         }
       })
     }
+
+    const userRoles = () => {
+      const url = API_URL().USER.USER_ROLES
+
+      axios.get(url).then((response) => {
+        setuserRoleLists(response.data)
+      })
+    }
+
+
+    userRoles()
     getListOfUser()
   }, [refreshUserList])
 
 
   return (
-    <Card className='p-3 rounded-4 add-item-shadow' style={{ minHeight: "400px" }}>
+    <Card className='p-3 border-0' style={{ minHeight: "400px" }}>
 
-      <h3>Daftar pengguna</h3>
+      <h3 className='bi bi-kanban'> Manajemen pengguna</h3>
 
       <div className='d-flex my-3 justify-content-between'>
         <div className='d-flex gap-2 p-2'>
@@ -275,12 +292,6 @@ const WorkingHours = () => {
               variant={`${category === "admin" && isFocus === false ? "success" : "outline-success"}`}
               style={{ width: "120px" }}
               onClick={() => { changeCategory("admin") }}>Admin
-            </Button>
-
-            <Button
-              variant={`${category === "kepdes" && isFocus === false ? "success" : "outline-success"}`}
-              style={{ width: "120px" }}
-              onClick={() => { changeCategory("kepdes") }}>Kepala desa
             </Button>
 
             <Button
@@ -329,7 +340,7 @@ const WorkingHours = () => {
           {
             category !== "semua" && isFocus === false
               ?
-              listOfUser.filter((items => items.role === category)).map((result, i) => {
+              listOfUser.filter((items => items.role_id === category)).map((result, i) => {
                 return (tableBodyComponent(result, i))
               })
               :
@@ -351,4 +362,4 @@ const WorkingHours = () => {
   )
 }
 
-export default WorkingHours
+export default UserManagement

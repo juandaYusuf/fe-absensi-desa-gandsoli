@@ -16,7 +16,7 @@ const DashboardHeader = () => {
   const [dateNow, setDateNow] = useState("")
   const [openCollapse, setOpenCollapse] = useState(false)
   const navigateTo = useNavigate()
-  const { setThemeChanger } = useContext(UserContext)
+  const { setThemeChanger, contextPresenceCounter } = useContext(UserContext)
 
 
   const src = 'data:image/jpeg;base64,' + imageData

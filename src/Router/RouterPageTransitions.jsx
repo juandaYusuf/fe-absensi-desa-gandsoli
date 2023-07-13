@@ -25,12 +25,12 @@ const RouterPageTransitions = () => {
             <Routes key={location.pathname} location={location}>
               {/* //! Unprotected Routes */}
               <Route path="/" element={<Login />} />
-                <Route path="/scanner-manager" element={<ScannerManager />} />
+              <Route path="/scanner-manager" element={<ScannerManager />} />
+              <Route path="/qr-generator" element={<QRCodeGenerator />} />
               {/* //! Protected Routes */}
               <Route element={<ProtectedRoutes />}>
                 <Route path="/register" element={<RegistarsiAdmin />} />
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/qr-generator" element={<QRCodeGenerator />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/setting" element={<UserSettings />} />
               </Route>
@@ -41,15 +41,13 @@ const RouterPageTransitions = () => {
             <AnimatePresence mode='wait'>
               <Routes key={location.pathname} location={location}>
                 {/* //! Unprotected Routes */}
-                  <Route path="/scanner-manager" element={<ScannerManager />} />
                 <Route path="/" element={<Login />} />
+                <Route path="/scanner-manager" element={<ScannerManager />} />
+                <Route path="/qr-generator" element={<QRCodeGenerator />} />
                 {/* //! Protected Routes */}
                 <Route element={<ProtectedRoutes />}>
-                  <Route path="/register-kepdes" element={<RegistarsiAdmin regOptions="kepdes"/>} />
-                  <Route path="/register-admin" element={<RegistarsiAdmin regOptions="admin"/>} />
-                  <Route path="/register-staf" element={<RegistarsiAdmin regOptions="staf"/>} />
+                  <Route path="/register" element={<RegistarsiAdmin/>} />
                   <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/qr-generator" element={<QRCodeGenerator />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/setting" element={<UserSettings />} />
                 </Route>

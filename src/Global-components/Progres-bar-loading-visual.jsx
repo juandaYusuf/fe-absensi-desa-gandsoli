@@ -1,7 +1,7 @@
 import React from 'react'
 import { ProgressBar } from 'react-bootstrap'
 
-const ProgresBarLoadingVisual = ({ theme, progresValue }) => {
+const ProgresBarLoadingVisual = ({ theme, progresValue, titleTxt }) => {
 
   let variant = 'primary'
   let progres = 100
@@ -18,7 +18,7 @@ const ProgresBarLoadingVisual = ({ theme, progresValue }) => {
 
   return (
     <div className={`${`mx-3 p-0 add-item-shadow-${variant}`}`}>
-      <p className='bi bi-cloud-download text-muted m=0 p-0 text-center w-100'> Memuat data pengguna...</p>
+      <p className='bi bi-cloud-download text-muted m=0 p-0 text-center w-100'> {!titleTxt ? "Memuat data pengguna..." : titleTxt}</p>
       <ProgressBar className='m-0 p-0' variant={variant} animated now={progres} />
     </div>
   )

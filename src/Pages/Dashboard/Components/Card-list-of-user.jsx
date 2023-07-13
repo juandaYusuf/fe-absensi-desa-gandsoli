@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, ProgressBar, } from 'react-bootstrap'
 import ThemingCangerFunc from '../../../Theme'
 import axios from 'axios'
@@ -57,7 +57,7 @@ const CardListOfUser = () => {
                         </div>
                         <span className='fw-bold text-capitalize'>{resultListOfUser.first_name} {resultListOfUser.last_name}</span>
                       </div>
-                      <span className='text-end fw-light m-0 p-0'>{resultListOfUser.role}</span>
+                      <span className='text-end fw-light m-0 p-0'>{resultListOfUser.role_id}</span>
                     </div>
                   )
                 }))

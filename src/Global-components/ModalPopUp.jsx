@@ -351,7 +351,7 @@ const ModalPopUp = (props) => {
                           <span className='bi bi-lock' />
                       }
                     </InputGroup.Text>
-                    <Form.Control placeholder='Masukan password baru' aria-label="Default" aria-describedby="inputGroup-sizing-default" type='password' value={newPassword} onChange={(e) => { setNewPassword(e.target.value) }} style={{ borderRadius: '0px 15px 15px 0px' }} />
+                    <Form.Control placeholder='Masukan password baru' aria-label="Default" aria-describedby="inputGroup-sizing-default" type='password' autoComplete='new-password' value={newPassword} onChange={(e) => { setNewPassword(e.target.value) }} style={{ borderRadius: '0px 15px 15px 0px' }} />
                   </InputGroup>
                   <p className='text-muted'>Konfirmasi password baru</p>
                   <InputGroup className="mb-3">
@@ -364,7 +364,7 @@ const ModalPopUp = (props) => {
                           <span className='bi bi-lock' />
                       }
                     </InputGroup.Text>
-                    <Form.Control placeholder='Konfirmasi password' aria-label="Default" aria-describedby="inputGroup-sizing-default" type='password' value={confirmNewPassword} onChange={(e) => { setConfirmNewPassword(e.target.value) }} style={{ borderRadius: '0px 15px 15px 0px' }} />
+                    <Form.Control placeholder='Konfirmasi password' aria-label="Default" aria-describedby="inputGroup-sizing-default" autoComplete='new-password' type='password' value={confirmNewPassword} onChange={(e) => { setConfirmNewPassword(e.target.value) }} style={{ borderRadius: '0px 15px 15px 0px' }} />
                   </InputGroup>
                   {
                     isNewPasswordMatch === false
@@ -385,7 +385,7 @@ const ModalPopUp = (props) => {
                         <span className='bi bi-lock' />
                     }
                   </InputGroup.Text>
-                  <Form.Control placeholder='Masukan password saat ini' aria-label="Default" aria-describedby="inputGroup-sizing-default" type='password' value={currentPassword} onChange={(e) => { setcurrentPassword(e.target.value) }} style={{ borderRadius: '0px 15px 15px 0px' }} />
+                  <Form.Control placeholder='Masukan password saat ini' aria-label="Default" aria-describedby="inputGroup-sizing-default" type='password' autoComplete='new-password' value={currentPassword} onChange={(e) => { setcurrentPassword(e.target.value) }} style={{ borderRadius: '0px 15px 15px 0px' }} />
                 </InputGroup>
               </>)
           }

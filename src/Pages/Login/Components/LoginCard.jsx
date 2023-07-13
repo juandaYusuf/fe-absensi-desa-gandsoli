@@ -1,50 +1,78 @@
-import React, { useContext, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, Button, InputGroup, Form, Alert, Container, Spinner } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
-import { BottomToTop, LeftToRight, TopToBottom, RightToLeft } from '../../../Page-transition/ComponentTransitions'
-import UserContext from '../../../Context/Context'
+import logo from '../../../Assets/Logo/logo.png'
+import { BottomToTop, TopToBottom, RightToLeft } from '../../../Page-transition/ComponentTransitions'
 import axios from 'axios'
 import API_URL from '../../../API/API_URL'
 import bcrypt from 'bcryptjs'
+import qpuReport from 'gl-info'
 
 
 const LoginCard = () => {
 
   const navigateTo = useNavigate()
-  const { setShowNavbar } = useContext(UserContext)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [isServerErr, setIsServerErr] = useState(false)
   const [isLoginFailed, setIsLoginFailed] = useState(false)
+  const [isDeviceValidated, setIsDeviceValidated] = useState('no-activity')
   const salt = bcrypt.genSaltSync(10)
 
-  const login = () => {
+
+
+  // ++++++++ Get UserAgent ++++++++
+  const userDevice =  () => {
+    const glReport = qpuReport()
+    const userAgent = navigator.userAgent
+    const userDeviceDatas = `${glReport.vendor}${glReport.version}${glReport.extensions}${userAgent}${glReport.unMaskedVendor}${glReport.unMaskedRenderer}${glReport.renderer}`
+    return userDeviceDatas
+  }
+  
+  
+  const login =  () => {
+    const userDeviceData = userDevice()
+    
     const encPass = bcrypt.hashSync(password, salt)
     const url = API_URL().USER.LOGIN_STAF
     const user_data = {
       "email": email,
-      "encpass": encPass
+      "encpass": encPass,
+      "user_device":  userDeviceData.replace('/\s/g', "")
     }
+
     setIsLoading(true)
     axios.post(url, user_data).then((response) => {
-      const dataForLocalStirage = {
-        "id": response.data.id,
-        "role": response.data.role 
-      }
-      bcrypt.compare(password, response.data.encpass, (err, res) => {
-        if (res === true) {
-          if (!!response.data.id) {
-            localStorage.setItem('obj', JSON.stringify(dataForLocalStirage))
-            navigateTo("/dashboard")
-            setShowNavbar("/dashboard")
+      if (response.data.message === "device not vaidated") {
+        setIsDeviceValidated('not-validated')
+        setIsLoginFailed(true)
+      } else {
+        const dataForLocalStirage = {
+          "id": response.data.id,
+          "role": response.data.role
+        }
+        bcrypt.compare(password, response.data.encpass, (err, res) => {
+          if (res === true) {
+            if (!!response.data.id) {
+              if (response.data.role === "KAUR Keuangan") {
+                localStorage.setItem('obj', JSON.stringify(dataForLocalStirage))
+                navigateTo("/dashboard")
+                // setShowNavbar("/dashboard")
+                setIsLoading(false)
+              } else {
+                localStorage.setItem('obj', JSON.stringify(dataForLocalStirage))
+                localStorage.setItem('visit', JSON.stringify({ "id": response.data.id }))
+                navigateTo("/profile")
+                setIsLoading(false)
+              }
+            }
+          } else {
+            setIsLoginFailed(true)
             setIsLoading(false)
           }
-        } else {
-          setIsLoginFailed(true)
-          setIsLoading(false)
-        }
-      })
+        })
+      }
     }).catch((err) => {
       if (!err.response) {
         console.log(err)
@@ -56,108 +84,128 @@ const LoginCard = () => {
     })
   }
 
+
+
+  
+
   return (
-    <Card className='add-box-shadow rounded-4 my-4 login-card-layout' style={{ }}>
-      <Card.Body className=' p-0'>
-        <Card.Title className='d-flex justify-content-center align-items-center flex-column m-0'>
-          <LeftToRight>
-            <span className="bi bi-person-video3 fw-bolder m-0 text-secondary" style={{ fontSize: "6rem" }}></span>
-          </LeftToRight>
-          <RightToLeft>
-            <span className='fw-bold m-0 text-secondary mx-4' style={{ fontSize: "2rem", zIndex: "999" }}>LOGIN</span>
-          </RightToLeft>
-        </Card.Title>
-        <Alert variant="info rounded-4 my-0 mt-3 border border-info LoginStaf-input-container-shadow overflow-hidden login-alert">
-          <TopToBottom>
-            {
-              isServerErr === true
-                ?
-                (<Alert variant='danger border-danger w-100'>
-                  <h4 className='fw-bold bi bi-database-x'> Error</h4>
-                  <hr className='text-danger' />
-                  <p>Terjadi kesalahan pada server! <span className='bi bi-emoji-frown' /> </p>
-                </Alert>)
-                :
-                isLoginFailed === true
-                  ?
-                  (
-                    <>
-                      <TopToBottom>
-                        <Alert variant='danger border-danger w-100' style={{ marginBottom: "56px" }}>
-                          <h4 className='bi bi-x-circle'> Login gagal </h4>
-                          <hr className='text-danger' />
-                          <p>Silahkan periksa kembali email dan password anda</p>
-                        </Alert>
-                      </TopToBottom>
-                      <hr />
-                    </>
-                  )
-                  :
-                  (<>
-                    <h5> <i className="bi bi-info-circle"></i> Info...!</h5>
-                    Login hanya dapat diakses oleh staf pengelola absen atau kepala desa. staf hanya bisa login ketika telah didaftarkan oleh kepala desa sebagai staf pengelola absen. <br /><br /> Untuk membuat staf pengelola admin baru hanya dapat dilakukan oleh kepala desa<br />
-                    <hr className='text-primary' />
-                  </>)
-            }
-          </TopToBottom>
-          <BottomToTop>
-            <>
-              <h5 className='bi bi-box-arrow-in-right'> Login</h5>
-              <InputGroup className="mb-3" bsPrefix="input-group">
-                <InputGroup.Text id="basic-addon1" style={{ borderRadius: '15px 0px 0px 15px' }}> <i className="bi bi-postcard"></i> </InputGroup.Text>
-                <Form.Control
-                  placeholder="Email"
-                  aria-label="Email"
-                  aria-describedby="basic-addon-email"
-                  type='email'
-                  style={{ borderRadius: '0px 15px 15px 0px' }}
-                  onKeyDown={(e) => { e.key === "Enter" && (login()) }}
-                  onChange={(e) => { setEmail(e.target.value) }} />
-              </InputGroup>
-              <InputGroup className="mb-3">
-                <InputGroup.Text id="basic-addon1" style={{ borderRadius: '15px 0px 0px 15px' }} > <i className="bi bi-lock"></i> </InputGroup.Text>
-                <Form.Control
-                  placeholder="Password"
-                  aria-label="Password"
-                  aria-describedby="basic-addon-password"
-                  type='password'
-                  style={{ borderRadius: '0px 15px 15px 0px' }}
-                  onKeyDown={(e) => { e.key === "Enter" && (login()) }}
-                  onChange={(e) => { setPassword(e.target.value) }} />
-              </InputGroup>
-              <Container className='d-flex justify-content-center align-items-center flex-column gap-2 p-0'>
+    <div className='position-relative px-2' style={{ height: "100vh"}}>
+      <div className='position-absolute d-flex justify-content-center pt-1' style={{ zIndex: "2", width: "96.5%" }}>
+        <img src={logo} style={{ width: "150px", height: "150px", objectFit: "contain", filter: "drop-shadow(0 3mm 1mm rgb(0, 0, 0, 0.40))", marginBottom: "15px" }} />
+      </div>
+      <div className='h-100' style={{ paddingTop: "50px" }}>
+        <Card className='add-box-shadow rounded-4 login-card-layout' style={{ backdropFilter: "blur(15px)", backgroundColor: "rgba(255, 255, 255, 0.54", backgroundImage: 'url("https://www.transparenttextures.com/patterns/egg-shell.png")' }} >
+          <Card.Body className=' p-0'>
+            <Card.Title className='d-flex justify-content-center align-items-center flex-column m-0'>
+              <RightToLeft>
+                <div style={{ zIndex: "999", paddingTop: "100px" }} >
+                  <h2 className='fw-bold text-dark m-0' style={{ fontSize: "3rem" }}>LOGIN</h2>
+                </div>
+              </RightToLeft>
+            </Card.Title>
+            <Alert variant="info rounded-4 h-100 text-dark my-0 border overflow-hidden login-alert" style={{ backgroundColor: "rgba(255, 255, 255, 0.50)", backgroundImage: 'url("https://www.transparenttextures.com/patterns/egg-shell.png")' }} >
+              <TopToBottom>
                 {
-                  !isLoading
+                  isServerErr === true
                     ?
-                    (<Button className="add-item-shadow bi bi-box-arrow-in-right" variant="warning rounded-4" style={{ width: "50%" }} onClick={() => { login() }}>
-                      <span> Login staf</span>
-                    </Button>)
+                    (<Alert variant='danger border-danger w-100'>
+                      <h4 className='fw-bold bi bi-database-x'> Error</h4>
+                      <hr className='text-danger' />
+                      <p>Terjadi kesalahan pada server! <span className='bi bi-emoji-frown' /> </p>
+                    </Alert>)
                     :
-                    <>
-                      <Button className="add-item-shadow rounded-4" variant={(isServerErr === true) ? "danger" : "warning"} style={{ width: "50%" }} disabled>
-                        {
-                          isServerErr === true
-                            ?
-                            (<span>Tidak dapat login</span>)
-                            :
-                            isLoginFailed === true
+                    isLoginFailed === true
+                      ?
+                      (<>
+                        <TopToBottom>
+                          {
+                            isDeviceValidated === "not-validated"
                               ?
-                              (<span> Login staf</span>)
+                              <Alert className='rounded-4' variant='danger border-danger w-100' style={{ marginBottom: "56px" }}>
+                                <h4 className='bi bi-phone-flip'> Perangkat tidak valid..! </h4>
+                                <hr className='text-danger' />
+                                <p>Mencoba login di perangkat lain terdetksi...!</p>
+                              </Alert>
                               :
-                              (<>
-                                <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
-                                <span> Loading...</span>
-                              </>)
-                        }
-                      </Button>
-                    </>
+                              <Alert className='rounded-4' variant='danger border-danger w-100' style={{ marginBottom: "56px" }}>
+                                <h4 className='bi bi-x-circle'> Login gagal </h4>
+                                <hr className='text-danger' />
+                                <p>Silahkan periksa kembali email dan password anda</p>
+                              </Alert>
+                          }
+                        </TopToBottom>
+                        <hr />
+                      </>)
+                      :
+                      (<>
+                        <h5> <i className="bi bi-info-circle"></i> Info...!</h5>
+                        Web absensi Desa Gandasoli merupakan Sistem informasi management berbasis web <b>"Web Based Application"</b> yang dibangun untuk mengelola absensi staf Desa Gandasoli. <br /><br /> Untuk melakukan registrasi staf desa, dapat dilakukan oleh admin, kemudian masuk ke menu registrasi<br />
+                        <hr />
+                      </>)
                 }
-              </Container>
-            </>
-          </BottomToTop>
-        </Alert>
-      </Card.Body>
-    </Card>
+              </TopToBottom>
+              <BottomToTop>
+                <>
+                  <h5 className='bi bi-box-arrow-in-right'> Login</h5>
+                  <InputGroup className="mb-3" bsPrefix="input-group">
+                    <InputGroup.Text className='add-item-shadow' id="basic-addon1" style={{ borderRadius: '15px 0px 0px 15px' }}> <i className="bi bi-postcard"></i> </InputGroup.Text>
+                    <Form.Control
+                      placeholder="Email"
+                      aria-label="Email"
+                      aria-describedby="basic-addon-email"
+                      type='email'
+                      className='add-item-shadow'
+                      style={{ borderRadius: '0px 15px 15px 0px' }}
+                      onKeyDown={(e) => { e.key === "Enter" && (login()) }}
+                      onChange={(e) => { setEmail(e.target.value) }} />
+                  </InputGroup>
+                  <InputGroup className="mb-3">
+                    <InputGroup.Text className='add-item-shadow' id="basic-addon1" style={{ borderRadius: '15px 0px 0px 15px' }} > <i className="bi bi-lock"></i> </InputGroup.Text>
+                    <Form.Control
+                      placeholder="Password"
+                      aria-label="Password"
+                      className='add-item-shadow'
+                      aria-describedby="basic-addon-password"
+                      type='password'
+                      style={{ borderRadius: '0px 15px 15px 0px' }}
+                      onKeyDown={(e) => { e.key === "Enter" && (login()) }}
+                      onChange={(e) => { setPassword(e.target.value) }} />
+                  </InputGroup>
+                  <Container className='d-flex justify-content-center align-items-center flex-column gap-2 p-0'>
+                    {
+                      !isLoading
+                        ?
+                        (<Button className="add-item-shadow bi bi-box-arrow-in-right" variant="warning rounded-4" style={{ width: "50%" }} onClick={() => { login() }}>
+                          <span> Login</span>
+                        </Button>)
+                        :
+                        <>
+                          <Button className="add-item-shadow rounded-4" variant={(isServerErr === true) ? "danger" : "warning"} style={{ width: "50%" }} disabled>
+                            {
+                              isServerErr === true
+                                ?
+                                (<span>Tidak dapat login</span>)
+                                :
+                                isLoginFailed === true
+                                  ?
+                                  (<span> Login staf</span>)
+                                  :
+                                  (<>
+                                    <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+                                    <span> Loading...</span>
+                                  </>)
+                            }
+                          </Button>
+                        </>
+                    }
+                  </Container>
+                </>
+              </BottomToTop>
+            </Alert>
+          </Card.Body>
+        </Card>
+      </div>
+    </div>
   )
 }
 

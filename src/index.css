@@ -36,6 +36,7 @@ code {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: url("https://www.transparenttextures.com/patterns/egg-shell.png");
 }
 
 .hover-card-list:hover {
@@ -68,6 +69,12 @@ code {
   -moz-box-shadow: 1px 13px 17px -17px rgba(9, 143, 69, 0.75);
 }
 
+.add-item-shadow-warning {
+  box-shadow: 1px 13px 17px -17px rgb(255, 193, 7);
+  -webkit-box-shadow: 1px 13px 17px -17px rgb(255, 193, 7);
+  -moz-box-shadow: 1px 13px 17px -17px rgb(255, 193, 7);
+}
+
 .add-item-shadow-primary {
   box-shadow: 1px 13px 17px -17px rgba(9, 51, 143, 0.75);
   -webkit-box-shadow: 1px 13px 17px -17px rgba(9, 51, 143, 0.75);
@@ -87,9 +94,15 @@ code {
 }
 
 .scanning-shadow {
-  box-shadow: 0px 0px 22px -14px rgba(0, 255, 101, 0.75);
-  -webkit-box-shadow: 0px 0px 22px -14px rgba(0, 255, 101, 0.75);
-  -moz-box-shadow: 0px 0px 22px -14px rgba(0, 255, 101, 0.75);
+  box-shadow: 0px 0px 22px -14px rgba(255, 0, 0, 0.75);
+  -webkit-box-shadow: 0px 0px 22px -14px rgba(255, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 22px -14px rgba(255, 0, 0, 0.75);
+}
+
+.verified-shadow {
+  box-shadow: 0px 0px 22px -14px rgb(0, 213, 255);
+  -webkit-box-shadow: 0px 0px 22px -14px rgb(0, 213, 255);
+  -moz-box-shadow: 0px 0px 22px -14px rgb(0, 213, 255);
 }
 
 .add-item-shadow-secondary {
@@ -110,15 +123,31 @@ code {
 
 
 .login-card-layout {
-  margin: 10px;
-  max-width: 400px;
-  min-width:  200px;
+  /* margin: 10px; */
+  /* max-width: 400px;
+  min-width: 200px; */
+  width: 400px;
   border: solid lightgrey 1px;
   border-top: solid lightgrey 2px;
   overflow: hidden;
+  box-shadow: 0px 1px 32px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 0px 1px 32px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 1px 32px 0px rgba(0, 0, 0, 0.75);
 }
 
 
+.login-container {
+  width: 100vw;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('../src/Assets/Background/login-bg.jpg');
+  background-position: center;
+  background-size: cover;
+  backdrop-filter: brightness(10%);
+}
 
 .qr-scanner-container {
   width: 100%;
@@ -135,12 +164,6 @@ code {
   box-shadow: -1px -20px 35px 0px rgba(235, 0, 0, 0.2);
   -webkit-box-shadow: -1px -20px 35px 0px rgba(235, 0, 0, 0.2);
   -moz-box-shadow: -1px -20px 35px 0px rgba(235, 0, 0, 0.2);
-}
-
-.LoginStaf-input-container-shadow {
-  box-shadow: -1px -20px 35px 0px rgba(0, 206, 235, 0.2);
-  -webkit-box-shadow: -1px -20px 35px 0px rgba(0, 206, 235, 0.2);
-  -moz-box-shadow: -1px -20px 35px 0px rgba(0, 206, 235, 0.2);
 }
 
 .dashboard-content-container {
@@ -296,11 +319,11 @@ code {
     display: none;
   }
 
-  .login-card-layout{
+  .login-card-layout {
     width: 100%;
   }
 
-  .qr-container{
+  .qr-container {
     width: 100%;
   }
 

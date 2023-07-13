@@ -12,6 +12,7 @@
     "bootstrap-icons": "^1.10.4",
     "crypto-browserify": "^3.12.0",
     "framer-motion": "^10.10.0",
+    "gl-info": "^0.1.0",
     "qr-scanner": "^1.4.2",
     "qrcode": "^1.5.1",
     "react": "^18.2.0",

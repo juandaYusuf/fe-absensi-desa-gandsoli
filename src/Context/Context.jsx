@@ -4,7 +4,7 @@ import React, { createContext, useState } from 'react'
 const UserContext = createContext()
 
 export const UserContextProvider = (props) => {
-  const [showNavbar, setShowNavbar] = useState("")
+  // const [showNavbar, setShowNavbar] = useState("")
   const [turnOnCameraOnQRScannerPage, setTurnOnCameraOnQRScannerPage] = useState("")
   const [themeChanger, setThemeChanger] = useState("normal")
   const [contextIsImageUploaded, setContextIsImageUploaded] = useState(false)
@@ -12,12 +12,13 @@ export const UserContextProvider = (props) => {
   const [contextUserFullNameOfTable, setContextUserFullNameOfTable] = useState("")
   const [contextPresenceCounter, setContextPresenceCounter] = useState({})
   const [contextRefreshDraftList, setContextRefreshDraftList] = useState(false)
-
+  const [contextShowToast, setContextShowToast] = useState(false)
+  const [contextToastTXT, setcontextToastTXT] = useState({ title: "", body: "", themes: "", times: "", })
 
   return (
     <UserContext.Provider value={{
-      showNavbar,
-      setShowNavbar,
+      // showNavbar,
+      // setShowNavbar,
 
       turnOnCameraOnQRScannerPage,
       setTurnOnCameraOnQRScannerPage,
@@ -38,7 +39,13 @@ export const UserContextProvider = (props) => {
       setContextPresenceCounter,
 
       contextRefreshDraftList,
-      setContextRefreshDraftList
+      setContextRefreshDraftList,
+
+      contextShowToast, 
+      setContextShowToast,
+
+      contextToastTXT, 
+      setcontextToastTXT
 
     }}>
       {props.children}

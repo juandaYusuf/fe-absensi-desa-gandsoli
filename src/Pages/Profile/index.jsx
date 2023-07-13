@@ -48,7 +48,6 @@ const Profile = () => {
   }
 
   useEffect(() => {
-    if (seenAsAVisitor === null) return
     const getProfilePicture = () => {
       let url = null
       if (seenAsAVisitor.id === currentUserlocalData.id) {
@@ -56,12 +55,13 @@ const Profile = () => {
       } else {
         url = API_URL(seenAsAVisitor.id).USER.GET_SINGLE_PROFILE_PICTURE
       }
-
+      
       axios.get(url).then((response) => {
         setImageData(response.data.picture)
       })
     }
-
+    
+    if (seenAsAVisitor === null) return
     getProfilePicture()
 
   }, [contextIsImageUploaded])
@@ -186,7 +186,7 @@ const Profile = () => {
         {
           seenAsAVisitor.id === currentUserlocalData.id
             ?
-            <Container className='d-flex flex-column p-2 overflow-hidden' style={{ zIndex: "2" }} onClick={() => { setShowPopOver(false) }}>
+            <Container className='d-flex flex-column p-2 mt-5 overflow-hidden' style={{ zIndex: "2" }} onClick={() => { setShowPopOver(false) }}>
               <div className='d-flex gap-2 mb-3 d-flex justify-content-center'>
                 <div className='d-flex gap-2' style={{ width: "700px" }}>
                   <Button className='w-100 rounded-4 add-item-shadow' variant={`${tabPosition === "profile" ? "secondary" : "outline-secondary"} `} onClick={() => { setTabPosition("profile") }}> <span className='bi bi-person-lines-fill h5 fw-bolder'> Profile</span> </Button>
@@ -215,7 +215,7 @@ const Profile = () => {
                       <Container className='d-flex gap-2 flex-wrap justify-content-center' style={{ width: "700px" }}>
                         <h3 className='w-100 text-start mt-3'>Aturan absensi</h3>
                         {
-                          attendanceRulesDatas.map((result) => {
+                          attendanceRulesDatas.filter((items) => items.usage === true).map((result) => {
                             return (
                               <CardAttendanceRules
                                 key={result.id}

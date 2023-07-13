@@ -7,7 +7,7 @@ import ThemingCangerFunc from '../../../Theme'
 import { LeftToRight, RightToLeft } from '../../../Page-transition/ComponentTransitions'
 
 
-const RegisterComponent = ({ regOptions, title }) => {
+const RegisterComponent = () => {
 
   const [isServerErr, setIsServerErr] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -15,6 +15,7 @@ const RegisterComponent = ({ regOptions, title }) => {
   const [whoIsRegistered, setWhoIsRegistered] = useState({})
   const [validated, setValidated] = useState(false)
   const salt = bcrypt.genSaltSync(10)
+  const userRole = ['KAUR Keuangan', 'KAUR Perencanaan', 'KAUR TU/Umum', 'KASI Pemerintahan', 'KASI Kesejahteraan', 'KASI Pelayanan']
 
 
 
@@ -27,6 +28,7 @@ const RegisterComponent = ({ regOptions, title }) => {
       e.preventDefault()
       setIsLoading(true)
       const encpass = bcrypt.hashSync(e.target.password.value, salt)
+      console.log(encpass)
       let data = {
         first_name: e.target.first_name.value,
         last_name: e.target.last_name.value,
@@ -35,16 +37,7 @@ const RegisterComponent = ({ regOptions, title }) => {
         email: e.target.email.value,
         password: encpass,
         j_kelamin: e.target.jk.value,
-        role: `${regOptions === "kepdes"
-          ?
-          "kepdes"
-          :
-          regOptions === "admin"
-            ?
-            "admin"
-            :
-            regOptions === "staf"
-            && "staf"}`
+        role: e.target.role.value
       }
       const url = API_URL().USER.REGISTER_ADMIN_BY_KEPDES
       axios.post(url, data).then((response) => {
@@ -74,7 +67,7 @@ const RegisterComponent = ({ regOptions, title }) => {
   return (
     <Container className={` ${ThemingCangerFunc().gradient} add-box-shadow p-3 rounded-4 overflow-hidden d-flex justify-content-center`} style={ThemingCangerFunc("white").style} >
       <div className='w-50'>
-        <h3 className='bi bi-person-add mt-3 mx-1'> {title} </h3>
+        <h3 className='bi bi-person-add mt-3 mx-1'> Registrasi pengguna </h3>
         <div className='overflow-hidden mt-4 p-1'>
           {
             isServerErr === true
@@ -87,30 +80,21 @@ const RegisterComponent = ({ regOptions, title }) => {
                 </Alert>
               </LeftToRight>)
               :
-              isRegisterSuccess === ""
-                ?
-                (<LeftToRight>
-                  <Alert className='border-info add-item-shadow' variant='info w-100 rounded-4'>
-                    <h4 className='bi bi-info-circle'> Info... </h4>
-                    <hr className='text-success' />
-                    <span> Gunakan halaman ini untuk <b className='text-decoration-underline text-capitalize'>{title}</b> </span><br /><br />
-                    <i className="bi bi-journal-text text-muted" style={{ fontSize: "0.85rem" }}> Selalu perhatikan title form untuk menghidari kesalahan dalam menentukan role atau bagian.</i>
-                  </Alert>
-                </LeftToRight>)
-                :
-                (<LeftToRight>
-                  <Alert className='border-success add-item-shadow' variant='success w-100 rounded-4'>
-                    <h4 className='bi bi-check-circle'> Sukses </h4>
-                    <hr className='text-success' />
-                    <div>
-                      <span> Registrasi berhasil, data</ span>
-                      <b> {whoIsRegistered.fullname}</b>
-                      <span> sebagai</span>
-                      <b> {whoIsRegistered.role} </b>
-                      <span> berhasil disimpan pada server.</span>
-                    </div>
-                  </Alert>
-                </LeftToRight>)
+              isRegisterSuccess !== ""
+              &&
+              (<LeftToRight>
+                <Alert className='border-success add-item-shadow' variant='success w-100 rounded-4'>
+                  <h4 className='bi bi-check-circle'> Sukses </h4>
+                  <hr className='text-success' />
+                  <div>
+                    <span> Registrasi berhasil, data</ span>
+                    <b> {whoIsRegistered.fullname}</b>
+                    <span> sebagai</span>
+                    <b> {whoIsRegistered.role} </b>
+                    <span> berhasil disimpan pada server.</span>
+                  </div>
+                </Alert>
+              </LeftToRight>)
           }
         </div>
         <hr />
@@ -144,7 +128,7 @@ const RegisterComponent = ({ regOptions, title }) => {
               controlId="email"
               label={`${isRegisterSuccess === "Email telah digunakan" ? (isRegisterSuccess) : ("Email")} `}
               className={`mb-3 ${isRegisterSuccess === "Email telah digunakan" && ("border-danger text-danger")}`}>
-              <Form.Control className={`rounded-4 ${isRegisterSuccess === "Email telah digunakan" && ("border-danger text-danger")}`} type="email" placeholder="name@example.com" required />
+              <Form.Control className={`rounded-4 ${isRegisterSuccess === "Email telah digunakan" && ("border-danger text-danger")}`} type="email" placeholder="name@example.com" required autoComplete='nope' />
               {
                 isRegisterSuccess === "Email telah digunakan"
                 &&
@@ -155,9 +139,9 @@ const RegisterComponent = ({ regOptions, title }) => {
               controlId="password"
               label="Password"
               className="mb-3">
-              <Form.Control className='rounded-4' type="password" placeholder="Password" required />
+              <Form.Control className='rounded-4' type="password" placeholder="Password" required autoComplete='new-password' />
               <Form.Text className="text-muted">
-                Password yang didaftarkan oleh kepala desa hanya sementara! Dapat diganti setelah dapat login
+                Password yang didaftarkan oleh pengelola absensi hanya sementara! Dapat diganti setelah pengguna dapat login
               </Form.Text>
             </FloatingLabel>
             <FloatingLabel
@@ -168,6 +152,21 @@ const RegisterComponent = ({ regOptions, title }) => {
                 <option>Pilih jenis kelamin</option>
                 <option value="pria">pria</option>
                 <option value="wanita">wanita</option>
+              </Form.Select>
+            </FloatingLabel>
+            <FloatingLabel
+              controlId="role"
+              label="role"
+              className="mb-3">
+              <Form.Select className='rounded-4' aria-label="Floating label select example" required>
+                <option>Pilih bagian</option>
+                {
+                  userRole.map((result) => {
+                    return (
+                      <option value={result}>{result}</option>
+                    )
+                  })
+                }
               </Form.Select>
             </FloatingLabel>
             {
