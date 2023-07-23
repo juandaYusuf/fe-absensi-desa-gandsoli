@@ -191,7 +191,7 @@ const QRScannerMonitoring = () => {
               <div className=' scanner-container'>
                 <div className=' qr-container add-item-shadow border border-2 border-secondary'>
                   <div className='w-100 d-flex justify-content-center'>
-                    <Container style={{ scale: "1.5" }}>
+                    <div style={{ scale: "1.5", minWidth: "330px", minHeight: "330px"}}>
                       {
                         startScan
                         &&
@@ -206,10 +206,10 @@ const QRScannerMonitoring = () => {
                               console.log("Tidak ada objek")
                             }
                           }}
-                          style={{ width: '100%' }}
+                          style={{ width: '100%'}}
                         />)
                       }
-                    </Container>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -15,6 +15,8 @@ import UserContext from '../../Context/Context'
 import Presenting from './Components/Presenting'
 import UserDetailPresence from './Components/User-detail-presence'
 import CardAttendanceRules from '../../Global-components/Card-attendance-rules'
+import PDFFile from './Components/PDFFile'
+
 
 const Profile = () => {
 
@@ -34,6 +36,7 @@ const Profile = () => {
   const [changeBgHeader, setChangeBgHeader] = useState(bg1)
   const [showPopOver, setShowPopOver] = useState(false)
   const [attendanceRulesDatas, setAttendanceRulesDatas] = useState([])
+  const { contextShowPDF } = useContext(UserContext)
 
 
 
@@ -55,12 +58,12 @@ const Profile = () => {
       } else {
         url = API_URL(seenAsAVisitor.id).USER.GET_SINGLE_PROFILE_PICTURE
       }
-      
+
       axios.get(url).then((response) => {
         setImageData(response.data.picture)
       })
     }
-    
+
     if (seenAsAVisitor === null) return
     getProfilePicture()
 
@@ -123,148 +126,156 @@ const Profile = () => {
   return (
     <BottomToTop>
       <Container className={` ${ThemingCangerFunc().gradient} add-item-shadow rounded-4 p-0 overflow-hidden d-flex flex-column`} style={ThemingCangerFunc("white").style} >
-        <div className='profile-header'>
-          <div style={{ height: "68%", width: "100%" }}>
-            <img className='w-100 h-100' src={changeBgHeader} style={{ objectFit: "cover" }} />
-            <div className='profile-picture-container'>
-              {
-                imageData !== "no picture" && imageData !== null
-                  ?
-                  (<img className='rounded-circle' src={src} style={{ objectFit: "cover", width: "200px", height: "200px", border: "solid 10px white", backgroundColor: "white" }} />)
-                  :
-                  imageData === "no picture"
-                    ?
-                    (<div className='rounded-circle d-flex' src={src} style={{ objectFit: "cover", width: "200px", height: "200px", border: "solid 10px white", backgroundColor: "grey" }} >
-                      <div className='m-auto p-2 w-100 d-flex justify-content-center'>
-                        <span className='bi bi-person-fill m-0 p-0 text-light' style={{ fontSize: "7rem" }} />
-                      </div>
-                    </div>)
-                    :
-                    (<div className='rounded-circle d-flex' src={src} style={{ objectFit: "cover", width: "200px", height: "200px", border: "solid 10px white", backgroundColor: "grey" }} >
-                      <div className='m-auto p-2 w-100'>
-                        <p className='text-light p-0 m-0'>Memuat gambar...</p>
-                        <ProgressBar variant='info' animated now={100} />
-                      </div>
-                    </div>)
-              }
-              <div className='d-flex justify-content-center flex-column'>
-                {
-                  !!userDetail.first_name
-                    ?
-                    (<>
-                      <p className='p-0 m-0 fw-bold h4'>{`${userDetail.first_name} ${userDetail.last_name}`}</p>
-                      <p className='p-0 m-0 text-muted'>{userDetail.email}</p>
-                    </>)
-                    :
-                    (<div style={{ width: "200px" }}>
-                      <Placeholder animation="glow">
-                        <Placeholder xs={12} size='lg' />
-                        <Placeholder xs={10} size="sm" />
-                      </Placeholder>
-                    </div>)
-                }
-              </div>
-            </div>
-            <div className='w-100 d-flex justify-content-end p-4 px-5'>
-              {
-                seenAsAVisitor.id === currentUserlocalData.id
-                &&
-                <OverlayTrigger trigger="click" placement="auto-start" overlay={popover} rootCloseEvent="click" show={showPopOver} >
-                  <div className='m-2' onClick={() => { setShowPopOver(!showPopOver) }}>
-                    <span className='bi bi-gear-fill position-relative cursor-pointer h4 text-dark' style={{ zIndex: "2" }} />
+        {
+          !!contextShowPDF
+            ?
+            (<PDFFile />)
+            :
+            <>
+              <div className='profile-header'>
+                <div style={{ height: "68%", width: "100%" }}>
+                  <img className='w-100 h-100' src={changeBgHeader} style={{ objectFit: "cover" }} />
+                  <div className='profile-picture-container'>
                     {
-                      !!showPopOver
+                      imageData !== "no picture" && imageData !== null
+                        ?
+                        (<img className='rounded-circle' src={src} style={{ objectFit: "cover", width: "200px", height: "200px", border: "solid 10px white", backgroundColor: "white" }} />)
+                        :
+                        imageData === "no picture"
+                          ?
+                          (<div className='rounded-circle d-flex' src={src} style={{ objectFit: "cover", width: "200px", height: "200px", border: "solid 10px white", backgroundColor: "grey" }} >
+                            <div className='m-auto p-2 w-100 d-flex justify-content-center'>
+                              <span className='bi bi-person-fill m-0 p-0 text-light' style={{ fontSize: "7rem" }} />
+                            </div>
+                          </div>)
+                          :
+                          (<div className='rounded-circle d-flex' src={src} style={{ objectFit: "cover", width: "200px", height: "200px", border: "solid 10px white", backgroundColor: "grey" }} >
+                            <div className='m-auto p-2 w-100'>
+                              <p className='text-light p-0 m-0'>Memuat gambar...</p>
+                              <ProgressBar variant='info' animated now={100} />
+                            </div>
+                          </div>)
+                    }
+                    <div className='d-flex justify-content-center flex-column'>
+                      {
+                        !!userDetail.first_name
+                          ?
+                          (<>
+                            <p className='p-0 m-0 fw-bold h4'>{`${userDetail.first_name} ${userDetail.last_name}`}</p>
+                            <p className='p-0 m-0 text-muted'>{userDetail.email}</p>
+                          </>)
+                          :
+                          (<div style={{ width: "200px" }}>
+                            <Placeholder animation="glow">
+                              <Placeholder xs={12} size='lg' />
+                              <Placeholder xs={10} size="sm" />
+                            </Placeholder>
+                          </div>)
+                      }
+                    </div>
+                  </div>
+                  <div className='w-100 d-flex justify-content-end p-4 px-5'>
+                    {
+                      seenAsAVisitor.id === currentUserlocalData.id
                       &&
-                      <div className='position-absolute' style={{ width: "100vw", height: "150vh", left: "0px", top: "0px", zIndex: "1" }} onClick={() => { setShowPopOver(false) }} />
+                      <OverlayTrigger trigger="click" placement="auto-start" overlay={popover} rootCloseEvent="click" show={showPopOver} >
+                        <div className='m-2' onClick={() => { setShowPopOver(!showPopOver) }}>
+                          <span className='bi bi-gear-fill position-relative cursor-pointer h4 text-dark' style={{ zIndex: "2" }} />
+                          {
+                            !!showPopOver
+                            &&
+                            <div className='position-absolute' style={{ width: "100vw", height: "150vh", left: "0px", top: "0px", zIndex: "1" }} onClick={() => { setShowPopOver(false) }} />
+                          }
+                        </div>
+                      </OverlayTrigger>
                     }
                   </div>
-                </OverlayTrigger>
-              }
-            </div>
-          </div>
-        </div>
-        {
-          seenAsAVisitor.id === currentUserlocalData.id
-            ?
-            <Container className='d-flex flex-column p-2 mt-5 overflow-hidden' style={{ zIndex: "2" }} onClick={() => { setShowPopOver(false) }}>
-              <div className='d-flex gap-2 mb-3 d-flex justify-content-center'>
-                <div className='d-flex gap-2' style={{ width: "700px" }}>
-                  <Button className='w-100 rounded-4 add-item-shadow' variant={`${tabPosition === "profile" ? "secondary" : "outline-secondary"} `} onClick={() => { setTabPosition("profile") }}> <span className='bi bi-person-lines-fill h5 fw-bolder'> Profile</span> </Button>
-                  <Button className='w-100 rounded-4 add-item-shadow' variant={`${tabPosition === "kehadiran" ? "secondary" : "outline-secondary"} `} onClick={() => { setTabPosition("kehadiran") }}> <span className='bi bi-postcard-fill h5 fw-bolder'> Kehadiran</span></Button>
-                  <Button className='w-100 rounded-4 add-item-shadow' variant={`${tabPosition === "info" ? "secondary" : "outline-secondary"} `} onClick={() => { setTabPosition("info") }}> <span className='bi bi-info-circle-fill h5 fw-bolder'> Info</span></Button>
                 </div>
               </div>
               {
-                tabPosition === "profile"
+                seenAsAVisitor.id === currentUserlocalData.id
                   ?
-                  (<LeftToRight>
-                    <div className='w-100 d-flex justify-content-center'>
-                      <FormEditProfile user_detail={setUserDetail} />
+                  <Container className='d-flex flex-column p-2 mt-5 overflow-hidden' style={{ zIndex: "2" }} onClick={() => { setShowPopOver(false) }}>
+                    <div className='d-flex gap-2 mb-3 d-flex justify-content-center'>
+                      <div className='d-flex gap-2' style={{ width: "700px" }}>
+                        <Button className='w-100 rounded-4 add-item-shadow' variant={`${tabPosition === "profile" ? "secondary" : "outline-secondary"} `} onClick={() => { setTabPosition("profile") }}> <span className='bi bi-person-lines-fill h5 fw-bolder'> Profile</span> </Button>
+                        <Button className='w-100 rounded-4 add-item-shadow' variant={`${tabPosition === "kehadiran" ? "secondary" : "outline-secondary"} `} onClick={() => { setTabPosition("kehadiran") }}> <span className='bi bi-postcard-fill h5 fw-bolder'> Kehadiran</span></Button>
+                        <Button className='w-100 rounded-4 add-item-shadow' variant={`${tabPosition === "info" ? "secondary" : "outline-secondary"} `} onClick={() => { setTabPosition("info") }}> <span className='bi bi-info-circle-fill h5 fw-bolder'> Info</span></Button>
+                      </div>
                     </div>
-                  </LeftToRight>)
-                  :
-                  tabPosition === "kehadiran"
-                    ?
-                    (<BottomToTop>
-                      <UserDetailPresence current_user="my-self" />
-                    </BottomToTop>)
-                    :
-                    tabPosition === "info"
-                    &&
-                    (<RightToLeft>
-                      <Container className='d-flex gap-2 flex-wrap justify-content-center' style={{ width: "700px" }}>
-                        <h3 className='w-100 text-start mt-3'>Aturan absensi</h3>
-                        {
-                          attendanceRulesDatas.filter((items) => items.usage === true).map((result) => {
-                            return (
-                              <CardAttendanceRules
-                                key={result.id}
-                                show_action={false}
-                                draft_id={result.id}
-                                title={result.title}
-                                work_start_time={result.work_start_time}
-                                work_times_up={result.work_times_up}
-                                late_deadline={result.late_deadline}
-                                description={result.description}
-                                usage={result.usage}
-                                created_at={result.created_at} />)
-                          })
-                        }
-                        {attendanceRulesDatas.length <= 0
+                    {
+                      tabPosition === "profile"
+                        ?
+                        (<LeftToRight>
+                          <div className='w-100 d-flex justify-content-center'>
+                            <FormEditProfile user_detail={setUserDetail} />
+                          </div>
+                        </LeftToRight>)
+                        :
+                        tabPosition === "kehadiran"
+                          ?
+                          (<BottomToTop>
+                            <UserDetailPresence current_user="my-self" />
+                          </BottomToTop>)
+                          :
+                          tabPosition === "info"
                           &&
-                          (<div
-                            className='w-100 d-flex align-items-center border-bottom border-2 flex-column text-muted mb-4 pb-5'>
-                            <span className="bi bi-journal-x h1 m-0 p-0" />
-                            Tidak ada item ! Sistem menjalankan aturan default
-                            <table className='mt-2'>
-                              <tbody>
-                                <tr>
-                                  <td className='bi bi-clock-fill fw-bold'> Jam masuk</td>
-                                  <td className='px-2'> :</td>
-                                  <td> 7:00:00</td>
-                                </tr>
-                                <tr>
-                                  <td className='bi bi-clock fw-bold'> Jam keluar</td>
-                                  <td className='px-2'> :</td>
-                                  <td> 15:00:00</td>
-                                </tr>
-                                <tr>
-                                  <td className='bi bi-clock-history fw-bold'> Keterlambatan</td>
-                                  <td className='px-2'> :</td>
-                                  <td> 30 menit</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>)
-                        }
-                      </Container>
-                    </RightToLeft>)
+                          (<RightToLeft>
+                            <Container className='d-flex gap-2 flex-wrap justify-content-center' style={{ width: "700px" }}>
+                              <h3 className='w-100 text-start mt-3'>Aturan absensi</h3>
+                              {
+                                attendanceRulesDatas.filter((items) => items.usage === true).map((result) => {
+                                  return (
+                                    <CardAttendanceRules
+                                      key={result.id}
+                                      show_action={false}
+                                      draft_id={result.id}
+                                      title={result.title}
+                                      work_start_time={result.work_start_time}
+                                      work_times_up={result.work_times_up}
+                                      late_deadline={result.late_deadline}
+                                      description={result.description}
+                                      usage={result.usage}
+                                      created_at={result.created_at} />)
+                                })
+                              }
+                              {attendanceRulesDatas.length <= 0
+                                &&
+                                (<div
+                                  className='w-100 d-flex align-items-center border-bottom border-2 flex-column text-muted mb-4 pb-5'>
+                                  <span className="bi bi-journal-x h1 m-0 p-0" />
+                                  Tidak ada item ! Sistem menjalankan aturan default
+                                  <table className='mt-2'>
+                                    <tbody>
+                                      <tr>
+                                        <td className='bi bi-clock-fill fw-bold'> Jam masuk</td>
+                                        <td className='px-2'> :</td>
+                                        <td> 7:00:00</td>
+                                      </tr>
+                                      <tr>
+                                        <td className='bi bi-clock fw-bold'> Jam keluar</td>
+                                        <td className='px-2'> :</td>
+                                        <td> 15:00:00</td>
+                                      </tr>
+                                      <tr>
+                                        <td className='bi bi-clock-history fw-bold'> Keterlambatan</td>
+                                        <td className='px-2'> :</td>
+                                        <td> 30 menit</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>)
+                              }
+                            </Container>
+                          </RightToLeft>)
+                    }
+                  </Container>
+                  :
+                  <Container className='d-flex justify-content-center align-items-center flex-column overflow-hidden' style={{ zIndex: "2" }} onClick={() => { setShowPopOver(false) }}>
+                    <UserDetailPresence user_detail={setUserDetail} current_user="visitor" />
+                  </Container>
               }
-            </Container>
-            :
-            <Container className='d-flex justify-content-center align-items-center flex-column overflow-hidden' style={{ zIndex: "2" }} onClick={() => { setShowPopOver(false) }}>
-              <UserDetailPresence user_detail={setUserDetail} current_user="visitor" />
-            </Container>
+            </>
         }
       </Container>
       <ModalPopUp

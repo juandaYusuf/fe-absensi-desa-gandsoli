@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Card, Button, InputGroup, Form, Alert, Container, Spinner } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import logo from '../../../Assets/Logo/logo.png'
@@ -26,8 +26,9 @@ const LoginCard = () => {
   // ++++++++ Get UserAgent ++++++++
   const userDevice = () => {
     const glReport = qpuReport()
-    const userAgent = navigator.userAgent
-    const userDeviceDatas = `${glReport.vendor}${glReport.version}${glReport.extensions}${userAgent}${glReport.unMaskedVendor}${glReport.unMaskedRenderer}${glReport.renderer}`
+    const userAgentData = navigator.userAgent
+    const userAgentWithoutBrowserVersion = userAgentData.replace(/\d+(\.\d+)+$/, '')
+    const userDeviceDatas = `${glReport.vendor}${glReport.version}${glReport.extensions}${userAgentWithoutBrowserVersion}${glReport.unMaskedVendor}${glReport.unMaskedRenderer}${glReport.renderer}`
     return userDeviceDatas
   }
 
@@ -84,13 +85,6 @@ const LoginCard = () => {
     })
   }
 
-  useEffect(() => {
-    axios.get('https://bedesagandasoli-2-j0924938.deta.app/').then(res => console.log(res))
-  }, [])
-  
-
-
-
 
   return (
     <div className='position-relative px-2' style={{ height: "100vh" }}>
@@ -143,7 +137,7 @@ const LoginCard = () => {
                       :
                       (<>
                         <h5> <i className="bi bi-info-circle"></i> Info...!</h5>
-                        Web absensi Desa Gandasoli merupakan Sistem informasi management berbasis web <b>"Web Based Application"</b> yang dibangun untuk mengelola absensi staf Desa Gandasoli. <br /><br /> Untuk melakukan registrasi staf desa, dapat dilakukan oleh admin, kemudian masuk ke menu registrasi<br />
+                        Sistem Informasi Absensi Gandasoli <b>"SIAGA"</b> merupakan sistem informasi management berbasis web <b>"Web Based Application"</b> yang dibangun untuk mengelola absensi staf Desa Gandasoli. <br /><br /> Untuk melakukan registrasi staf desa, dapat dilakukan oleh admin, kemudian masuk ke menu registrasi<br />
                         <hr />
                       </>)
                 }

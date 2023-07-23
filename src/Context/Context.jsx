@@ -14,6 +14,9 @@ export const UserContextProvider = (props) => {
   const [contextRefreshDraftList, setContextRefreshDraftList] = useState(false)
   const [contextShowToast, setContextShowToast] = useState(false)
   const [contextToastTXT, setcontextToastTXT] = useState({ title: "", body: "", themes: "", times: "", })
+  const [contextShowPDF, setcontextShowPDF] = useState(false)
+  const [contextPDFDatas, setcontextPDFDatas] = useState({ tahun: "", nama: "", role: "", alamat: "", email: "", no_telepon: "" })
+
 
   return (
     <UserContext.Provider value={{
@@ -41,11 +44,17 @@ export const UserContextProvider = (props) => {
       contextRefreshDraftList,
       setContextRefreshDraftList,
 
-      contextShowToast, 
+      contextShowToast,
       setContextShowToast,
 
-      contextToastTXT, 
-      setcontextToastTXT
+      contextToastTXT,
+      setcontextToastTXT,
+
+      contextShowPDF,
+      setcontextShowPDF,
+
+      contextPDFDatas,
+      setcontextPDFDatas
 
     }}>
       {props.children}
