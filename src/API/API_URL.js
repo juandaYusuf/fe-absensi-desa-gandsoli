@@ -1,5 +1,5 @@
 const API_URL = (apiParam,apiParam2) => {
-  const baseUrl = 'https://bedesagandasoli-1-j0924938.deta.app/'
+  const baseUrl = 'https://bedesagandasoli-1-j0924938.deta.app'
   return {
     USER: {
       LOGIN_STAF: `${baseUrl}/api/user/login`,
