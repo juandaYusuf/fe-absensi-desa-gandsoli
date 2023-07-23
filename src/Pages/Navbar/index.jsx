@@ -191,7 +191,7 @@ const NavigationsBar = ({ children }) => {
               />
             </div>
           </section>
-          {/* MOBILE MODE NAVBAR */}
+          {/*! MOBILE MODE NAVBAR */}
           <section className='mobile-nav'>
             <div className='d-flex flex-column'>
               <div className='d-flex align-items-center gap-3'>
@@ -200,53 +200,29 @@ const NavigationsBar = ({ children }) => {
                 <Button className='border' variant={(isNavbarCollapse === true) ? 'secondary' : 'transparent'} onClick={() => { navCollapse() }}> <span className='bi bi-list h2' /> </Button>
               </div>
               <div className='d-flex gap-4 align-items-center'>
-                <div className={(isNavbarCollapse === true) ? "mobile-link" : "mobile-link-collapse"}>
-                  <Link to="/dashboard" className='m-0 fw-bold bi bi-tv cursor-pointer text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Dashboard</Link>
-                  {
-                    localData === "kepdes" && (
-                      <Dropdown>
-                        <Dropdown.Toggle className='cursor-pointer' id="dropdown-basic" as="b">
-                          <span className='bi bi-person-add h5' /> Registrasi
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu className='add-box-shadow p-2 overlay-bg-custom-gradient-color p-0' style={{ width: "300px" }}>
-                          <Dropdown.Item className='rounded-3'>
-                            <div className='d-flex flex-column'>
-                              <p className='bi bi-person-video3 m-0 p-0'> Kepala desa</p>
-                              <div style={{ fontSize: "12px", marginLeft: "21px", marginBottom: "0px", whiteSpace: "normal" }}>
-                                Halman ini khusus mengganti kepala desa, gunakan halaman ini jika kepala desa berpindah tangan
-                              </div>
-                            </div>
-                          </Dropdown.Item>
-                          <hr className='m-1 p-0' />
-                          <Dropdown.Item className='rounded-3' onClick={() => { navigateTo('/register') }}>
-                            <div className='d-flex flex-column'>
-                              <p className='bi bi-clipboard-data m-0 p-0'> Pengelola absen</p>
-                              <div style={{ fontSize: "12px", marginLeft: "21px", marginBottom: "0px", whiteSpace: "normal" }}>
-                                Halaman ini khusus mendaftarkan pengelola absensi
-                              </div>
-                            </div>
-                          </Dropdown.Item>
-                          <hr className='m-1 p-0' />
-                          <Dropdown.Item className='rounded-3'>
-                            <div className='d-flex flex-column'>
-                              <p className='bi bi-person-check m-0 p-0'> Staf desa</p>
-                              <div style={{ fontSize: "12px", marginLeft: "21px", marginBottom: "0px" }}>
-                                Halaman ini khusus mendaftarkan staf desa
-                              </div>
-                            </div>
-                          </Dropdown.Item>
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    )
+                <div className={(isNavbarCollapse === true) ? "mobile-link w-100" : "mobile-link-collapse w-100"}>
+                {
+                    localData === "KAUR Keuangan" 
+                    &&
+                    <>
+                      <Link to="/dashboard" className={`m-0 fw-bold bi bi-tv cursor-pointer text-dark text-decoration-none ${currentUrl === "/dashboard" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Dashboard</Link>
+                      <Link to="/register" className={`m-0 fw-bold bi bi-person-add cursor-pointer text-dark text-decoration-none ${currentUrl === "/register" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOnCamera")}> Registrasi</Link>
+                    </>
                   }
-                  {/* <Link to="/scanner-manager" className='m-0 fw-bold bi bi-qr-code-scan cursor-pointer text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOnCamera")}> QR Scanner</Link> */}
-                  {/* <Link to="/qr-generator" className='m-0 fw-bold bi bi-qr-code cursor-pointer text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> QR Generator</Link> */}
+                  <Link to="/scanner-manager" className={`m-0 fw-bold bi bi-qr-code-scan cursor-pointer text-dark text-decoration-none ${currentUrl === "/scanner-manager" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOnCamera")}> QR Scanner</Link>
                   {
-                    localData === "admin" || localData === "kepdes"
+                    localData === "KAUR Keuangan"
                       ?
-                      <Link to="/setting" className='m-0 fw-bold bi bi-qr-code cursor-pointer text-dark text-decoration-none' onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Setting</Link>
+                      <>
+                        <Link to="/qr-generator" className={`m-0 fw-bold bi bi-qr-code cursor-pointer text-dark text-decoration-none ${currentUrl === "/qr-generator" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> QR Generator</Link>
+                        <Link to="/setting" className={`m-0 fw-bold bi bi-gear cursor-pointer text-dark text-decoration-none ${currentUrl === "/setting" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Pengaturan</Link>
+                      </>
                       :
-                      null
+                      <>
+                        <div className={`m-0 fw-bold bi bi-person cursor-pointer text-dark text-decoration-none ${currentUrl === "/profile" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => goToProfile()}> Profile</div>
+                        <Button className='rounded-4 w-100' variant='outline-danger' onClick={() => logOut()}> Log Out</Button>
+                      </>
+
                   }
                 </div>
               </div>

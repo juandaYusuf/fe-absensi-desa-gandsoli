@@ -1,8 +1,9 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import API_URL from '../../../API/API_URL'
 import { Button, Col, Container, Form, FormGroup, FormLabel, InputGroup, Row, Table } from 'react-bootstrap'
 import TableDetailPresence from './Table-detail-presence'
+import UserContext from '../../../Context/Context'
 
 const UserDetailPresence = (props) => {
 
@@ -13,11 +14,10 @@ const UserDetailPresence = (props) => {
   const [valueOfYear, setValueOfYear] = useState(currentYear)
   const [yearTotalBackward, setYearTotalBackward] = useState(2)
   const [yearTotalForward, setYearTotalForward] = useState(2)
+  const { setcontextShowPDF, setcontextPDFDatas } = useContext(UserContext)
 
 
   const yearOptionValue = () => {
-
-
     if (yearTotalForward <= 2) {
       for (let year = currentYear - yearTotalBackward; year <= currentYear + 2; year++) {
         yearOptions.push(
@@ -48,6 +48,23 @@ const UserDetailPresence = (props) => {
     return yearOptions
   }
 
+  const showPDF = () => {
+    setcontextShowPDF(true)
+    setcontextPDFDatas({
+      tahun: valueOfYear,
+      nama: `${userDetail.first_name} ${userDetail.last_name}`,
+      role: userDetail.role,
+      alamat: userDetail.alamat,
+      email: userDetail.email,
+      no_telepon: userDetail.no_telepon,
+      user_id: currentUserIdFromVisitor.id
+    })
+  }
+
+
+
+
+
   useEffect(() => {
 
     const getUserDetail = () => {
@@ -72,13 +89,16 @@ const UserDetailPresence = (props) => {
           alamat: response.data.alamat,
           no_telepon: response.data.no_telepon,
           jk: response.data.j_kelamin,
-          pp: response.data.profile_picture
+          pp: response.data.profile_picture,
+          role: response.data.role
         })
       })
     }
 
     getUserDetail()
   }, [])
+
+
 
 
 
@@ -163,7 +183,7 @@ const UserDetailPresence = (props) => {
                       <td colSpan={2} className='text-center'>
                         <InputGroup className='overflow-hidden p-0 mx-0' style={{ width: "800px" }}>
                           <InputGroup.Text style={{ borderRadius: '15px 0px 0px 15px' }}><span className='bi bi-calendar-month h5 m-0 p-0' /> </InputGroup.Text>
-                          <Form.Select style={{ backgroundColor: "cornsilk", width: "100px", borderRadius: '0px 15px 15px 0px'}} aria-label="Default select example" onChange={((e) => { setValueOfYear(e.target.value) })}>
+                          <Form.Select style={{ backgroundColor: "cornsilk", width: "100px", borderRadius: '0px 15px 15px 0px' }} aria-label="Default select example" onChange={((e) => { setValueOfYear(e.target.value) })}>
                             <option value={currentYear}>Pilih tahun </option>
                             {yearOptionValue()}
                           </Form.Select>
@@ -172,12 +192,13 @@ const UserDetailPresence = (props) => {
                     </tr>
                   </tbody>
                 </Table>
-
               </div>
-
             </Col>
           </Row>
           <Row>
+            <div className='w-100 d-flex justify-content-end'>
+              <Button className='rounded-4 ' variant='danger' onClick={() => showPDF()}>Tampilkan PDF</Button>
+            </div>
             <Col className='mx-2 my-1 rounded-4 overflow-hidden border p-0' style={{ backgroundColor: "Ivory" }}>
               <div className='overflow-auto'>
                 <TableDetailPresence year={valueOfYear} user_id={currentUserIdFromVisitor.id} />

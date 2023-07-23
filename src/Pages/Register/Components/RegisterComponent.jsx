@@ -161,9 +161,9 @@ const RegisterComponent = () => {
               <Form.Select className='rounded-4' aria-label="Floating label select example" required>
                 <option>Pilih bagian</option>
                 {
-                  userRole.map((result) => {
+                  userRole.map((result, i) => {
                     return (
-                      <option value={result}>{result}</option>
+                      <option key={i} value={result}>{result}</option>
                     )
                   })
                 }
