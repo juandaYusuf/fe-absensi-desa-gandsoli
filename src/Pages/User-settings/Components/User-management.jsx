@@ -275,7 +275,7 @@ const UserManagement = () => {
 
 
   return (
-    <Card className='p-3 border-0' style={{ minHeight: "400px" }}>
+    <Card className='p-3 border-0 bg-transparent' style={{ minHeight: "400px" }}>
 
       <h3 className='bi bi-kanban'> Manajemen pengguna</h3>
 

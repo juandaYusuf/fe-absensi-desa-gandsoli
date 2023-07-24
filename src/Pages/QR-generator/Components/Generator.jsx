@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react'
 import QRCode from 'qrcode'
 import { Alert, Button, Form, InputGroup, Spinner, Table } from 'react-bootstrap'
 import { BottomToTop, LeftToRight, RightToLeft, TopToBottom } from '../../../Page-transition/ComponentTransitions'
-import UserGeoLocated from './GeoLocated'
+// import UserGeoLocated from './GeoLocated'
 import axios from 'axios'
 import API_URL from '../../../API/API_URL'
 import { useNavigate } from 'react-router-dom'
 import TableScannedIn from './Table-scanned-in'
 import TableScannedOut from './Table-scanned-out'
 import ProgresBarLoadingVisual from '../../../Global-components/Progres-bar-loading-visual'
-
+import ModalQRCode from './ModalQRCode'
+import CryptoJS from 'crypto-js'
 
 
 const Generator = () => {
@@ -23,17 +24,20 @@ const Generator = () => {
   const [refreshTable, setrefreshTable] = useState(false)
   const [tableOptions, setTableOptions] = useState("masuk")
   const [oldDatasClener, setIsCleanerLoading] = useState(true)
+  const [qrCodeModalShow, setQrCodeModalShow] = useState(false)
+  const [modalOptions, setModalOptions] = useState('')
 
-  let latitude = null
-  let longitude = null
-  let userCoordinate = UserGeoLocated()
 
-  if (!!userCoordinate) {
-    if (userCoordinate.coordinate !== "please enable locations service" || userCoordinate.coordinate === "please enable locations service") {
-      latitude = userCoordinate.coordinate.latitude
-      longitude = userCoordinate.coordinate.longitude
-    }
-  }
+  // let latitude = null
+  // let longitude = null
+  // let userCoordinate = UserGeoLocated()
+
+  // if (!!userCoordinate) {
+  //   if (userCoordinate.coordinate !== "please enable locations service" || userCoordinate.coordinate === "please enable locations service") {
+  //     latitude = userCoordinate.coordinate.latitude
+  //     longitude = userCoordinate.coordinate.longitude
+  //   }
+  // }
 
   // function generateRandomString(length) {
   //   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -63,12 +67,22 @@ const Generator = () => {
     setQrcodeStatus(data_option)
     setqrcodeDate(await getQrCodeData(data_option))
     const data = JSON.stringify(await getQrCodeData(data_option))
+    // Encrypt datanya
+    const secretKey = data_option;
+    const encrypted = CryptoJS.AES.encrypt(data, secretKey).toString();
 
     try {
-      const QRCOdeResponse = await QRCode.toDataURL(data)
-      setIsLoadingQRCode(false)
+      if (data_option === 'in') {
+        setModalOptions('in')
+        const QRCOdeResponse = await QRCode.toDataURL(`i${encrypted}`)
+        setQrCodeGenerated(QRCOdeResponse)
+      } else if (data_option === 'out') {
+        setModalOptions('out')
+        const QRCOdeResponse = await QRCode.toDataURL(`o${encrypted}`)
+        setQrCodeGenerated(QRCOdeResponse)
+      }
       setDisplayQRCode(true)
-      setQrCodeGenerated(QRCOdeResponse)
+      setIsLoadingQRCode(false)
     } catch (err) {
       console.log(err)
     }
@@ -140,18 +154,30 @@ const Generator = () => {
               !displayQRCode
                 ?
                 (<div className='add-item-shadow rounded-4 h5 fw-bold m-0 p-0' style={{ height: "300px", width: "300px", border: "solid 2px lightgrey", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }} alt=" " >
-                  <span className="text-muted h1 bi bi-qr-code" />
-                  <p className='text-center text-muted'>Klik tombol diatas untuk menampilkan QRCode </p>
+                  {
+                    isLoadingQRCode === true
+                      ?
+                      <><p className='text-muted h5 fw-bold'>Memuat data...</p>
+                        <Spinner size='md' variant='secondary' /></>
+                      :
+                      <><span className="text-muted h1 bi bi-qr-code" />
+                        <p className='text-center text-muted'>Klik tombol diatas untuk menampilkan QRCode </p></>
+                  }
                 </div>)
                 :
-                isLoadingQRCode === true
+                !!isLoadingQRCode
                   ?
                   (<div className='add-item-shadow rounded-4 h5 fw-bold m-0 p-0' style={{ height: "300px", width: "300px", border: "solid 2px lightgrey", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }} alt=" " >
                     <p className='text-muted'>Memuat data...</p>
                     <Spinner size='md' variant='secondary' />
                   </div>)
                   :
-                  (<img src={qrCodeGenerated} download className='add-item-shadow rounded-4' style={{ height: "300px", width: "300px", border: "solid 2px lightgrey" }} alt=" " />)
+                  (<img
+                    src={qrCodeGenerated}
+                    className='add-item-shadow rounded-4 cursor-pointer'
+                    style={{ height: "300px", width: "300px", border: "solid 2px lightgrey" }}
+                    onClick={() => setQrCodeModalShow(true)}
+                    alt=" " />)
             }
           </>
           {
@@ -221,6 +247,11 @@ const Generator = () => {
           }
         </div>
       </div>
+      <ModalQRCode
+        show={qrCodeModalShow}
+        qrcode={qrCodeGenerated}
+        options={modalOptions}
+        onHide={() => setQrCodeModalShow(false)} />
     </>
 
   )
