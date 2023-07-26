@@ -134,6 +134,7 @@ const RegisterComponent = () => {
                 &&
                 <i className='text-danger'> Email yang anda masukan telah terdaftar</i>
               }
+              <Form.Text>Harap gunakan email aktif untuk menerima pesan pemberitahuan kehadiran</Form.Text>
             </FloatingLabel>
             <FloatingLabel
               controlId="password"

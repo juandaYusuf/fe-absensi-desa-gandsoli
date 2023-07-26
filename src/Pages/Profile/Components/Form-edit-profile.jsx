@@ -33,6 +33,7 @@ function FormEditProfile(props) {
         no_telepon: e.target.no_telepon.value,
         email: e.target.email.value
       }
+      console.log(data)
       const url = API_URL().USER.UPDATE_PROFILE
       axios.put(url, data).then(() => {
         setIsUpdateProfileSuccess("success")
