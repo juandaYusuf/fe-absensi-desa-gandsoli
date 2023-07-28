@@ -25,22 +25,21 @@ const CardAttendanceRules = (props) => {
     }
 
     axios.put(url, data).then((response) => {
+      console.log(response)
       if (response.data.messages === "attendance_rules has been updated") {
         setContextRefreshDraftList(!contextRefreshDraftList)
-        if (response.data.sechedule_status === "rescheduled") {
-          setContextShowToast(true)
-          const work_start_time = response.data.work_start_time
-          const work_times_up = response.data.work_times_up
-          const late_deadline = response.data.late_deadline
-          const sechedule = response.data.sechedule
-          setcontextToastTXT({
-            title: "Perubahan penjadwalan",
-            body: `Jadwal telah di ubah , jam masuk :  ${work_start_time}, jam keluar :  ${work_times_up}, estimasi terlambat :  ${late_deadline} menit,  ${sechedule}`,
-            themes: "",
-            times: "",
-          })
-          setLoadingState(false)
-        }
+        setContextShowToast(true)
+        const work_start_time = response.data.work_start_time
+        const work_times_up = response.data.work_times_up
+        const late_deadline = response.data.late_deadline
+        const sechedule = response.data.sechedule
+        setcontextToastTXT({
+          title: "Perubahan penjadwalan",
+          body: `Jadwal telah di ubah , jam masuk :  ${work_start_time}, jam keluar :  ${work_times_up}, estimasi terlambat :  ${late_deadline} menit,  ${sechedule}`,
+          themes: "",
+          times: "",
+        })
+        setLoadingState(false)
       }
     }).catch((e) => {
       alert("Gagal update, periksa koneksi")
