@@ -1,10 +1,10 @@
 const API_URL = (apiParam,apiParam2) => {
   // const baseUrl = 'http://127.0.0.1:8000'
-  const baseUrl = 'https://bedesagandasoli-1-j0924938.deta.app'
+  // const baseUrl = 'https://bedesagandasoli-1-j0924938.deta.app'
   
   
   // VPS idcloudhost
-  // const baseUrl = 'http://103.63.25.80:8000'
+  const baseUrl = 'https://siaga23.biz.id'
   
   return {
     USER: {
