@@ -270,6 +270,17 @@ code {
   -moz-box-shadow: 5px 5px 7px -1px rgba(0, 0, 0, 0.300);
 }
 
+.card-title-attendancerule-container{
+  width: 700px;
+}
+
+
+.choese-year-container{
+  width: 800px;
+  padding: 4px;
+}
+
+
 
 /* ! ============================== RESPONSIVE ============================== */
 @media only screen and (max-width: 1196px) {
@@ -326,5 +337,42 @@ code {
   .qr-container {
     width: 100%;
   }
+
+  .profile-picture-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: center;
+    padding: 10px;
+    width: 95%;
+    margin: 10px;
+    top: 0vh;
+    height: 110%;
+    left: 0px;
+    /* overflow: hidden; */
+  }
+  .card-title-attendancerule-container{
+    width: 100%;
+  }
+
+  .profile-tab-layout{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .choese-year-container{
+    width: 100%;
+  }
+
+  .choese-year-input{
+    width: 100%;
+  }
+
+  .tabel-detail-container{
+    min-width: 1030px;
+  }
+
 
 }
