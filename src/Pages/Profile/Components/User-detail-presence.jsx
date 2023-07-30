@@ -8,6 +8,7 @@ import UserContext from '../../../Context/Context'
 const UserDetailPresence = (props) => {
 
   const currentUserIdFromVisitor = JSON.parse(localStorage.getItem('visit'))
+  const userRole = JSON.parse(localStorage.getItem('obj'))
   const [userDetail, setUserDetail] = useState({})
   const yearOptions = []
   const currentYear = new Date().getFullYear()
@@ -99,9 +100,6 @@ const UserDetailPresence = (props) => {
   }, [])
 
 
-
-
-
   return (
     <Container className="p-0 py-2 m-0">
       {
@@ -144,7 +142,7 @@ const UserDetailPresence = (props) => {
           </Row>
           <Row>
             <Col className='d-flex justify-content-center'>
-              <div style={{ width: "800px", paddingRight: "4px" }}>
+              <div className='choese-year-container'>
                 <Table borderless className='m-0'>
                   <thead>
                     <tr>
@@ -181,7 +179,7 @@ const UserDetailPresence = (props) => {
                     </tr>
                     <tr>
                       <td colSpan={2} className='text-center'>
-                        <InputGroup className='overflow-hidden p-0 mx-0' style={{ width: "800px" }}>
+                        <InputGroup className='overflow-hidden p-0 mx-0 choese-year-input'>
                           <InputGroup.Text style={{ borderRadius: '15px 0px 0px 15px' }}><span className='bi bi-calendar-month h5 m-0 p-0' /> </InputGroup.Text>
                           <Form.Select style={{ backgroundColor: "cornsilk", width: "100px", borderRadius: '0px 15px 15px 0px' }} aria-label="Default select example" onChange={((e) => { setValueOfYear(e.target.value) })}>
                             <option value={currentYear}>Pilih tahun </option>
@@ -196,11 +194,15 @@ const UserDetailPresence = (props) => {
             </Col>
           </Row>
           <Row>
-            <div className='w-100 d-flex justify-content-end'>
-              <Button className='rounded-4 ' variant='danger' onClick={() => showPDF()}>Tampilkan PDF</Button>
-            </div>
-            <Col className='mx-2 my-1 rounded-4 overflow-hidden border p-0' style={{ backgroundColor: "Ivory" }}>
-              <div className='overflow-auto'>
+            {
+              userRole.role === "KAUR Keuangan"
+              &&
+              <div className='w-100 d-flex justify-content-end'>
+                <Button className='rounded-4 ' variant='danger' onClick={() => showPDF()}>Tampilkan PDF</Button>
+              </div>
+            }
+            <Col className='mx-2 my-1 rounded-4 overflow-auto border p-0' style={{ backgroundColor: "Ivory" }}>
+              <div className='tabel-detail-container'>
                 <TableDetailPresence year={valueOfYear} user_id={currentUserIdFromVisitor.id} />
               </div>
             </Col>
