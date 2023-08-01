@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom'
 const UserManagement = () => {
 
   const navigateTo = useNavigate()
-  const [category, setCategory] = useState("semua")
   const [listOfUser, setListOfUser] = useState([])
   const [isFocus, setIsFocus] = useState(false)
   const [isLoadingDatas, setIsLoadingDatas] = useState(true)
@@ -22,7 +21,6 @@ const UserManagement = () => {
   const [updateUserRole, setUpdateUserRole] = useState({ "id": 0, "show": false })
   const [roleSelected, setRoleSelected] = useState("")
   const [userRoleLists, setuserRoleLists] = useState([])
-  const userRole = ['KAUR Keuangan', 'KAUR Perencanaan', 'KAUR TU/Umum', 'KASI Pemerintahan', 'KASI Kesejahteraan', 'KASI Pelayanan']
 
   const visitStafProfileByAdmin = (userID) => {
     localStorage.setItem('visit', JSON.stringify({ "id": userID }))
@@ -41,12 +39,6 @@ const UserManagement = () => {
       "telepon": telepon,
       "role": role
     })
-  }
-
-  const changeCategory = (options) => {
-    setCategory(options)
-    setIsFocus(false)
-    setTogleDeleteUser(false)
   }
 
   const DeleteUser = (id) => {
@@ -280,28 +272,6 @@ const UserManagement = () => {
       <h3 className='bi bi-kanban'> Manajemen pengguna</h3>
 
       <div className='d-flex my-3 justify-content-between'>
-        <div className='d-flex gap-2 p-2'>
-          <ButtonGroup className='add-item-shadow-success'>
-            <Button
-              variant={`${category === "staf" && isFocus === false ? "success" : "outline-success"}`}
-              style={{ width: "120px", borderRadius: '15px 0px 0px 15px' }}
-              onClick={() => { changeCategory("staf") }}>Staf
-            </Button>
-
-            <Button
-              variant={`${category === "admin" && isFocus === false ? "success" : "outline-success"}`}
-              style={{ width: "120px" }}
-              onClick={() => { changeCategory("admin") }}>Admin
-            </Button>
-
-            <Button
-              variant={`${category === "semua" || isFocus === true ? "success" : "outline-success"}`}
-              style={{ width: "120px", borderRadius: '0px 15px 15px 0px' }}
-              onClick={() => { changeCategory("semua") }}>semua
-            </Button>
-          </ButtonGroup>
-        </div>
-
         <div>
           <Form.Group
             className="mb-3 add-item-shadow rounded-4"
@@ -338,17 +308,11 @@ const UserManagement = () => {
         </thead>
         <tbody>
           {
-            category !== "semua" && isFocus === false
+            isFocus === true
               ?
-              listOfUser.filter((items => items.role_id === category)).map((result, i) => {
-                return (tableBodyComponent(result, i))
-              })
+              (searchBoxFocused())
               :
-              isFocus === true
-                ?
-                (searchBoxFocused())
-                :
-                (searchResult())
+              (searchResult())
           }
         </tbody>
       </Table>

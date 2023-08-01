@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { Fragment, useEffect, useState } from 'react'
-import { Alert, Button, ButtonGroup, Card, Collapse, Form, Table } from 'react-bootstrap'
+import { Alert, Button, ButtonGroup, Card, Collapse, Form, Table, Spinner } from 'react-bootstrap'
 import API_URL from '../../../API/API_URL'
 import { BottomToTop, TopToBottom } from '../../../Page-transition/ComponentTransitions'
 import ProgresBarLoadingVisual from '../../../Global-components/Progres-bar-loading-visual'
@@ -14,13 +14,21 @@ const Permission = () => {
   const [selectedOptions, setSelectedOptions] = useState("today")
   const [isUserPermissionDatasLoading, setIsUserPermissionDatasLoading] = useState(true)
   const [userData, setuserData] = useState([])
-  const [isPermissioDatasPosted, setIsPermissioDatasPosted] = useState({ "is_on_permission_today": false, "is_on_personal_leave": false, "full_name": "", "created_at": "" })
   const [isFormShow, setIsFormShow] = useState(true)
+  const [isSubmissionFormLoading, setIsSubmissionFormLoading] = useState(false)
+  const [isPermissioDatasPosted, setIsPermissioDatasPosted] = useState({
+    "is_permission_success": false,
+    "is_on_permission_today": false,
+    "is_on_personal_leave": false,
+    "full_name": "",
+    "created_at": ""
+  })
 
 
 
   const backToForm = () => {
     setIsPermissioDatasPosted({
+      "is_permission_success": false,
       "is_on_permission_today": false,
       "is_on_personal_leave": false,
       "full_name": "",
@@ -38,9 +46,13 @@ const Permission = () => {
     }
     axios.post(url, data).then((response) => {
       setIsPermissioDatasPosted({
-
+        "is_permission_success": true,
+        "is_on_permission_today": false,
+        "is_on_personal_leave": false,
+        "full_name": `${response.data.first_name} ${response.data.last_name}`,
+        "created_at": response.data.created_at
       })
-      console.log(response.data)
+      setIsSubmissionFormLoading(false)
     }).catch((err) => {
       if (err.response.status === 409) {
         if (err.response.data.detail.message === "user has been permission") {
@@ -50,6 +62,7 @@ const Permission = () => {
             "full_name": err.response.data.detail.full_name,
             "created_at": err.response.data.detail.created_at
           })
+          setIsSubmissionFormLoading(false)
         }
 
         if (err.response.data.detail.message === "user is on paid leave") {
@@ -59,12 +72,14 @@ const Permission = () => {
             "full_name": err.response.data.detail.full_name,
             "created_at": err.response.data.detail.end_date
           })
+          setIsSubmissionFormLoading(false)
         }
       }
     })
   }
 
   const handleSubmit = (e) => {
+    setIsSubmissionFormLoading(true)
     const form = e.currentTarget
     if (form.checkValidity() === false) {
       if (selectOptionValues === "default") {
@@ -99,7 +114,7 @@ const Permission = () => {
       setIsUserPermissionDatasLoading(false)
     })
 
-  }, [selectedOptions])
+  }, [selectedOptions, isPermissioDatasPosted.is_permission_success])
 
 
 
@@ -127,57 +142,75 @@ const Permission = () => {
                 {
                   isPermissioDatasPosted.is_on_permission_today === false && isPermissioDatasPosted.is_on_personal_leave === false
                     ?
-                    <BottomToTop>
-                      <Form.Group md="4" controlId="user_name">
-                        <Form.Label> <span className='bi bi-person' /> Pengaju</Form.Label>
-                        <Form.Select
-                          className={`add-item-shadow rounded-4 ${selectOptionValues === "default" && 'text-muted'}`}
-                          onChange={(e) => setselectOptionValues(e.target.value)}
-                          defaultValue="default"
-                          value={selectOptionValues}
-                          isInvalid={selectOptionValues === "default" ? true : false}>
-                          <option value='default' > Nama pengaju izin</option>
+                    isPermissioDatasPosted.is_permission_success === true
+                      ?
+                      <TopToBottom>
+                        <Alert className='rounded-4 border add-item-shadow' variant='success' style={{ marginTop: "34px" }}>
+                          <Alert.Heading> Pengajuan izin berhasil</Alert.Heading>
+                          <p>Pengajuan izin pada tangal <b>"{isPermissioDatasPosted.created_at}"</b> untuk <b>"{isPermissioDatasPosted.full_name}"</b> berhasil.</p>
+                          <Button className='add-item-shadow w-100 rounded-4' variant='success' onClick={() => backToForm()}>Kembali ke form</Button>
+                        </Alert>
+                      </TopToBottom>
+                      :
+                      <BottomToTop>
+                        <Form.Group md="4" controlId="user_name">
+                          <Form.Label> <span className='bi bi-person' /> Pengaju</Form.Label>
+                          <Form.Select
+                            className={`add-item-shadow rounded-4 ${selectOptionValues === "default" && 'text-muted'}`}
+                            onChange={(e) => setselectOptionValues(e.target.value)}
+                            defaultValue="default"
+                            value={selectOptionValues}
+                            isInvalid={selectOptionValues === "default" ? true : false}>
+                            <option value='default' > Nama pengaju izin</option>
+                            {
+                              userData.map((result, i) => {
+                                return (
+                                  <Fragment key={i}>
+                                    <option value={result.id}>{result.first_name} {result.last_name}</option>
+                                  </Fragment>
+                                )
+                              })
+                            }
+                          </Form.Select>
                           {
-                            userData.map((result, i) => {
-                              return (
-                                <Fragment key={i}>
-                                  <option value={result.id}>{result.first_name} {result.last_name}</option>
-                                </Fragment>
-                              )
-                            })
+                            selectOptionValues === "default"
+                            &&
+                            <Form.Text className='text-danger'>Nama pengaju tidak boleh kosong</Form.Text>
                           }
-                        </Form.Select>
-                        {
-                          selectOptionValues === "default"
-                          &&
-                          <Form.Text className='text-danger'>Nama pengaju tidak boleh kosong</Form.Text>
-                        }
-                      </Form.Group>
-                      <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                        <Form.Group md="4" controlId="date_submission" className='mt-3'>
-                          <Form.Label> <span className='bi bi-calendar2-check' /> Tanggal izin</Form.Label>
-                          <Form.Control
-                            className='rounded-4 add-item-shadow'
-                            required
-                            type="date"
-                          />
                         </Form.Group>
-                        <Form.Group md="4" controlId="reason" className='mt-3'>
-                          <Form.Label> <span className='bi bi-journal-text' /> Deskripsi</Form.Label>
-                          <Form.Control
-                            className='rounded-4 add-item-shadow'
-                            required
-                            type="text"
-                            placeholder="Tujuan atau alasan izin"
-                          />
-                          <Button className='bi bi-arrow-up-left-circle rounded-4 mt-4 add-item-shadow-success w-100' type="submit" variant='success'> Simpan pengajuan izin</Button>
-                        </Form.Group>
-                      </Form>
-                    </BottomToTop>
+                        <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                          <Form.Group md="4" controlId="date_submission" className='mt-3'>
+                            <Form.Label> <span className='bi bi-calendar2-check' /> Tanggal izin</Form.Label>
+                            <Form.Control
+                              className='rounded-4 add-item-shadow'
+                              required
+                              type="date"
+                            />
+                          </Form.Group>
+                          <Form.Group md="4" controlId="reason" className='mt-3'>
+                            <Form.Label> <span className='bi bi-journal-text' /> Deskripsi</Form.Label>
+                            <Form.Control
+                              className='rounded-4 add-item-shadow'
+                              required
+                              type="text"
+                              placeholder="Tujuan atau alasan izin"
+                            />
+                            <Button className='rounded-4 mt-4 add-item-shadow-success w-100' type="submit" variant='success' disabled={isSubmissionFormLoading}>
+                              {
+                                !!isSubmissionFormLoading
+                                  ?
+                                  (<><Spinner size='sm' /> <span>Menyimpan pengajuan izin</span></>)
+                                  :
+                                  (<span className='bi bi-arrow-up-left-circle mx-2' > Simpan pengajuan izin</span>)
+                              }
+                            </Button>
+                          </Form.Group>
+                        </Form>
+                      </BottomToTop>
                     :
                     <TopToBottom>
-                      <Alert className='rounded-4 border' variant='danger' style={{ marginTop: "34px" }}>
-                        <Alert.Heading>Tidak dapat di proses</Alert.Heading>
+                      <Alert className='rounded-4 border add-item-shadow' variant={isPermissioDatasPosted.is_permission_success === true ? 'success' : 'danger'} style={{ marginTop: "34px" }}>
+                        <Alert.Heading> {isPermissioDatasPosted.is_permission_success === true ? "Pengajuan izin berhasil" : "Tidak dapat di proses"}</Alert.Heading>
                         {
                           isPermissioDatasPosted.is_on_permission_today === true
                           &&
@@ -189,7 +222,7 @@ const Permission = () => {
                           &&
                           <p> <b>"{isPermissioDatasPosted.full_name}"</b> tidak dapat izin karena masih dalam jangka waktu cuti, tanggal akhir cuti <b className='bi bi-arrow-right'> {isPermissioDatasPosted.created_at}</b>. Harap jangan melakukan pengajuan izin jika staf desa sedang dalam masa cuti. </p>
                         }
-                        <Button className='add-item-shadow-danger w-100 rounded-4' variant='danger' onClick={() => backToForm()}>Kembali ke form</Button>
+                        <Button className='add-item-shadow w-100 rounded-4' variant='danger' onClick={() => backToForm()}>Kembali ke form</Button>
                       </Alert>
                     </TopToBottom>
                 }
@@ -212,7 +245,7 @@ const Permission = () => {
                 </BottomToTop>
             }
           </div>
-          <ButtonGroup className='w-100 mt-4 p-0'>
+          <ButtonGroup className='w-100 mt-4 p-0 add-item-shadow rounded-4'>
             <Button
               className='add-item-shadow-success p-1'
               variant={selectedOptions === "today" ? "success" : "outline-success"}
@@ -228,7 +261,7 @@ const Permission = () => {
               Semua
             </Button>
           </ButtonGroup>
-          <div className='rounded-4 overflow-hidden my-3' style={{ minHeight: "450px", backgroundColor: "rgba(157, 157, 157, 0.11)" }}>
+          <div className='rounded-4 add-item-shadow overflow-hidden my-3' style={{ minHeight: "450px", backgroundColor: "rgba(157, 157, 157, 0.11)" }}>
             <div className='h-100' style={{ overflowY: "auto" }}>
               <Table borderless hover={userPermissionDatas.length > 0 ? true : false}>
                 <thead style={{ position: "sticky", top: "0px" }}>
@@ -298,8 +331,8 @@ const Permission = () => {
           </div>
         </div>
 
-      </div>
-    </Card>
+      </div >
+    </Card >
   )
 }
 
