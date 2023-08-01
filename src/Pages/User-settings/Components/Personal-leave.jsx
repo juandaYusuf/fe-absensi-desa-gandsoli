@@ -89,7 +89,7 @@ const PersonalLeave = () => {
   const tableBodyComponent = () => {
     return personalLeaveDatas.map((result, i) => {
       return (<tr key={i}>
-        <td className='text-center align-middle'>{i + 1}</td>
+        <td >{i + 1}</td>
         <td>
           {
             !!result.profile_picture
@@ -104,16 +104,16 @@ const PersonalLeave = () => {
               </div>)
           }
         </td>
-        <td className='align-middle'>{result.first_name} {result.last_name}</td>
-        <td className='align-middle'>{result.email}</td>
-        <td className='align-middle'>{result.no_telepon}</td>
-        <td className='m-0 py-2 p-0 align-middle'>
+        <td>{result.first_name} {result.last_name}</td>
+        <td>{result.email}</td>
+        <td>{result.no_telepon}</td>
+        <td className='m-0 py-2 p-0'>
           <div className='d-flex align-items-center'>
             <div className='w-50 text-center d-flex align-items-center px-2 fw-bold' style={{ backgroundColor: "rgba(39, 245, 56, 0.15)" }}>{result.start_date}</div>
             <div className='w-50 text-center d-flex align-items-center px-2 fw-bold' style={{ backgroundColor: "rgba(241, 105, 0, 0.15)" }}>{result.end_date}</div>
           </div>
         </td>
-        <td className='align-middle'>{result.descriptions}</td>
+        <td>{result.descriptions}</td>
       </tr>)
     })
   }
@@ -215,7 +215,7 @@ const PersonalLeave = () => {
                     </>
                     :
                     <TopToBottom>
-                      <Alert className='rounded-4 border mt-4' variant={`${submissionsPostedData.is_on_permission === true ? 'danger' : submissionsPostedData.is_on_leave === true ? 'warning' : 'success'}`}>
+                      <Alert className='rounded-4 border mt-4' variant={`${submissionsPostedData.is_on_permission === true ? 'danger' : submissionsPostedData.is_on_leave === true ? 'warning' : 'success'}`} style={{width: "380px"}}>
                         <Alert.Heading>{submissionsPostedData.is_on_permission === true || submissionsPostedData.is_on_leave === true ? "Tidak dapat diproses" : "Berhasil"}</Alert.Heading>
                         {
                           submissionsPostedData.is_on_permission === true
