@@ -55,7 +55,7 @@ const DashboardContent = () => {
           </TopToBottom>
           <br />
           <Card className={`${ThemingCangerFunc().gradient} add-item-shadow rounded-4 p-0 height-tabel-container overflow-hidden`} style={ThemingCangerFunc("white").style}>
-            <h3 className='m-3 mb-2'>Preview Absensi</h3>
+            <h3 className='m-3 mb-2'>Preview Kehadiran</h3>
 
             <div className='mx-3 mb-2 d-flex justify-content-between'>
               <div>
