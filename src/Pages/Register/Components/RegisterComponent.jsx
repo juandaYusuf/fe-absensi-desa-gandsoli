@@ -15,7 +15,7 @@ const RegisterComponent = () => {
   const [whoIsRegistered, setWhoIsRegistered] = useState({})
   const [validated, setValidated] = useState(false)
   const salt = bcrypt.genSaltSync(10)
-  const userRole = ['KAUR Keuangan', 'KAUR Perencanaan', 'KAUR TU/Umum', 'KASI Pemerintahan', 'KASI Kesejahteraan', 'KASI Pelayanan']
+  const userRole = ['KAUR Keuangan', 'KAUR Perencanaan', 'KAUR TU/Umum', 'KASI Pemerintahan', 'KASI Kesejahteraan', 'KASI Pelayanan', 'Sekretaris Desa']
 
 
 

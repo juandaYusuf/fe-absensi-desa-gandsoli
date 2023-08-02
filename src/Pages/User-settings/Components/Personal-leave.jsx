@@ -260,7 +260,7 @@ const PersonalLeave = () => {
         <div className='w-100 px-3'>
           <p className='w-100 text-center text-muted'>Daftar staf desa yang sedang dalam masa cuti</p>
           <RightToLeft>
-            <div className='rounded-4 mb-3' style={{ minHeight: "450px", backgroundColor: "rgba(157, 157, 157, 0.11)", overflow: "hidden" }}>
+            <div className='rounded-4 mb-3 add-item-shadow' style={{ minHeight: "450px", backgroundColor: "rgba(157, 157, 157, 0.11)", overflow: "hidden" }}>
               <Table borderless hover={personalLeaveDatas.length > 0 ? true : false}>
                 <thead className='fw-bold' style={{ position: "sticky", top: "0px" }}>
                   <tr>
