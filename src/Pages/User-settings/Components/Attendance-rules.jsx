@@ -4,6 +4,7 @@ import CardAttendanceRules from '../../../Global-components/Card-attendance-rule
 import axios from 'axios'
 import API_URL from '../../../API/API_URL'
 import UserContext from '../../../Context/Context'
+import ProgresBarLoadingVisual from '../../../Global-components/Progres-bar-loading-visual'
 
 
 
@@ -15,6 +16,7 @@ const AttendanceRules = () => {
   const [lengthOfTitleChar, setLengthOfTitleChar] = useState(0)
   const [alert, setAlert] = useState(false)
   const [showAlerIfItemNoOneEnable, setshowAlerIfItemNoOneEnable] = useState(false)
+  const [isAttendanceRulesLoading, setIsAttendanceRulesLoading] = useState(true)
   const [showTableInItemNoOneEnableAlert, setshowTableInItemNoOneEnableAlert] = useState(false)
   const [isFormShow, setIsFormShow] = useState(true)
   // const hasTrueValue = data.some(item => item.usage === true);
@@ -57,6 +59,7 @@ const AttendanceRules = () => {
       const url = API_URL().ATTENDANCE_RULES.SHOW_ALL_ATTENDANCE_RULES
       axios.get(url).then((response) => {
         setAttendanceRulesDatas(response.data)
+        setIsAttendanceRulesLoading(false)
       })
     }
 
@@ -73,7 +76,7 @@ const AttendanceRules = () => {
     <div className='p-3 rounded-4'>
       <h3 className='bi bi-file-earmark-ruled'> Aturan absensi</h3>
       <div className="d-flex">
-        <Button className={`p-1 me-2 add-item-shadow ${isFormShow ? 'bi bi-caret-left-fill': 'bi bi-caret-right-fill'}`} variant='dark' style={{height: "40px"}} onClick={() => setIsFormShow(prev => !prev)}/>
+        <Button className={`p-1 me-2 add-item-shadow ${isFormShow ? 'bi bi-caret-left-fill' : 'bi bi-caret-right-fill'}`} variant='dark' style={{ height: "40px" }} onClick={() => setIsFormShow(prev => !prev)} />
         <div className='d-flex flex-wrap gap-4'>
           <Collapse in={isFormShow} dimension="width">
             <div id="example-collapse-text" className='overflow-hidden'>
@@ -198,6 +201,15 @@ const AttendanceRules = () => {
             })
           }
         </div>
+        {
+          !!isAttendanceRulesLoading
+          &&
+          <div className='flex-column d-flex justify-content-center align-items-center' style={{ width: "100%" }}>
+            <div className='w-100 p-3'>
+              <ProgresBarLoadingVisual titleTxt={'Memuat data aturan absensi...'} />
+            </div>
+          </div>
+        }
       </div>
     </div >
   )
