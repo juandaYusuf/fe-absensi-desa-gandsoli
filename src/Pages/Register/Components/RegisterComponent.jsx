@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Alert, Button, Container, FloatingLabel, Form, Spinner } from 'react-bootstrap'
 import API_URL from '../../../API/API_URL'
 import bcrypt from 'bcryptjs'
@@ -15,8 +15,7 @@ const RegisterComponent = () => {
   const [whoIsRegistered, setWhoIsRegistered] = useState({})
   const [validated, setValidated] = useState(false)
   const salt = bcrypt.genSaltSync(10)
-  const userRole = ['KAUR Keuangan', 'KAUR Perencanaan', 'KAUR TU/Umum', 'KASI Pemerintahan', 'KASI Kesejahteraan', 'KASI Pelayanan', 'Sekretaris Desa']
-
+  const [userRole, setUserRole] = useState([])
 
 
   const register = (e) => {
@@ -63,6 +62,13 @@ const RegisterComponent = () => {
     }
     setValidated(true)
   }
+
+  useEffect(() => {
+    // Show all user role
+    const url = API_URL().USER_ROLE.SHOW_USER_ROLES
+    axios.get(url).then(response => setUserRole(response.data))
+  }, [])
+  
 
   return (
     <Container className={` ${ThemingCangerFunc().gradient} add-box-shadow p-3 rounded-4 overflow-hidden d-flex justify-content-center`} style={ThemingCangerFunc("white").style} >
@@ -163,8 +169,9 @@ const RegisterComponent = () => {
                 <option>Pilih bagian</option>
                 {
                   userRole.map((result, i) => {
+                    // console.log("==> ", userRole)
                     return (
-                      <option key={i} value={result}>{result}</option>
+                      <option key={i} value={result.role}>{result.role}</option>
                     )
                   })
                 }

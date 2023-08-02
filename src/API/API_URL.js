@@ -59,6 +59,9 @@ const API_URL = (apiParam,apiParam2) => {
     USER_PERMISSION : {
       ADD_SUBMISSION_PERMISSION : `${baseUrl}/api/user-permission/submission`,
       GET_PERMISSION_DATAS : `${baseUrl}/api/user-permission/show-all-user-permission/${apiParam}`,
+    },
+    USER_ROLE : {
+      SHOW_USER_ROLES : `${baseUrl}/api/user-role/show-all-user-role`
     }
   }
 }
