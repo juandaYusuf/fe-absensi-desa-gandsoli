@@ -94,7 +94,7 @@ const LoginCard = () => {
       }
     }).catch((err) => {
       if (!err.response) {
-        console.log(err)
+        // console.log(err)
         setIsServerErr(true)
       } else if (err.response.status === 404) {
         setIsLoginFailed(true)

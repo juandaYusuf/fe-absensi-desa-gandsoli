@@ -44,6 +44,8 @@ const TableScannedIn = (props) => {
             </tr>
             :
             scannedOutDetail.map((result, i) => {
+              const hours_in = result.created_at
+              const split_time_from_date = hours_in.replace('T',' ')
               return (<tr key={i}>
                 <td className='align-middle'>{i + 1}</td>
                 <td className='align-middle'>
@@ -61,7 +63,7 @@ const TableScannedIn = (props) => {
                   }
                 </td>
                 <td className='align-middle'> {result.first_name} {result.last_name} </td>
-                <td className='align-middle'> {result.created_at} </td>
+                <td className='align-middle'> {split_time_from_date} </td>
                 <td className='align-middle'>{result.descriptions}</td>
               </tr>)
             })

@@ -37,7 +37,6 @@ const QRScannerMonitoring = () => {
     }
 
     axios.post(url, datas).then((response) => {
-      console.log(response)
       if (response.data.message === "thanks for scanned in") {
         setStartScan(false)
         setIsDataValidated({

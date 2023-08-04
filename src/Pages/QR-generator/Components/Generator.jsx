@@ -84,7 +84,7 @@ const Generator = () => {
       setDisplayQRCode(true)
       setIsLoadingQRCode(false)
     } catch (err) {
-      console.log(err)
+      // console.log(err)
     }
   }
 

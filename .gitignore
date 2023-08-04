@@ -24,4 +24,4 @@ yarn-error.log*
 
 
 # cstm
-src/API/API_URL.js
+/src/API/API_URL.js
