@@ -25,7 +25,7 @@ const CardAttendanceRules = (props) => {
     }
 
     axios.put(url, data).then((response) => {
-      console.log(response)
+      // console.log(response)
       if (response.data.messages === "attendance_rules has been updated") {
         setContextRefreshDraftList(!contextRefreshDraftList)
         setContextShowToast(true)

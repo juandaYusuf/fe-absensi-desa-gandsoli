@@ -33,6 +33,7 @@ const TableScannedOut = (props) => {
           <th className='text-muted'>Foto</th>
           <th className='text-muted'>Nama</th>
           <th className='text-muted'>Jam keluar</th>
+          <th className='text-muted'>Total jam kerja</th>
           <th className='text-muted' style={{ width: "200px" }}>Keterangan</th>
         </tr>
       </thead>
@@ -41,10 +42,12 @@ const TableScannedOut = (props) => {
           !!loading
             ?
             <tr>
-              <td colSpan={5}><ProgresBarLoadingVisual /></td>
+              <td colSpan={6}><ProgresBarLoadingVisual /></td>
             </tr>
             :
             scannedOutDetail.map((result, i) => {
+              const hours_in = result.created_at
+              const split_time_from_date = hours_in.replace('T',' ')
               return (<tr key={i}>
                 <td className='align-middle'>{i + 1}</td>
                 <td className='align-middle'>
@@ -62,8 +65,9 @@ const TableScannedOut = (props) => {
                   }
                 </td>
                 <td className='align-middle'> {result.first_name} {result.last_name} </td>
-                <td className='align-middle'> {result.created_at} </td>
-                <td className='align-middle'>{result.descriptions}</td>
+                <td className='align-middle'> {split_time_from_date} </td>
+                <td className='align-middle'> {result.total} </td>
+                <td className='align-middle'> {result.descriptions} </td>
               </tr>)
             })
         }
