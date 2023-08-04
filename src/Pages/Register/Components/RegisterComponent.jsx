@@ -27,7 +27,6 @@ const RegisterComponent = () => {
       e.preventDefault()
       setIsLoading(true)
       const encpass = bcrypt.hashSync(e.target.password.value, salt)
-      console.log(encpass)
       let data = {
         first_name: e.target.first_name.value,
         last_name: e.target.last_name.value,
@@ -50,7 +49,6 @@ const RegisterComponent = () => {
         e.target.reset()
       }).catch((err) => {
         if (!err.response) {
-          console.log(err)
           setIsServerErr(true)
         } else if (err.response.status === 404) {
           setIsLoading(false)
@@ -68,7 +66,7 @@ const RegisterComponent = () => {
     const url = API_URL().USER_ROLE.SHOW_USER_ROLES
     axios.get(url).then(response => setUserRole(response.data))
   }, [])
-  
+
 
   return (
     <Container className={` ${ThemingCangerFunc().gradient} add-box-shadow p-3 rounded-4 overflow-hidden d-flex justify-content-center`} style={ThemingCangerFunc("white").style} >
@@ -111,24 +109,33 @@ const RegisterComponent = () => {
               controlId="first_name"
               className="mb-3">
               <Form.Control className='rounded-4' type="text" placeholder="text" required />
+              <Form.Control.Feedback type='invalid'>
+                Tidak boleh kosong
+              </Form.Control.Feedback>
             </FloatingLabel>
             <FloatingLabel
               controlId="last_name"
-              label="Nama akhir"
+              label="Nama akhir (Opsional)"
               className="mb-3">
-              <Form.Control className='rounded-4' type="text" placeholder="text" required />
+              <Form.Control className='rounded-4' defaultValue={" "} type="text" placeholder="text" />
             </FloatingLabel>
             <FloatingLabel
               controlId="alamat"
               label="Alamat"
               className="mb-3">
               <Form.Control className='rounded-4' type="text" placeholder="text" required />
+              <Form.Control.Feedback type='invalid'>
+                Tidak boleh kosong
+              </Form.Control.Feedback>
             </FloatingLabel>
             <FloatingLabel
               controlId="no_telepon"
               label="No Telepon"
               className="mb-3">
-              <Form.Control className='rounded-4' type="text" placeholder="text" required />
+              <Form.Control className='rounded-4' type="number" inputMode='numeric' placeholder="number" required />
+              <Form.Control.Feedback type='invalid'>
+                No Telepon Harus berupa nomor dan tidak boleh kosong
+              </Form.Control.Feedback>
             </FloatingLabel>
             <FloatingLabel
               controlId="email"
