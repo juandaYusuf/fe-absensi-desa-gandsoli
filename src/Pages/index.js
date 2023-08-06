@@ -7,5 +7,9 @@ import ScannerManager from './Scanner-manager'
 import RegistarsiAdmin from './Register'
 import Profile from './Profile'
 import UserSettings from './User-settings'
+import Attendance from './Attendance'
+// import UserPermission from './UserPermission'
+// import UserSettings from './User-settings'
 
-export {React, Login, Dashboard, NavigationsBar, ScannerManager, QRCodeGenerator, RegistarsiAdmin, Profile, UserSettings }
+
+export {React, Login, Dashboard, NavigationsBar, ScannerManager, QRCodeGenerator, RegistarsiAdmin, Profile, UserSettings, Attendance}
