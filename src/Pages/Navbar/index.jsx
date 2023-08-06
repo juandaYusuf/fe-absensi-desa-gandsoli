@@ -155,7 +155,7 @@ const NavigationsBar = ({ children }) => {
               <div className='d-flex gap-4 align-items-center'>
                 <div className='d-flex gap-3'>
                   {
-                    localData === "KAUR Keuangan" 
+                    localData === "KAUR Keuangan"
                     &&
                     <>
                       <Link to="/dashboard" className={`m-0 fw-bold bi bi-tv cursor-pointer text-dark text-decoration-none ${currentUrl === "/dashboard" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Dashboard</Link>
@@ -167,7 +167,8 @@ const NavigationsBar = ({ children }) => {
                     localData === "KAUR Keuangan"
                       ?
                       <>
-                        <Link to="/qr-generator" className={`m-0 fw-bold bi bi-qr-code cursor-pointer text-dark text-decoration-none ${currentUrl === "/qr-generator" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> QR Generator</Link>
+                        {/* <Link to="/qr-generator" className={`m-0 fw-bold bi bi-qr-code cursor-pointer text-dark text-decoration-none ${currentUrl === "/qr-generator" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> QR Generator</Link> */}
+                        <Link to="/absensi" className={`m-0 fw-bold bi bi-journal-medical cursor-pointer text-dark text-decoration-none ${currentUrl === "/absensi" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Absensi</Link>
                         <Link to="/setting" className={`m-0 fw-bold bi bi-gear cursor-pointer text-dark text-decoration-none ${currentUrl === "/setting" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Pengaturan</Link>
                       </>
                       :
@@ -175,7 +176,6 @@ const NavigationsBar = ({ children }) => {
                         <div className={`m-0 fw-bold bi bi-person cursor-pointer text-dark text-decoration-none ${currentUrl === "/profile" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => goToProfile()}> Profile</div>
                         <Button className='rounded-4 mx-3' variant='outline-danger' onClick={() => logOut()}> Log Out</Button>
                       </>
-
                   }
                 </div>
               </div>
@@ -191,6 +191,7 @@ const NavigationsBar = ({ children }) => {
               />
             </div>
           </section>
+
           {/*! MOBILE MODE NAVBAR */}
           <section className='mobile-nav'>
             <div className='d-flex flex-column'>
@@ -201,8 +202,8 @@ const NavigationsBar = ({ children }) => {
               </div>
               <div className='d-flex gap-4 align-items-center'>
                 <div className={(isNavbarCollapse === true) ? "mobile-link w-100" : "mobile-link-collapse w-100"}>
-                {
-                    localData === "KAUR Keuangan" 
+                  {
+                    localData === "KAUR Keuangan"
                     &&
                     <>
                       <Link to="/dashboard" className={`m-0 fw-bold bi bi-tv cursor-pointer text-dark text-decoration-none ${currentUrl === "/dashboard" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Dashboard</Link>
@@ -214,7 +215,8 @@ const NavigationsBar = ({ children }) => {
                     localData === "KAUR Keuangan"
                       ?
                       <>
-                        <Link to="/qr-generator" className={`m-0 fw-bold bi bi-qr-code cursor-pointer text-dark text-decoration-none ${currentUrl === "/qr-generator" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> QR Generator</Link>
+                        {/* <Link to="/qr-generator" className={`m-0 fw-bold bi bi-qr-code cursor-pointer text-dark text-decoration-none ${currentUrl === "/qr-generator" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> QR Generator</Link> */}
+                        <Link to="/absensi" className={`m-0 fw-bold bi bi-journal-medical cursor-pointer text-dark text-decoration-none ${currentUrl === "/absensi" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Absensi</Link>
                         <Link to="/setting" className={`m-0 fw-bold bi bi-gear cursor-pointer text-dark text-decoration-none ${currentUrl === "/setting" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Pengaturan</Link>
                       </>
                       :

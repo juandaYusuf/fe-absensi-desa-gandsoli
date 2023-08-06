@@ -4,13 +4,13 @@ import { Alert, Button, Form, InputGroup, Spinner, Table } from 'react-bootstrap
 import { BottomToTop, LeftToRight, RightToLeft, TopToBottom } from '../../../Page-transition/ComponentTransitions'
 // import UserGeoLocated from './GeoLocated'
 import axios from 'axios'
-import API_URL from '../../../API/API_URL'
 import { useNavigate } from 'react-router-dom'
 import TableScannedIn from './Table-scanned-in'
 import TableScannedOut from './Table-scanned-out'
 import ProgresBarLoadingVisual from '../../../Global-components/Progres-bar-loading-visual'
 import ModalQRCode from './ModalQRCode'
 import CryptoJS from 'crypto-js'
+import API_URL from '../../../API/API_URL'
 
 
 const Generator = () => {
@@ -69,10 +69,8 @@ const Generator = () => {
   const whichAttendanceRuleIsActivate = async () => {
     const url = API_URL().ATTENDANCE_RULES.SHOW_ALL_ATTENDANCE_RULES
     const timesUp = await axios.get(url)
-    const result = timesUp.data.map(resl => {
-      if (resl.usage === true) {
-        return resl.work_times_up
-      }
+    const result = timesUp.data.filter(items => items.usage === true).map(resl => {
+      return resl.work_times_up
     })
     return result[0]
   }
@@ -90,8 +88,6 @@ const Generator = () => {
     // Encrypt datanya
     const secretKey = data_option;
     const encrypted = CryptoJS.AES.encrypt(data, secretKey).toString();
-    // console.log(typeOf(await whichAttendanceRuleIsActivate()))
-
     // get waktu akhir kerja untuk dari attendace rule untuk validasi membuka qrcode sejam sebelum waktu berakhir kerja 
     const openQrCodeAt = await whichAttendanceRuleIsActivate()
     const intOpenQrCodeAt = parseInt(openQrCodeAt.split(':')[0])
@@ -103,13 +99,14 @@ const Generator = () => {
         const QRCOdeResponse = await QRCode.toDataURL(`i${encrypted}`)
         setQrCodeGenerated(QRCOdeResponse)
       } else if (data_option === 'out') {
-        setModalOptions('out')
+        const QRCOdeResponse = await QRCode.toDataURL(`o${encrypted}`)
+        // setQrCodeGenerated(intOpenQrCodeAt)
         const currentHourse = parseInt(hours)
-        if ( currentHourse >= intOpenQrCodeAt - 1) {
+        if (currentHourse >= intOpenQrCodeAt - 1) {
           const QRCOdeResponse = await QRCode.toDataURL(`o${encrypted}`)
           setQrCodeGenerated(QRCOdeResponse)
-        }
-        else {
+          setModalOptions('out')
+        } else {
           setQrCodeGenerated("")
         }
       }

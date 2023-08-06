@@ -270,17 +270,31 @@ code {
   -moz-box-shadow: 5px 5px 7px -1px rgba(0, 0, 0, 0.300);
 }
 
-.card-title-attendancerule-container{
+.card-title-attendancerule-container {
   width: 700px;
 }
 
 
-.choese-year-container{
+.choese-year-container {
   width: 800px;
   padding: 4px;
 }
 
 
+
+.card-menu-gradient {
+  background: rgb(255, 255, 255);
+}
+
+.card-menu-gradient:hover {
+  background: rgb(255, 246, 250);
+  background: linear-gradient(18deg, rgba(255, 246, 250, 1) 0%, rgba(235, 244, 255, 1) 100%);
+}
+
+.default-card-menu-gradient {
+  background: rgb(255, 246, 250);
+  background: linear-gradient(18deg, rgba(255, 246, 250, 1) 0%, rgba(235, 244, 255, 1) 100%);
+}
 
 /* ! ============================== RESPONSIVE ============================== */
 @media only screen and (max-width: 1196px) {
@@ -351,26 +365,27 @@ code {
     left: 0px;
     /* overflow: hidden; */
   }
-  .card-title-attendancerule-container{
+
+  .card-title-attendancerule-container {
     width: 100%;
   }
 
-  .profile-tab-layout{
+  .profile-tab-layout {
     display: flex;
     flex-direction: column;
     width: 100%;
     justify-content: center;
   }
 
-  .choese-year-container{
+  .choese-year-container {
     width: 100%;
   }
 
-  .choese-year-input{
+  .choese-year-input {
     width: 100%;
   }
 
-  .tabel-detail-container{
+  .tabel-detail-container {
     min-width: 1030px;
   }
 
