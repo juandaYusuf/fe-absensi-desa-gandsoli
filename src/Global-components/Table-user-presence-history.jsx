@@ -130,6 +130,8 @@ const TableUserPresenceHistory = ({ year, month }) => {
                                     icons = "bi bi-x-circle-fill text-danger fs-4"
                                   } else if (presence_result.status === "cuti") {
                                     icons = " bi bi-door-open-fill text-success fs-4"
+                                  } else if (presence_result.status === "sakit") {
+                                    icons = " bi bi-prescription2 text-warning fs-4"
                                   }
                                   return (
                                     presence_result.date === parseInt(valueOfDay_result) && presence_result.month === 1 + month && presence_result.year === parseInt(year)

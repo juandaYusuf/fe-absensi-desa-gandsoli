@@ -66,6 +66,10 @@ const API_URL = (apiParam, apiParam2) => {
     },
     USER_VERIFICATIONS: {
       VERIFY_CODE: `${baseUrl}/api/verifications/single/user-verification-code/`
+    },
+    FOR_USER_SICK : {
+      SHOW_ALL_USER : `${baseUrl}/api/attendance/presence/multi/user/`,
+      UPDATE_USER_SICK : `${baseUrl}/api/attendance/presence/sick-user/`
     }
   }
 }
