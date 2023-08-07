@@ -6,6 +6,7 @@ import PersonalLeave from './Components/Personal-leave'
 import Permission from './Components/Permission'
 import AttendanceRules from './Components/Attendance-rules'
 import Generator from './Components/Generator'
+import SickUser from './Components/SickUser'
 
 
 
@@ -25,7 +26,7 @@ const Attendance = () => {
             style={{ width: '18rem' }}
             onClick={() => { setMenuIsActivate('rule') }}>
             <Card.Body className='d-flex justify-content-center'>
-              <Card.Title className='bi bi-file-ruled'> Aturan absensi</Card.Title>
+              <Card.Title className='bi bi-file-ruled fs-6 fw-bold'> Aturan absensi</Card.Title>
             </Card.Body>
           </Card>
 
@@ -33,8 +34,8 @@ const Attendance = () => {
             className={`${menuIsActivate === 'leave' && 'default-card-menu-gradient'}  add-item-shadow rounded-4 cursor-pointer card-menu-gradient`}
             style={{ width: '18rem' }}
             onClick={() => { setMenuIsActivate('leave') }}>
-            <Card.Body className='d-flex justify-content-center'>
-              <Card.Title className='bi bi-door-open'> Pengajuan cuti</Card.Title>
+            <Card.Body className='d-flex justify-content-center '>
+              <Card.Title className='bi bi-door-open fs-6 fw-bold'> Pengajuan cuti</Card.Title>
             </Card.Body>
           </Card>
 
@@ -42,8 +43,8 @@ const Attendance = () => {
             className={`${menuIsActivate === 'permission' && 'default-card-menu-gradient'}  add-item-shadow rounded-4 cursor-pointer card-menu-gradient`}
             style={{ width: '18rem' }}
             onClick={() => { setMenuIsActivate('permission') }}>
-            <Card.Body className='d-flex justify-content-center'>
-              <Card.Title className='bi bi-arrow-up-left'> Pengajuan izin</Card.Title>
+            <Card.Body className='d-flex justify-content-center '>
+              <Card.Title className='bi bi-arrow-up-left fs-6 fw-bold'> Pengajuan izin</Card.Title>
             </Card.Body>
           </Card>
 
@@ -51,8 +52,8 @@ const Attendance = () => {
             className={`${menuIsActivate === 'user' && 'default-card-menu-gradient'}  add-item-shadow rounded-4 cursor-pointer card-menu-gradient`}
             style={{ width: '18rem' }}
             onClick={() => { setMenuIsActivate('user') }}>
-            <Card.Body className='d-flex justify-content-center'>
-              <Card.Title className='bi bi-person-fill-gear'> Pengguna</Card.Title>
+            <Card.Body className='d-flex justify-content-center '>
+              <Card.Title className='bi bi-person-fill-gear fs-6 fw-bold'> Pengguna</Card.Title>
             </Card.Body>
           </Card>
 
@@ -60,8 +61,17 @@ const Attendance = () => {
             className={`${menuIsActivate === 'generator' && 'default-card-menu-gradient'}  add-item-shadow rounded-4 cursor-pointer card-menu-gradient`}
             style={{ width: '18rem' }}
             onClick={() => { setMenuIsActivate('generator') }}>
+            <Card.Body className='d-flex justify-content-center '>
+              <Card.Title className='bi bi-person-fill-gear fs-6 fw-bold'> Qr Generator</Card.Title>
+            </Card.Body>
+          </Card>
+
+          <Card
+            className={`${menuIsActivate === 'sick' && 'default-card-menu-gradient'}  add-item-shadow rounded-4 cursor-pointer card-menu-gradient`}
+            style={{ width: '18rem' }}
+            onClick={() => { setMenuIsActivate('sick') }}>
             <Card.Body className='d-flex justify-content-center'>
-              <Card.Title className='bi bi-person-fill-gear'> Qr Generator</Card.Title>
+              <Card.Title className='bi bi-prescription2 fs-6 fw-bold'> Perizinan sakit</Card.Title>
             </Card.Body>
           </Card>
         </div>
@@ -83,8 +93,12 @@ const Attendance = () => {
                   <UserManagement />
                   :
                   menuIsActivate === "generator"
-                  &&
+                  ?
                   <Generator />
+                  :
+                  menuIsActivate === "sick"
+                  &&
+                  <SickUser />
         }
       </div>
 

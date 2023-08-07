@@ -57,7 +57,7 @@ const DashboardContent = () => {
           <Card className={`${ThemingCangerFunc().gradient} add-item-shadow rounded-4 p-0 height-tabel-container overflow-hidden`} style={ThemingCangerFunc("white").style}>
             <h3 className='m-3 mb-2'>Preview Kehadiran</h3>
 
-            <div className='mx-3 mb-2 d-flex justify-content-between'>
+            <div className='mx-3 mb-2 d-flex justify-content-between flex-wrap gap-3'>
               <div>
                 <OverlayTrigger
                   placement="bottom"
@@ -82,12 +82,15 @@ const DashboardContent = () => {
                   </InputGroup>
                 </OverlayTrigger>
               </div>
-              <div className='add-item-shadow d-flex gap-2 px-4 mb-2 align-items-center border rounded-4' style={{ backgroundColor: "Cornsilk", height: "43px" }}>
+              <div className='add-item-shadow d-flex gap-2 px-4 mb-2 align-items-center border rounded-4 flex-wrap p-2' style={{ backgroundColor: "Cornsilk" }}>
                 <span className='bi bi-check-circle-fill text-success h6 p-0 m-0' style={{ textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black" }} />
                 <p className='text-success h5 p-0 m-0 fw-bold'>Hadir</p>
                 <p className='text-muted h5 p-0 m-0 fw-bold'>|</p>
-                <p className='text-warning h5 p-0 m-0 fw-bold'>Izin</p>
                 <span className='bi bi-arrow-up-left-circle-fill text-warning h6  p-0 m-0' style={{ textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black" }} />
+                <p className='text-warning h5 p-0 m-0 fw-bold'>Izin</p>
+                <p className='text-muted h5 p-0 m-0 fw-bold'>|</p>
+                <span className='bi bi-prescription2 text-warning h6  p-0 m-0' style={{ textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black" }} />
+                <p className='text-warning h5 p-0 m-0 fw-bold'>Sakit</p>
                 <p className='text-muted h5 p-0 m-0 fw-bold'>|</p>
                 <span className='bi bi-x-circle-fill text-danger h6 p-0 m-0' style={{ textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black" }} />
                 <p className='text-danger h5 p-0 m-0 fw-bold'>Alfa</p>
