@@ -11,6 +11,7 @@ const TableDetailPresence = (props) => {
   const [izin, setIzin] = useState([])
   const [alfa, setAlfa] = useState([])
   const [cuti, setCuti] = useState([])
+  const [sakit, setSakit] = useState([])
   const [isPresenceDetailLoading, setIsPetpresenceDetailLoading] = useState(true)
 
   const getNameOfCurrenMonth = () => {
@@ -26,7 +27,7 @@ const TableDetailPresence = (props) => {
     const izinDatas = izin.map((result, i) => result.month === monthRow && (<td key={i} style={{ borderLeft: "solid 1px lightgrey" }}>{result.total}</td>))
     const alfaDatas = alfa.map((result, i) => result.month === monthRow && (<td key={i} style={{ borderLeft: "solid 1px lightgrey" }}>{result.total}</td>))
     const cutiDatas = cuti.map((result, i) => result.month === monthRow && (<td key={i} style={{ borderLeft: "solid 1px lightgrey" }}>{result.total}</td>))
-
+    const sakitDatas = sakit.map((result, i) => result.month === monthRow && (<td key={i} style={{ borderLeft: "solid 1px lightgrey" }}>{result.total}</td>))
     // efective works
     const efectiveWork = hadir.map((result, i) => result.month === monthRow && (<td key={i} style={{ borderLeft: "solid 1px lightgrey" }}>{result.efective_work} hari</td>))
 
@@ -35,6 +36,7 @@ const TableDetailPresence = (props) => {
     const izinPercentageDatas = izin.map((result, i) => result.month === monthRow && (<td key={i} style={{ width: "50px", borderLeft: "solid 1px lightgrey", borderRight: "solid 1px lightgrey" }}>{result.percentage.toFixed(1)}  %</td>))
     const alfaPercentageDatas = alfa.map((result, i) => result.month === monthRow && (<td key={i} style={{ width: "50px", borderLeft: "solid 1px lightgrey", borderRight: "solid 1px lightgrey" }}>{result.percentage.toFixed(1)}  %</td>))
     const cutiPercentageDatas = cuti.map((result, i) => result.month === monthRow && (<td key={i} style={{ width: "50px", borderLeft: "solid 1px lightgrey", borderRight: "solid 1px lightgrey" }}>{result.percentage.toFixed(1)}  %</td>))
+    const sakitPercentageDatas = sakit.map((result, i) => result.month === monthRow && (<td key={i} style={{ width: "50px", borderLeft: "solid 1px lightgrey", borderRight: "solid 1px lightgrey" }}>{result.percentage.toFixed(1)}  %</td>))
 
 
     if (options === "hadir") {
@@ -45,6 +47,8 @@ const TableDetailPresence = (props) => {
       return alfaDatas
     } else if (options === "cuti") {
       return cutiDatas
+    } else if (options === "sakit") {
+      return sakitDatas
     }
 
     if (options === "efective-work") {
@@ -59,6 +63,8 @@ const TableDetailPresence = (props) => {
       return alfaPercentageDatas
     } else if (options === "cuti-percentage") {
       return cutiPercentageDatas
+    }else if (options === "sakit-percentage") {
+      return sakitPercentageDatas
     }
 
   }
@@ -83,6 +89,10 @@ const TableDetailPresence = (props) => {
             tableDataspresenceDetail("cuti", result)
           }
           {
+            // kolom sakit
+            tableDataspresenceDetail("sakit", result)
+          }
+          {
             tableDataspresenceDetail("efective-work", result)
           }
           <td className='p-0'>
@@ -100,6 +110,10 @@ const TableDetailPresence = (props) => {
                   }
                   {
                     tableDataspresenceDetail("cuti-percentage", result)
+                  }
+                  {
+                    // kolom sakit
+                    tableDataspresenceDetail("sakit-percentage", result)
                   }
                 </tr>
               </tbody>
@@ -124,6 +138,7 @@ const TableDetailPresence = (props) => {
       setIzin(response.data.izin)
       setAlfa(response.data.alfa)
       setCuti(response.data.cuti)
+      setSakit(response.data.sakit)
     })
   }, [props.year])
 
@@ -132,7 +147,7 @@ const TableDetailPresence = (props) => {
 
 
   return (
-    <div style={{height: "573px"}}>
+    <div style={{ height: "573px" }}>
       <Table hover={!isPresenceDetailLoading} className='m-0' >
         <thead>
           <tr>
@@ -142,6 +157,7 @@ const TableDetailPresence = (props) => {
             <th className='text-center' style={{ verticalAlign: "middle", borderLeft: "solid 1px lightgrey", backgroundColor: "#FFFF66" }}><span className='bi bi-arrow-up-left-circle-fill text-warning' style={{ textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black" }} /> Izin</th>
             <th className='text-center' style={{ verticalAlign: "middle", borderLeft: "solid 1px lightgrey", backgroundColor: "#ff8a75" }}><span className='bi bi-x-circle-fill text-danger' style={{ textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black" }} /> Alfa</th>
             <th className='text-center' style={{ verticalAlign: "middle", borderLeft: "solid 1px lightgrey", backgroundColor: "LightGreen" }}><span className='bi bi-door-open-fill text-success' style={{ textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black" }} /> Cuti </th>
+            <th className='text-center' style={{ verticalAlign: "middle", borderLeft: "solid 1px lightgrey", backgroundColor: "#FFFF66" }}><span className='bi bi-prescription2 text-warning' style={{ textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black" }} /> Sakit</th>
             <th className='text-center px-0' style={{ verticalAlign: "middle", borderLeft: "solid 1px lightgrey", backgroundColor: "MistyRose" }}><span className='bi bi-plus-slash-minus' /> Efektif kerja</th>
             <th className='text-center p-0 pt-2' style={{ borderLeft: "solid 1px lightgrey", backgroundColor: "MistyRose" }}><span className='bi bi-percent' />
               Persentase
@@ -152,6 +168,7 @@ const TableDetailPresence = (props) => {
                     <th className='px-0' style={{ width: "50px", borderLeft: "solid 1px lightgrey", borderRight: "solid 1px lightgrey", backgroundColor: "#FFFF66" }}><span className='bi bi-arrow-up-left-circle-fill text-warning' style={{ textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black" }} /></th>
                     <th className='px-0' style={{ width: "50px", backgroundColor: "#ff8a75" }}> <span className='bi bi-x-circle-fill text-danger' style={{ textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black" }} /></th>
                     <th className='px-0' style={{ width: "50px", backgroundColor: "LightGreen" }}> <span className='bi bi-door-open-fill text-success' style={{ textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black" }} /></th>
+                    <th className='px-0' style={{ width: "50px", borderLeft: "solid 1px lightgrey", borderRight: "solid 1px lightgrey", backgroundColor: "#FFFF66" }}><span className='bi bi-prescription2 text-warning' style={{ textShadow: "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black" }} /></th>
                   </tr>
                 </thead>
               </Table>
@@ -163,7 +180,7 @@ const TableDetailPresence = (props) => {
             !!isPresenceDetailLoading
               ?
               <tr>
-                <td colSpan={11} className='py-5' style={{border: "solid 0px"}}>
+                <td colSpan={11} className='py-5' style={{ border: "solid 0px" }}>
                   <ProgresBarLoadingVisual theme={"danger"} titleTxt={"Memuat data presensi..."} />
                 </td>
               </tr>
