@@ -12,6 +12,7 @@ const SickUser = () => {
   const [searchName, setSearchName] = useState("")
   const [searchDate, setSearchDate] = useState("")
 
+
   const getDataForUserSickPage = () => {
     const url = API_URL().FOR_USER_SICK.SHOW_ALL_USER
     axios.get(url).then(response => {
@@ -67,7 +68,7 @@ const SickUser = () => {
                 <Spinner className='me-2' variant='secondary' size='sm' /> <p className='text-muted mt-3'>Memuat...</p>
               </div>
               :
-              <Form.Select className='rounded-4' size="sm" aria-label="Default select" onChange={(e) => { updateUserSick(result.user_id, e.target.value) }} style={{ width: "130px" }}>
+              <Form.Select className='rounded-4' size="sm" aria-label="Default select" onChange={(e) => { updateUserSick(result.user_id, e.target.value, result.created_at_in) }} style={{ width: "130px" }}>
                 {
                   result.presence_status === "sakit"
                   &&
@@ -94,12 +95,13 @@ const SickUser = () => {
   }
 
 
-  const updateUserSick = (user_id, selectOptionsValue) => {
+  const updateUserSick = (user_id, selectOptionsValue, date) => {
     setLoading(true)
     const url = API_URL().FOR_USER_SICK.UPDATE_USER_SICK
     const data = {
       "user_id": user_id,
       "descriptions": selectOptionsValue,
+      "created_at_in": date,
       "options": selectOptionsValue
     }
     axios.post(url, data).then(response => {
