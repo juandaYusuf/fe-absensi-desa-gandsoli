@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Form, InputGroup, Spinner, Table } from 'react-bootstrap'
 import API_URL from '../../../API/API_URL'
 import axios from 'axios'
+import ModalPopUp from '../../../Global-components/ModalPopUp'
 
 const SickUser = () => {
 
@@ -11,7 +12,9 @@ const SickUser = () => {
   const [loading, setLoading] = useState(false)
   const [searchName, setSearchName] = useState("")
   const [searchDate, setSearchDate] = useState("")
-
+  const [modalShow, setModalShow] = useState(false)
+  const [updateSickData, setupdateSickData] = useState({ 'selectOptionsValue': '', 'date': '' })
+  const [userID, setUserID] = useState(0)
 
   const getDataForUserSickPage = () => {
     const url = API_URL().FOR_USER_SICK.SHOW_ALL_USER
@@ -68,7 +71,15 @@ const SickUser = () => {
                 <Spinner className='me-2' variant='secondary' size='sm' /> <p className='text-muted mt-3'>Memuat...</p>
               </div>
               :
-              <Form.Select className='rounded-4' size="sm" aria-label="Default select" onChange={(e) => { updateUserSick(result.user_id, e.target.value, result.created_at_in) }} style={{ width: "130px" }}>
+              <Form.Select
+                className={` rounded-4 border cursor-pointer ${result.presence_status === "alfa" || result.presence_status === "sakit" ? 'border-secondary border-2 add-item-shadow' : ''}`}
+                size="sm" aria-label="Default select"
+                onChange={(e) => {
+                  updateUserSick(result.user_id, e.target.value, result.created_at_in)
+                  setUserID(result.user_id)
+                }}
+                disabled={result.presence_status === "alfa" || result.presence_status === "sakit" ? false : true}
+                style={{ width: "130px", backgroundColor: `${result.presence_status === "alfa" ? "tomato" : result.presence_status === "sakit" ? "yellow" : ""}` }}>
                 {
                   result.presence_status === "sakit"
                   &&
@@ -96,19 +107,31 @@ const SickUser = () => {
 
 
   const updateUserSick = (user_id, selectOptionsValue, date) => {
-    setLoading(true)
-    const url = API_URL().FOR_USER_SICK.UPDATE_USER_SICK
-    const data = {
-      "user_id": user_id,
-      "descriptions": selectOptionsValue,
-      "created_at_in": date,
-      "options": selectOptionsValue
-    }
-    axios.post(url, data).then(response => {
-      if (response.data) {
-        setTruggerTable(prev => !prev)
+    if (selectOptionsValue === 'sakit') {
+      setupdateSickData({
+        'user_id ': user_id,
+        'selectOptionsValue': selectOptionsValue,
+        'date': date
+      })
+      setModalShow(true)
+      setLoading(true)
+    } else {
+      setLoading(true)
+      const url = API_URL().FOR_USER_SICK.UPDATE_USER_SICK
+      const data = {
+        "user_id": user_id,
+        "descriptions": selectOptionsValue,
+        "created_at_in": date,
+        "options": selectOptionsValue
       }
-    })
+
+      axios.post(url, data).then(response => {
+        if (response.data) {
+          setTruggerTable(prev => !prev)
+          setLoading(false)
+        }
+      })
+    }
   }
 
 
@@ -120,54 +143,66 @@ const SickUser = () => {
 
 
   return (
-    <div className='p-3'>
-      <h3 className='bi bi-prescription2'>Perizinan sakit</h3>
-      <InputGroup className='d-flex justify-content-end mb-3'>
-        <Form.Control
-          aria-describedby="searchByName"
-          placeholder="Cari nama"
-          type="text"
-          className='add-item-shadow'
-          style={{ borderRadius: '15px 0px 0px 15px', maxWidth: "200px" }}
-          onChange={(e) => { setSearchName(e.target.value) }}
-        />
-        <Form.Control
-          aria-describedby="searchByName"
-          placeholder="Cari tanggal"
-          type="date"
-          className='add-item-shadow'
-          // onFocus={() => { onFocusHandler() }}
-          style={{ maxWidth: "200px" }}
-          onChange={(e) => { setSearchDate(e.target.value) }}
-        />
-        <InputGroup.Text
-          style={{ borderRadius: '0px 15px 15px 0px' }}
-          className='text-muted add-item-shadow'>
-          <span className='bi bi-search cursor-pointer' />
-        </InputGroup.Text>
-      </InputGroup>
+    <>
+      <div className='p-3'>
+        <h3 className='bi bi-prescription2'>Perizinan sakit</h3>
+        <InputGroup className='d-flex justify-content-end mb-3'>
+          <Form.Control
+            aria-describedby="searchByName"
+            placeholder="Cari nama"
+            type="text"
+            className='add-item-shadow'
+            style={{ borderRadius: '15px 0px 0px 15px', maxWidth: "200px" }}
+            onChange={(e) => { setSearchName(e.target.value) }}
+          />
+          <Form.Control
+            aria-describedby="searchByName"
+            placeholder="Cari tanggal"
+            type="date"
+            className='add-item-shadow'
+            style={{ maxWidth: "200px" }}
+            onChange={(e) => { setSearchDate(e.target.value) }}
+          />
+          <InputGroup.Text
+            style={{ borderRadius: '0px 15px 15px 0px' }}
+            className='text-muted add-item-shadow'>
+            <span className='bi bi-search cursor-pointer' />
+          </InputGroup.Text>
+        </InputGroup>
 
-      <div>
-        <Table borderless hover>
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>Foto</th>
-              <th>Nama</th>
-              <th>tanggal</th>
-              <th>status</th>
-              <th>Diubah</th>
-              <th>deskripsi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              dataSearcher().map((result, i) => tableBodyComponent(result, i))
-            }
-          </tbody>
-        </Table>
+        <div>
+          <Table borderless hover>
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Foto</th>
+                <th>Nama</th>
+                <th>tanggal</th>
+                <th>status</th>
+                <th>Diubah</th>
+                <th>deskripsi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                dataSearcher().map((result, i) => tableBodyComponent(result, i))
+              }
+            </tbody>
+          </Table>
+        </div >
       </div >
-    </div >
+      <ModalPopUp
+        show={modalShow}
+        user_id={userID}
+        selectOptionsValue={updateSickData.selectOptionsValue}
+        date={updateSickData.date}
+        responded={() => setTruggerTable(prev => !prev)}
+        onHide={() => {
+          setModalShow(false)
+          setLoading(false)
+        }}
+        options='sick proof' />
+    </>
   )
 }
 

@@ -1,11 +1,11 @@
 const API_URL = (apiParam, apiParam2) => {
-  // const baseUrl = 'http://127.0.0.1:8000'
+  const baseUrl = 'http://127.0.0.1:8000'
   // const baseUrl = 'https://bedesagandasoli-1-j0924938.deta.app'
 
 
   
   // VPS idcloudhost
-  const baseUrl = 'https://siaga23.biz.id'
+  // const baseUrl = 'https://siaga23.biz.id'
 
   return {
     USER: {
@@ -22,7 +22,8 @@ const API_URL = (apiParam, apiParam2) => {
       UPDATE_PASSWORD: `${baseUrl}/api/user/change-password`,
       UPDATE_ROLE: `${baseUrl}/api/user/single/update-user-role`,
       DELETE_USER: `${baseUrl}/api/user/single/delete-user/${apiParam}`,
-      USER_ROLES: `${baseUrl}/api/user-role/multi/role`
+      USER_ROLES: `${baseUrl}/api/user-role/multi/role`,
+      UPDATE_USER_SIGNATURE: `${baseUrl}/api/user/single/update-signature`
     },
     ATTENDANCE: {
       LIST_OF_USER_ATTENDANCE: `${baseUrl}/api/attendance/multi/user-presence-data`,
@@ -60,6 +61,11 @@ const API_URL = (apiParam, apiParam2) => {
     USER_PERMISSION: {
       ADD_SUBMISSION_PERMISSION: `${baseUrl}/api/user-permission/submission`,
       GET_PERMISSION_DATAS: `${baseUrl}/api/user-permission/show-all-user-permission/${apiParam}`,
+      PERMISSION_AGREEMENT: `${baseUrl}/api/user-permission/agreement/`,
+      GET_SINGLE_DATA: `${baseUrl}/api/user-permission/single/user-permission/${apiParam}/${apiParam2}`,
+      GET_SINGLE_DATA_LIST: `${baseUrl}/api/user-permission/single/user-permission-list/${apiParam}`,
+      PERMISSION_APPROVING: `${baseUrl}/api/user-permission/agreement/`,
+      GET_DOCS: `${baseUrl}/api/user-permission/single/doc/${apiParam}`,
     },
     USER_ROLE: {
       SHOW_USER_ROLES: `${baseUrl}/api/user-role/show-all-user-role`
@@ -69,7 +75,8 @@ const API_URL = (apiParam, apiParam2) => {
     },
     FOR_USER_SICK : {
       SHOW_ALL_USER : `${baseUrl}/api/attendance/presence/multi/user/`,
-      UPDATE_USER_SICK : `${baseUrl}/api/attendance/presence/sick-user/`
+      UPDATE_USER_SICK : `${baseUrl}/api/attendance/presence/sick-user/`,
+      UPDATE_USER_SICK_PROOF : `${baseUrl}/api/attendance/presence/sick-user/sick-proof/${apiParam}`
     }
   }
 }

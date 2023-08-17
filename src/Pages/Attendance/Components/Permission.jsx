@@ -82,6 +82,7 @@ const Permission = () => {
     setIsSubmissionFormLoading(true)
     const form = e.currentTarget
     if (form.checkValidity() === false) {
+      setIsSubmissionFormLoading(false)
       if (selectOptionValues === "default") {
         setselectOptionValues("default")
       } else {

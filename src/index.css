@@ -296,6 +296,11 @@ code {
   background: linear-gradient(18deg, rgba(255, 246, 250, 1) 0%, rgba(235, 244, 255, 1) 100%);
 }
 
+.form-container{
+  width: 50%;
+}
+
+
 /* ! ============================== RESPONSIVE ============================== */
 @media only screen and (max-width: 1196px) {
   .container-main {
@@ -389,5 +394,8 @@ code {
     min-width: 1030px;
   }
 
+  .form-container{
+    width: 100%;
+  }
 
 }

@@ -155,7 +155,7 @@ const NavigationsBar = ({ children }) => {
               <div className='d-flex gap-4 align-items-center'>
                 <div className='d-flex gap-3'>
                   {
-                    localData === "KAUR Keuangan"
+                    localData === "master"
                     &&
                     <>
                       <Link to="/dashboard" className={`m-0 fw-bold bi bi-tv cursor-pointer text-dark text-decoration-none ${currentUrl === "/dashboard" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Dashboard</Link>
@@ -163,12 +163,12 @@ const NavigationsBar = ({ children }) => {
                     </>
                   }
                   <Link to="/scanner-manager" className={`m-0 fw-bold bi bi-qr-code-scan cursor-pointer text-dark text-decoration-none ${currentUrl === "/scanner-manager" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOnCamera")}> QR Scanner</Link>
+                  <Link to="/absensi" className={`m-0 fw-bold bi bi-journal-medical cursor-pointer text-dark text-decoration-none ${currentUrl === "/absensi" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Absensi</Link>
                   {
-                    localData === "KAUR Keuangan"
+                    localData === "master"
                       ?
                       <>
                         {/* <Link to="/qr-generator" className={`m-0 fw-bold bi bi-qr-code cursor-pointer text-dark text-decoration-none ${currentUrl === "/qr-generator" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> QR Generator</Link> */}
-                        <Link to="/absensi" className={`m-0 fw-bold bi bi-journal-medical cursor-pointer text-dark text-decoration-none ${currentUrl === "/absensi" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Absensi</Link>
                         <Link to="/setting" className={`m-0 fw-bold bi bi-gear cursor-pointer text-dark text-decoration-none ${currentUrl === "/setting" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Pengaturan</Link>
                       </>
                       :
@@ -203,7 +203,7 @@ const NavigationsBar = ({ children }) => {
               <div className='d-flex gap-4 align-items-center'>
                 <div className={(isNavbarCollapse === true) ? "mobile-link w-100" : "mobile-link-collapse w-100"}>
                   {
-                    localData === "KAUR Keuangan"
+                    localData === "master"
                     &&
                     <>
                       <Link to="/dashboard" className={`m-0 fw-bold bi bi-tv cursor-pointer text-dark text-decoration-none ${currentUrl === "/dashboard" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Dashboard</Link>
@@ -212,7 +212,7 @@ const NavigationsBar = ({ children }) => {
                   }
                   <Link to="/scanner-manager" className={`m-0 fw-bold bi bi-qr-code-scan cursor-pointer text-dark text-decoration-none ${currentUrl === "/scanner-manager" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOnCamera")}> QR Scanner</Link>
                   {
-                    localData === "KAUR Keuangan"
+                    localData === "master"
                       ?
                       <>
                         {/* <Link to="/qr-generator" className={`m-0 fw-bold bi bi-qr-code cursor-pointer text-dark text-decoration-none ${currentUrl === "/qr-generator" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> QR Generator</Link> */}

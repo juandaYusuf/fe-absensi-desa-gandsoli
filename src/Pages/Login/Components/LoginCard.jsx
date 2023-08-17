@@ -60,7 +60,7 @@ const LoginCard = () => {
         bcrypt.compare(password, response.data.encpass, (err, res) => {
           if (res === true) {
             if (!!response.data.id) {
-              if (response.data.role === "KAUR Keuangan") {
+              if (response.data.role === "master") {
                 if (response.data.log === "unverified") {
                   setUserIdUnverifiedAccount(response.data.id)
                   localStorage.setItem('obj', JSON.stringify(dataForLocalStirage))
