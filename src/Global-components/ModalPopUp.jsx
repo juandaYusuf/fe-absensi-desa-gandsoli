@@ -22,6 +22,9 @@ const ModalPopUp = (props) => {
   const [isPasswordChangerLoading, setIsPasswordChangerLoading] = useState(false)
   const [isPWDSuccessfulChange, setIsPWDSuccessfulChange] = useState(false)
   const [isNewPasswordMatch, setisNewPasswordMatch] = useState(true)
+  const [uploadImageExtentionValidator, setUploadImageExtentionValidator] = useState(true)
+  const [disableButton, setDisableButton] = useState(true)
+  const [ifExtentionsNotAloowed, setIfExtentionsNotAloowed] = useState('')
   const salt = bcrypt.genSaltSync(10)
 
 
@@ -42,7 +45,10 @@ const ModalPopUp = (props) => {
         setContextIsImageUploaded(true)
       }
     }).catch((err) => {
-      alert("Error dari backend", err)
+      if (err.response.status === 400 && err.response.data.detail === "file not allowed") {
+        setIsLoading(false)
+        setUploadImageExtentionValidator(false)
+      }
     })
     setContextIsImageUploaded(false)
     setIsResponded(false)
@@ -130,11 +136,39 @@ const ModalPopUp = (props) => {
     })
   }
 
+  const uploadSickMail = () => {
+    setIsLoading(true)
+    const url = API_URL().FOR_USER_SICK.UPDATE_USER_SICK
+    const data = {
+      "user_id": props.user_id,
+      "descriptions": props.selectOptionsValue,
+      "created_at_in": props.date,
+      "options": props.selectOptionsValue
+    }
+
+    axios.post(url, data).then(response => {
+      if (response.data) {
+        const urlSickProof = API_URL(props.user_id).FOR_USER_SICK.UPDATE_USER_SICK_PROOF
+        let bodyFormData = new FormData()
+        bodyFormData.append("image", uploadImage)
+        axios({
+          method: "post",
+          url: urlSickProof,
+          data: bodyFormData,
+          headers: { "Content-Type": "multipart/form-data" },
+        }).then(resp => {
+          setIsLoading(false)
+          props.responded()
+        })
+      }
+    })
+
+  }
 
   useEffect(() => {
     if (props.options === "update picture") {
       setTitle("Upload foto profile")
-      setSecondTitle("silahkan pilih foto profile")
+      setSecondTitle("Silahkan pilih foto profile")
     }
     if (props.options === "delete picture") {
       setTitle("Hapus foto")
@@ -148,12 +182,28 @@ const ModalPopUp = (props) => {
       setTitle("Delete draft")
       setSecondTitle("Draft akan di hapus secara permanen")
     }
-    if (props.options === "delete user") {
-      setTitle("delete user")
-      setSecondTitle("User akan di hapus secara permanen")
+    if (props.options === "sick proof") {
+      setTitle("Surat sakit")
+      setSecondTitle("Silahkan unggah surat sakit dalam berbentuk gambar")
     }
 
   }, [props.options])
+
+  useEffect(() => {
+    const extentionsChecker = () => {
+      if (uploadImage === null) return
+      const extentions = ['jpg', 'png', 'jpeg']
+      if (extentions.includes(uploadImage.name.split('.')[1])) {
+        setDisableButton(false)
+        setIfExtentionsNotAloowed('')
+      } else {
+        setIfExtentionsNotAloowed('File tidak diizinkan')
+        setDisableButton(true)
+      }
+    }
+
+    extentionsChecker()
+  }, [uploadImage])
 
 
   const modalUpdatePicture = (<Modal
@@ -201,17 +251,27 @@ const ModalPopUp = (props) => {
                     <ProgressBar variant='success' animated now={100} style={{ marginBottom: "22px" }} />
                   </TopToBottom>)
                   :
-                  (<BottomToTop>
-                    <Form.Control
-                      className='rounded-4 m-1'
-                      type="file"
-                      onChange={(e) => { setUploadImage(e.target.files[0]) }}
-                      style={{ width: "98%" }}
-                    />
-                    <Form.Text id="passwordHelpBlock" muted>
-                      Masukan gambar dari penyimpanan anda
-                    </Form.Text>
-                  </BottomToTop>)
+                  uploadImageExtentionValidator === true
+                    ?
+                    (<BottomToTop>
+                      <Form.Control
+                        className='rounded-4 m-1'
+                        type="file"
+                        onChange={(e) => { setUploadImage(e.target.files[0]) }}
+                        style={{ width: "98%" }}
+                      />
+                      <Form.Text id="passwordHelpBlock" muted>
+                        Masukan gambar dari penyimpanan anda
+                      </Form.Text>
+                    </BottomToTop>)
+                    :
+                    (<TopToBottom>
+                      <Form.Text id="passwordHelpBlock" className='text-danger fw-bold'>
+                        Sepertinya file yang anda unggah bukan gambar...!
+                        Harap unggah file jenis gambar. <br />
+                        <span className='text-muted fw-normal'> Ekstensi file yang diizinkan '.jpg', '.jpeg', '.png'</span>
+                      </Form.Text>
+                    </TopToBottom>)
               }
             </div>
           </>)
@@ -221,15 +281,20 @@ const ModalPopUp = (props) => {
       {
         !!isResponded
           ?
-          <Button className='px-4' variant='warning' onClick={() => { props.onHide() }}>Kembali</Button>
+          <Button className='px-4 rounded-4 add-item-shadow border border-secondary' variant='warning' onClick={() => { props.onHide() }}>Kembali</Button>
           :
           !!isLoading
             ?
-            <Button variant='success' disabled onClick={() => { uploadProfilePicture() }}>
+            <Button className='rounded-4 add-item-shadow border border-secondary' variant='success' disabled onClick={() => { uploadProfilePicture() }}>
               <Spinner variant='light' size='sm'></Spinner> Loading
             </Button>
             :
-            <Button className='px-4' variant='success' onClick={() => { uploadProfilePicture() }}>Upload</Button>
+            uploadImageExtentionValidator === true
+              ?
+              <Button className='px-4 rounded-4 add-item-shadow border border-secondary' variant='success' onClick={() => { uploadProfilePicture() }}>Unggah</Button>
+              :
+              <Button className='px-4 rounded-4 add-item-shadow border border-secondary' variant='warning' onClick={() => { setUploadImageExtentionValidator(true) }}>Pilih gambar</Button>
+
       }
     </Modal.Footer></Modal>)
 
@@ -466,6 +531,102 @@ const ModalPopUp = (props) => {
   </Modal>)
 
 
+  const modalSickMail = (<Modal
+    {...props}
+    aria-labelledby="contained-modal-title-vcenter"
+    centered
+    size="md"
+    backdrop={false}
+    onShow={() => {
+      setIsLoading(false)
+      setIsResponded(false)
+      setIfExtentionsNotAloowed('')
+    }}
+    style={{ zIndex: "9999", backgroundColor: "rgba(0, 0, 0, 0.1)", backdropFilter: "blur(20px)" }}
+    contentClassName='rounded-4 bg-transparent overflow-hidden'
+  >
+    <Modal.Header closeButton style={{ backdropFilter: "blur(20px)", backgroundColor: "rgba(255, 255, 255, 0.5)" }}>
+      <Modal.Title id="contained-modal-title-vcenter">
+        <span className='bi bi-cloud-upload' /> {title}
+      </Modal.Title>
+    </Modal.Header>
+    <Modal.Body style={{ backdropFilter: "blur(20px)", backgroundColor: "rgba(255, 255, 255, 0.5)", borderTop: "solid 1px grey", borderBottom: "solid 1px grey" }}>
+      {
+        !!isResponded
+          ?
+          (<div className='overflow-hidden'>
+            <RightToLeft>
+              <Alert variant='success border-sucess w-100 rounded-4'>
+                <h4 className='bi bi-check-circle'> Sukses </h4>
+                <hr className='text-success m-0' />
+                <p>Upload file berhasil. Silahkan kembali ke halaman profile</p>
+              </Alert>
+            </RightToLeft>
+          </div>)
+          :
+          (<>
+            <h5>{secondTitle}</h5>
+            <div className='overflow-hidden'>
+              {
+                isLoading === true
+                  ?
+                  (<TopToBottom>
+                    <Form.Text id="passwordHelpBlock" muted>
+                      Mengunggah gambar, silahkan tunggu...
+                    </Form.Text>
+                    <ProgressBar variant='success' animated now={100} style={{ marginBottom: "22px" }} />
+                  </TopToBottom>)
+                  :
+                  uploadImageExtentionValidator === true
+                    ?
+                    (<BottomToTop>
+                      <Form.Control
+                        className='rounded-4 m-1'
+                        type="file"
+                        onChange={(e) => { setUploadImage(e.target.files[0]) }}
+                        style={{ width: "98%" }}
+                      />
+                      <Form.Text id="passwordHelpBlock" muted>
+                        <span className='text-danger fw-bold me-2'> {ifExtentionsNotAloowed} </span>
+                        <span>Silahkan masukan gambar dari penyimpanan anda yang berekstensi '.jpg, .jpeg, atau .png'</span>
+                      </Form.Text>
+                    </BottomToTop>)
+                    :
+                    (<TopToBottom>
+                      <Form.Text id="passwordHelpBlock" className='text-danger fw-bold'>
+                        Sepertinya file yang anda unggah bukan gambar...!
+                        Harap unggah file jenis gambar. <br />
+                        <span className='text-muted fw-normal'> Ekstensi file yang diizinkan '.jpg', '.jpeg', '.png'</span>
+                      </Form.Text>
+                    </TopToBottom>)
+              }
+            </div>
+          </>)
+      }
+    </Modal.Body>
+    <Modal.Footer style={{ backdropFilter: "blur(20px)", backgroundColor: "rgba(255, 255, 255, 0.5)" }}>
+      {
+        !!isResponded
+          ?
+          <Button className='px-4 rounded-4 add-item-shadow border border-secondary' variant='warning' onClick={() => { props.onHide() }}>Kembali</Button>
+          :
+          !!isLoading
+            ?
+            <Button className='rounded-4 add-item-shadow border border-secondary' variant='success' disabled onClick={() => { uploadSickMail() }}>
+              <Spinner variant='light' size='sm'></Spinner> Loading
+            </Button>
+            :
+            uploadImageExtentionValidator === true
+              ?
+              <Button disabled={disableButton} className='px-4 rounded-4 add-item-shadow border border-secondary' variant='success' onClick={() => { uploadSickMail() }}>Unggah</Button>
+              :
+              <Button className='px-4 rounded-4 add-item-shadow border border-secondary' variant='warning' onClick={() => { setUploadImageExtentionValidator(true) }}>Pilih gambar</Button>
+
+      }
+    </Modal.Footer></Modal>)
+
+
+
   return (
     props.options === "update picture"
       ?
@@ -480,8 +641,12 @@ const ModalPopUp = (props) => {
           (changePassword)
           :
           props.options === "delete draft attdnc rules"
-          &&
-          (deleteDraftAttendanceRules)
+            ?
+            (deleteDraftAttendanceRules)
+            :
+            props.options === "sick proof"
+            &&
+            (modalSickMail)
   )
 }
 

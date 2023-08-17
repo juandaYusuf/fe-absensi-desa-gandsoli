@@ -16,6 +16,7 @@
     "gl-info": "^0.1.0",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
+    "pdfmake": "^0.2.7",
     "qr-scanner": "^1.4.2",
     "qrcode": "^1.5.1",
     "react": "^18.2.0",
@@ -25,6 +26,7 @@
     "react-qr-reader": "^3.0.0-beta-1",
     "react-router-dom": "^6.10.0",
     "react-scripts": "5.0.1",
+    "react-signature-canvas": "^1.0.6",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
