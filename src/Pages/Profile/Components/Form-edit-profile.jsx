@@ -39,7 +39,6 @@ function FormEditProfile(props) {
         no_telepon: e.target.no_telepon.value,
         email: e.target.email.value
       }
-      // console.log(data)
       const url = API_URL().USER.UPDATE_PROFILE
       axios.put(url, data).then(() => {
         setIsUpdateProfileSuccess("success")
@@ -95,7 +94,7 @@ function FormEditProfile(props) {
 
     getUserDetail()
 
-  }, [isLoading]);
+  }, [isLoading, showSignature]);
 
   return (
     <>
@@ -190,7 +189,7 @@ function FormEditProfile(props) {
                                   :
                                   <RightToLeft>
                                     <Alert className='border border-secondary w-100 rounded-4 add-item-shadow' variant='info'>
-                                      <Alert.Heading className='fw-bold'>Tanda tangan</Alert.Heading>
+                                      <Alert.Heading className='bi bi-info-circle'> Pemberitahuan</Alert.Heading>
                                       <hr className='m-0 p-0' />
                                       <p>Anda telah memiiki tanda tangan. Tanda tangan akan digunakan untuk pengajuan perizinan, persetujuan, dan hal lainnya yang membutuhkannya. </p>
                                       <p className='text-muted'>Apakah anda ingin buat ulang tandangan...?</p>

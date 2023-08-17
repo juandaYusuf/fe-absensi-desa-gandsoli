@@ -9,6 +9,7 @@ import Generator from './Components/Generator'
 import SickUser from './Components/SickUser'
 import ApplyForPermission from './Components/Apply-for-permission'
 import AgreementPermission from './Components/Agreement-permission'
+import ApplyForPersonalLeave from './Components/Apply-for-personal-leave'
 
 
 
@@ -126,7 +127,7 @@ const Attendance = () => {
             :
             menuIsActivate === "leave"
               ?
-              <PersonalLeave />
+              <ApplyForPersonalLeave />
               :
               menuIsActivate === "permission"
                 ?

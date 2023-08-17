@@ -4,6 +4,7 @@ import ProgresBarLoadingVisual from '../../../Global-components/Progres-bar-load
 import axios from 'axios'
 import API_URL from '../../../API/API_URL'
 import PermissionPDF from '../../../PDFFile/Permission-PDF'
+import downloadPDF from './DownloadPDF'
 
 const AgreementPermission = () => {
 
@@ -15,6 +16,7 @@ const AgreementPermission = () => {
   const [agreementStatus, setAgreementStatus] = useState('')
   const [openDetailByItem, setOpenDetailByItem] = useState(0)
   const [loading, setLoading] = useState(false)
+  const [isPDFLoading, setIsPDFLoading] = useState(false)
 
 
 
@@ -77,6 +79,13 @@ const AgreementPermission = () => {
     setOpenDetailByItem(i)
   }
 
+  const downloadPDFSubmission = (user_id) => {
+    const url = API_URL(user_id).USER_PERMISSION.GET_DOCS
+    axios.get(url).then(response => {
+      downloadPDF(response.data.docs)
+      setIsPDFLoading(false)
+    })
+  }
 
 
   useEffect(() => {
@@ -109,227 +118,231 @@ const AgreementPermission = () => {
       </ButtonGroup>
       <div className='rounded-4 add-item-shadow overflow-hidden my-3' style={{ minHeight: "450px", backgroundColor: "rgba(157, 157, 157, 0.11)" }}>
         <div className='h-100' style={{ overflowY: "auto" }}>
-          <Table borderless>
-            <thead style={{ position: "sticky", top: "0px" }}>
-              <tr>
-                <th style={{ backgroundColor: "#EFEFEF" }}>No</th>
-                <th style={{ backgroundColor: "#EFEFEF" }}>Foto</th>
-                <th style={{ backgroundColor: "#EFEFEF" }}>Nama</th>
-                <th style={{ backgroundColor: "#EFEFEF" }}>Email</th>
-                <th style={{ backgroundColor: "#EFEFEF" }}>Status</th>
-                <th style={{ backgroundColor: "#EFEFEF" }}>Detail</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-
-                !!isUserPermissionDatasLoading
-                  ?
-                  <tr>
-                    <td colSpan={6} className='py-4 text-center'>
-                      <ProgresBarLoadingVisual />
-                    </td>
-                  </tr>
-                  :
-                  userPermissionDatas.map((result, i) => {
-                    const startDateOfPermission = new Date(result.start_date)
-                    const endDateOfPermission = new Date(result.end_date)
-                    let selisihHari = Math.floor((endDateOfPermission - startDateOfPermission) / (24 * 60 * 60 * 1000))
-                    if (!!result.end_date) {
-                      selisihHari = Math.floor((endDateOfPermission - startDateOfPermission) / (24 * 60 * 60 * 1000))
-                    } else {
-                      selisihHari = 1
-                    }
-                    return (
-                      <Fragment key={i}>
-                        <tr>
-                          <td className='text-center align-middle'>{i + 1}</td>
-                          <td>
-                            {
-                              !!result.profile_picture
+          <div style={{ minWidth: "928px" }}>
+            <Table borderless>
+              <thead style={{ position: "sticky", top: "0px" }}>
+                <tr>
+                  <th style={{ backgroundColor: "#EFEFEF" }}>No</th>
+                  <th style={{ backgroundColor: "#EFEFEF" }}>Foto</th>
+                  <th style={{ backgroundColor: "#EFEFEF" }}>Nama</th>
+                  <th style={{ backgroundColor: "#EFEFEF" }}>Email</th>
+                  <th style={{ backgroundColor: "#EFEFEF" }}>Status</th>
+                  <th style={{ backgroundColor: "#EFEFEF" }}>Detail</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  !!isUserPermissionDatasLoading
+                    ?
+                    <tr>
+                      <td colSpan={6} className='py-4 text-center'>
+                        <ProgresBarLoadingVisual />
+                      </td>
+                    </tr>
+                    :
+                    userPermissionDatas.map((result, i) => {
+                      const startDateOfPermission = new Date(result.start_date)
+                      const endDateOfPermission = new Date(result.end_date)
+                      let selisihHari = Math.floor((endDateOfPermission - startDateOfPermission) / (24 * 60 * 60 * 1000))
+                      if (!!result.end_date) {
+                        selisihHari = Math.floor((endDateOfPermission - startDateOfPermission) / (24 * 60 * 60 * 1000))
+                      } else {
+                        selisihHari = 1
+                      }
+                      return (
+                        <Fragment key={i}>
+                          <tr>
+                            <td className='text-center align-middle'>{i + 1}</td>
+                            <td>
+                              {
+                                !!result.profile_picture
+                                  ?
+                                  (<img
+                                    src={'data:image/jpeg;base64,' + result.profile_picture}
+                                    className='rounded-circle border'
+                                    style={{ height: "40px", width: "40px", objectFit: "cover" }} />)
+                                  :
+                                  (<div className='border d-flex justify-content-center rounded-circle align-item-end' style={{ height: "40px", width: "40px", backgroundColor: "#E9E9E9" }} >
+                                    <span className='bi bi-person-fill m-0 p-0 text-secondary' style={{ fontSize: "1.6rem" }} />
+                                  </div>)
+                              }
+                            </td>
+                            <td className='align-middle'>{result.first_name} {result.last_name}</td>
+                            <td className='align-middle'>{result.email}</td>
+                            <td className="align-middle">{
+                              result.agreement === "waiting"
                                 ?
-                                (<img
-                                  src={'data:image/jpeg;base64,' + result.profile_picture}
-                                  className='rounded-circle border'
-                                  style={{ height: "40px", width: "40px", objectFit: "cover" }} />)
+                                <p className="p-0 m-0 fw-bold">Menunggu <span className="text-warning bi bi-exclamation-circle-fill m-0 p-0" /> </p>
                                 :
-                                (<div className='border d-flex justify-content-center rounded-circle align-item-end' style={{ height: "40px", width: "40px", backgroundColor: "#E9E9E9" }} >
-                                  <span className='bi bi-person-fill m-0 p-0 text-secondary' style={{ fontSize: "1.6rem" }} />
-                                </div>)
-                            }
-                          </td>
-                          <td className='align-middle'>{result.first_name} {result.last_name}</td>
-                          <td className='align-middle'>{result.email}</td>
-                          <td className="align-middle">{
-                            result.agreement === "waiting"
-                              ?
-                              <p className="p-0 m-0 fw-bold">Menunggu <span className="text-warning bi bi-exclamation-circle-fill m-0 p-0" /> </p>
-                              :
-                              result.agreement === "not approved"
-                                ?
-                                <p className="p-0 m-0 fw-bold">Ditolak <span className="text-danger bi bi-x-circle-fill m-0 p-0" /> </p>
-                                :
-                                result.agreement === "approved"
-                                &&
-                                <p className="p-0 m-0 fw-bold">Disetujui <span className="text-success bi bi-check-circle-fill m-0 p-0" /> </p>
-                          }</td>
-                          <td className='align-middle'>
-                            <Button className='rounded-4 add-item-shadow border border-secondary' variant='warning' style={{ width: "150px" }} onClick={() => { openDetail(i) }}>{!!open && i === openDetailByItem ? "Tutup detail" : "Tampilkan detail"}</Button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td colSpan={6} className='m-0 p-0'>
-                            <Collapse in={!!open && i === openDetailByItem ? open : null}>
-                              <div id="example-collapse-text">
-                                <div className='mx-4 my-4 bg-light rounded-4 py-2 border add-item-shadow d-flex align-items-center flex-column'>
-                                  {
-                                    result.agreement === 'waiting'
-                                      ?
-                                      <span className="text-warning fw-bold">Belum disetujui</span>
-                                      :
-                                      result.agreement === 'not approved'
+                                result.agreement === "not approved"
+                                  ?
+                                  <p className="p-0 m-0 fw-bold">Ditolak <span className="text-danger bi bi-x-circle-fill m-0 p-0" /> </p>
+                                  :
+                                  result.agreement === "approved"
+                                  &&
+                                  <p className="p-0 m-0 fw-bold">Disetujui <span className="text-success bi bi-check-circle-fill m-0 p-0" /> </p>
+                            }</td>
+                            <td className='align-middle'>
+                              <Button className='rounded-4 add-item-shadow border border-secondary' variant='warning' style={{ width: "150px" }} onClick={() => { openDetail(i) }}>{!!open && i === openDetailByItem ? "Tutup detail" : "Tampilkan detail"}</Button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colSpan={6} className='m-0 p-0'>
+                              <Collapse in={!!open && i === openDetailByItem ? open : null}>
+                                <div id="example-collapse-text">
+                                  <div className='mx-4 my-4 bg-light rounded-4 py-2 border add-item-shadow d-flex align-items-center flex-column'>
+                                    {
+                                      result.agreement === 'waiting'
                                         ?
-                                        <span className="fw-bold">Tidak disetujui</span>
+                                        <span className="text-warning fw-bold">Belum disetujui</span>
                                         :
-                                        result.agreement === 'approved'
-                                        &&
-                                        <span className="fw-bold">Disetujui</span>
-                                  }
-                                  <p className='fw-bold'>Permohonan izin yang diajukan pada tanggal {result.created_at} oleh :</p>
-                                  {
-                                    !!result.profile_picture
-                                      ?
-                                      (<img
-                                        src={'data:image/jpeg;base64,' + result.profile_picture}
-                                        className='rounded-circle border add-item-shadow'
-                                        style={{ height: "90px", width: "90px", objectFit: "cover" }} />)
-                                      :
-                                      (<div className='border d-flex justify-content-center rounded-circle align-item-end add-item-shadow' style={{ height: "90px", width: "90px", backgroundColor: "#E9E9E9" }} >
-                                        <span className='bi bi-person-fill m-0 p-0 text-secondary' style={{ fontSize: "4rem" }} />
-                                      </div>)
-                                  }
-                                  <div>
-                                    <table>
-                                      <tbody>
-                                        <tr>
-                                          <th>Nama</th>
-                                          <td className='pe-1'>:</td>
-                                          <td>{result.first_name} {result.last_name}</td>
-                                        </tr>
-                                        <tr>
-                                          <th>Jabatan</th>
-                                          <td className='pe-1'>:</td>
-                                          <td>{result.role}</td>
-                                        </tr>
-                                        <tr>
-                                          <th>No Telepon</th>
-                                          <td className='pe-1'>:</td>
-                                          <td>{result.no_telepon}</td>
-                                        </tr>
-                                        <tr>
-                                          <th>Alamat</th>
-                                          <td className='pe-1'>:</td>
-                                          <td>{result.alamat}</td>
-                                        </tr>
-                                        <tr>
-                                          <th>Email</th>
-                                          <td className='pe-1'>:</td>
-                                          <td>{result.email}</td>
-                                        </tr>
-                                        <tr>
-                                          <th>Alasan</th>
-                                          <td className='pe-1'>:</td>
-                                          <td>{result.reason}</td>
-                                        </tr>
-                                        {
-                                          !!result.end_date
-                                            ?
-                                            <>
-                                              <tr>
-                                                <th>Dari tanggal</th>
-                                                <td className='pe-1'>:</td>
-                                                <td>{result.start_date}</td>
-                                              </tr>
-                                              <tr>
-                                                <th>Sampai tanggal </th>
-                                                <td>:</td>
-                                                <td>{result.end_date}</td>
-                                              </tr>
-                                              <tr>
-                                                <th>Durasi</th>
-                                                <td className='pe-1'>:</td>
-                                                <td>{selisihHari} hari</td>
-                                              </tr>
-                                            </>
-                                            :
-                                            <>
-                                              <tr>
-                                                <th>Tanggal</th>
-                                                <td className='pe-1'>:</td>
-                                                <td>{result.start_date}</td>
-                                              </tr>
-                                              <tr>
-                                                <th>Durasi</th>
-                                                <td className='pe-1'>:</td>
-                                                <td>{selisihHari} hari</td>
-                                              </tr>
-                                            </>
-                                        }
-                                      </tbody>
-                                    </table>
-                                    <div className='w-100 d-flex gap-2 my-4'>
-                                      {
-                                        result.agreement === "approved"
+                                        result.agreement === 'not approved'
                                           ?
-                                          <h4 className='text-success fw-bold'>Telah disetujui</h4>
+                                          <span className="fw-bold">Tidak disetujui</span>
                                           :
-                                          result.agreement === "not approved"
+                                          result.agreement === 'approved'
+                                          &&
+                                          <span className="fw-bold">Disetujui</span>
+                                    }
+                                    <p className='fw-bold'>Permohonan izin yang diajukan pada tanggal {result.created_at} oleh :</p>
+                                    {
+                                      !!result.profile_picture
+                                        ?
+                                        (<img
+                                          src={'data:image/jpeg;base64,' + result.profile_picture}
+                                          className='rounded-circle border add-item-shadow'
+                                          style={{ height: "90px", width: "90px", objectFit: "cover" }} />)
+                                        :
+                                        (<div className='border d-flex justify-content-center rounded-circle align-item-end add-item-shadow' style={{ height: "90px", width: "90px", backgroundColor: "#E9E9E9" }} >
+                                          <span className='bi bi-person-fill m-0 p-0 text-secondary' style={{ fontSize: "4rem" }} />
+                                        </div>)
+                                    }
+                                    <div>
+                                      <table>
+                                        <tbody>
+                                          <tr>
+                                            <th>Nama</th>
+                                            <td className='pe-1'>:</td>
+                                            <td>{result.first_name} {result.last_name}</td>
+                                          </tr>
+                                          <tr>
+                                            <th>Jabatan</th>
+                                            <td className='pe-1'>:</td>
+                                            <td>{result.role}</td>
+                                          </tr>
+                                          <tr>
+                                            <th>No Telepon</th>
+                                            <td className='pe-1'>:</td>
+                                            <td>{result.no_telepon}</td>
+                                          </tr>
+                                          <tr>
+                                            <th>Alamat</th>
+                                            <td className='pe-1'>:</td>
+                                            <td>{result.alamat}</td>
+                                          </tr>
+                                          <tr>
+                                            <th>Email</th>
+                                            <td className='pe-1'>:</td>
+                                            <td>{result.email}</td>
+                                          </tr>
+                                          <tr>
+                                            <th>Alasan</th>
+                                            <td className='pe-1'>:</td>
+                                            <td>{result.reason}</td>
+                                          </tr>
+                                          {
+                                            !!result.end_date
+                                              ?
+                                              <>
+                                                <tr>
+                                                  <th>Dari tanggal</th>
+                                                  <td className='pe-1'>:</td>
+                                                  <td>{result.start_date}</td>
+                                                </tr>
+                                                <tr>
+                                                  <th>Sampai tanggal </th>
+                                                  <td>:</td>
+                                                  <td>{result.end_date}</td>
+                                                </tr>
+                                                <tr>
+                                                  <th>Durasi</th>
+                                                  <td className='pe-1'>:</td>
+                                                  <td>{selisihHari} hari</td>
+                                                </tr>
+                                              </>
+                                              :
+                                              <>
+                                                <tr>
+                                                  <th>Tanggal</th>
+                                                  <td className='pe-1'>:</td>
+                                                  <td>{result.start_date}</td>
+                                                </tr>
+                                                <tr>
+                                                  <th>Durasi</th>
+                                                  <td className='pe-1'>:</td>
+                                                  <td>{selisihHari} hari</td>
+                                                </tr>
+                                              </>
+                                          }
+                                        </tbody>
+                                      </table>
+                                      <div className='w-100 d-flex gap-2 my-4'>
+                                        {
+                                          result.agreement === "approved"
                                             ?
-                                            <h4 className='text-danger fw-bold'>Tidak disetujui</h4>
+                                            <div className='w-100 d-flex justify-content-between align-items-center'>
+                                              <h4 className='text-success fw-bold'>Telah disetujui</h4>
+                                              <Button className='rounded-4 border-dark fw-bold add-item-shadow' variant='success' disabled={!!isPDFLoading ? true : false} onClick={() => downloadPDFSubmission(result.user_id)}>Unduh surat pengajuan</Button>
+                                            </div>
                                             :
-                                            <>
-                                              <Button
-                                                className='w-100 rounded-4 add-item-shadow'
-                                                variant='outline-danger'
-                                                disabled={loading}
-                                                onClick={() => agreement({ staff_id: result.user_id, agreement: "not approved", permission_id: result.permission_id })}>
-                                                {
-                                                  !!loading
-                                                    ?
-                                                    "Loading"
-                                                    :
-                                                    "Tolak"
-                                                }
-                                              </Button>
-                                              <Button
-                                                className='w-100 rounded-4 add-item-shadow'
-                                                variant='success'
-                                                disabled={loading}
-                                                onClick={() => { agreement({ staff_id: result.user_id, agreement: "approved", permission_id: result.permission_id }) }} >
-                                                {
+                                            result.agreement === "not approved"
+                                              ?
+                                              <h4 className='text-danger fw-bold'>Tidak disetujui</h4>
+                                              :
+                                              <>
+                                                <Button
+                                                  className='w-100 rounded-4 add-item-shadow'
+                                                  variant='outline-danger'
+                                                  disabled={loading}
+                                                  onClick={() => agreement({ staff_id: result.user_id, agreement: "not approved", permission_id: result.permission_id })}>
+                                                  {
                                                     !!loading
-                                                    ?
-                                                  "Loading"
-                                                    :
-                                                  "Setujui"
+                                                      ?
+                                                      "Loading"
+                                                      :
+                                                      "Tolak"
                                                   }
-                                              </Button>
-                                            </>
-                                      }
+                                                </Button>
+                                                <Button
+                                                  className='w-100 rounded-4 add-item-shadow'
+                                                  variant='success'
+                                                  disabled={loading}
+                                                  onClick={() => { agreement({ staff_id: result.user_id, agreement: "approved", permission_id: result.permission_id }) }} >
+                                                  {
+                                                    !!loading
+                                                      ?
+                                                      "Loading"
+                                                      :
+                                                      "Setujui"
+                                                  }
+                                                </Button>
+                                              </>
+                                        }
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                            </Collapse>
-                          </td>
-                        </tr>
-                      </Fragment>
+                              </Collapse>
+                            </td>
+                          </tr>
+                        </Fragment>
+                      )
+                    }
                     )
-                  }
-                  )
-              }
-            </tbody>
-          </Table>
+                }
+              </tbody>
+            </Table>
+          </div>
         </div>
       </div>
     </Card>
