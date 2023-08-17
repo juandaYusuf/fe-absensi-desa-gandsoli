@@ -52,7 +52,7 @@ const SignaturePad = (props) => {
                 <span className='ms-2'>Menyimpan...</span>
               </div>
               :
-              "Simpan Tanda Tangan"
+              "Simpan tanda tangan"
           }
         </Button>
       </div>

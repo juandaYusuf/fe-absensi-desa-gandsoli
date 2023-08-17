@@ -1,3 +1,7 @@
+// !=============================== WARNING ===============================
+// !DEPRECTED PAGE
+
+
 import axios from 'axios'
 import React, { Fragment, useEffect, useState } from 'react'
 import { Alert, Button, Card, Collapse, Form, Spinner, Table } from 'react-bootstrap'
@@ -318,3 +322,4 @@ const PersonalLeave = () => {
 }
 
 export default PersonalLeave
+// !=======================================================================

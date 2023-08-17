@@ -1,3 +1,6 @@
+// !=============================== WARNING ===============================
+// !DEPRECTED PAGE
+
 import axios from 'axios'
 import React, { Fragment, useEffect, useState } from 'react'
 import { Alert, Button, ButtonGroup, Card, Collapse, Form, Table, Spinner } from 'react-bootstrap'
@@ -338,3 +341,6 @@ const Permission = () => {
 }
 
 export default Permission
+
+
+// !=======================================================================
