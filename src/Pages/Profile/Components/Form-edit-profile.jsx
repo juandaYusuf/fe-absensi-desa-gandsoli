@@ -173,15 +173,15 @@ function FormEditProfile(props) {
                       ?
                       <RightToLeft>
                         <div className='d-flex align-items-center flex-column'>
-                          <div className='d-flex p-2 justify-content-center border rounded-4 bg-white add-item-shadow' style={{ height: "400px", width: "400px" }}>
+                          <div className='d-flex p-2 justify-content-center border rounded-4 bg-white add-item-shadow' style={{ height: "300px", width: "300px" }}>
                             <div className="w-100 overflow-hidden p-1">
                               {
                                 !!showSignature
                                   ?
                                   <LeftToRight>
                                     <div className='w-100 d-flex flex-column justify-content-center'>
-                                      <div style={{ height: "300px", width: "300px" }}>
-                                        <img src={`data:image/jpeg;base64,${userDetail.signature_data}`} style={{ height: "300px", width: "300px" }} alt=" " />
+                                      <div className='mb-2' style={{ height: "200px", width: "200px" }}>
+                                        <img src={`data:image/jpeg;base64,${userDetail.signature_data}`} style={{ height: "200px", width: "200px" }} alt=" " />
                                       </div>
                                       <Button className='w-100 fw-bold rounded-4 add-item-shadow border border-dark' variant='warning' onClick={() => setShowSignature(false)}>Kembali</Button>
                                     </div>
@@ -189,10 +189,7 @@ function FormEditProfile(props) {
                                   :
                                   <RightToLeft>
                                     <Alert className='border border-secondary w-100 rounded-4 add-item-shadow' variant='info'>
-                                      <Alert.Heading className='bi bi-info-circle'> Pemberitahuan</Alert.Heading>
-                                      <hr className='m-0 p-0' />
-                                      <p>Anda telah memiiki tanda tangan. Tanda tangan akan digunakan untuk pengajuan perizinan, persetujuan, dan hal lainnya yang membutuhkannya. </p>
-                                      <p className='text-muted'>Apakah anda ingin buat ulang tandangan...?</p>
+                                      <p>Anda telah memiiki tanda tangan. Tanda tangan akan digunakan untuk pengajuan, persetujuan, dan hal lainnya. </p>
                                     </Alert>
                                     <Button className='w-100 fw-bold rounded-4 add-item-shadow border border-dark' variant='warning' onClick={() => setShowSignature(true)}>Tampilkan</Button>
                                     <Button className='mt-3 w-100 fw-bold rounded-4 add-item-shadow border border-dark' variant='info' onClick={() => setIsSignatureUpdated(false)}>Buat ulang</Button>

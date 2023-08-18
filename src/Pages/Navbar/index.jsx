@@ -211,6 +211,7 @@ const NavigationsBar = ({ children }) => {
                     </>
                   }
                   <Link to="/scanner-manager" className={`m-0 fw-bold bi bi-qr-code-scan cursor-pointer text-dark text-decoration-none ${currentUrl === "/scanner-manager" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOnCamera")}> QR Scanner</Link>
+                  <Link to="/absensi" className={`m-0 fw-bold bi bi-journal-medical cursor-pointer text-dark text-decoration-none ${currentUrl === "/absensi" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> {localData === "master" ? "Absensi" : localData === "Kepala Desa" ? "Persetujuan" : "Pengajuan"} </Link>
                   {
                     localData === "master"
                       ?
