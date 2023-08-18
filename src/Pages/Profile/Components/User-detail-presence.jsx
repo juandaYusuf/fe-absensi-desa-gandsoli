@@ -195,7 +195,7 @@ const UserDetailPresence = (props) => {
           </Row>
           <Row>
             {
-              userRole.role === "KAUR Keuangan"
+              userRole.role === "master"
               &&
               <div className='w-100 d-flex justify-content-end'>
                 <Button className='rounded-4 ' variant='danger' onClick={() => showPDF()}>Tampilkan PDF</Button>

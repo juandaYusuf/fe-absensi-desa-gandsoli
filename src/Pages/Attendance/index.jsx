@@ -10,6 +10,7 @@ import SickUser from './Components/SickUser'
 import ApplyForPermission from './Components/Apply-for-permission'
 import AgreementPermission from './Components/Agreement-permission'
 import ApplyForPersonalLeave from './Components/Apply-for-personal-leave'
+import AgreementPersonalLeave from './Components/Agreement-personal-leave'
 
 
 
@@ -146,8 +147,12 @@ const Attendance = () => {
                     <SickUser />
                     :
                     menuIsActivate === "agreement-permission"
-                    &&
+                    ?
                     <AgreementPermission/>
+                    :
+                    menuIsActivate === "agreement-leave"
+                    &&
+                    <AgreementPersonalLeave />
         }
       </div>
 
