@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import { Button, ButtonGroup, Card, Collapse, Table } from 'react-bootstrap'
+import { Button, ButtonGroup, Card, Collapse, Table, Spinner } from 'react-bootstrap'
 import ProgresBarLoadingVisual from '../../../Global-components/Progres-bar-loading-visual'
 import axios from 'axios'
 import API_URL from '../../../API/API_URL'
@@ -79,8 +79,9 @@ const AgreementPermission = () => {
     setOpenDetailByItem(i)
   }
 
-  const downloadPDFSubmission = (user_id) => {
-    const url = API_URL(user_id).USER_PERMISSION.GET_DOCS
+  const downloadPDFSubmission = (user_id, permission_id) => {
+    setIsPDFLoading(true)
+    const url = API_URL(user_id, permission_id).USER_PERMISSION.GET_DOCS
     axios.get(url).then(response => {
       downloadPDF(response.data.docs)
       setIsPDFLoading(false)
@@ -198,11 +199,11 @@ const AgreementPermission = () => {
                                         :
                                         result.agreement === 'not approved'
                                           ?
-                                          <span className="fw-bold">Tidak disetujui</span>
+                                          <span className="text-danger fw-bold">Tidak disetujui</span>
                                           :
                                           result.agreement === 'approved'
                                           &&
-                                          <span className="fw-bold">Disetujui</span>
+                                          <span className="text-success fw-bold">Disetujui</span>
                                     }
                                     <p className='fw-bold'>Permohonan izin yang diajukan pada tanggal {result.created_at} oleh :</p>
                                     {
@@ -292,7 +293,20 @@ const AgreementPermission = () => {
                                             ?
                                             <div className='w-100 d-flex justify-content-between align-items-center'>
                                               <h4 className='text-success fw-bold'>Telah disetujui</h4>
-                                              <Button className='rounded-4 border-dark fw-bold add-item-shadow' variant='success' disabled={!!isPDFLoading ? true : false} onClick={() => downloadPDFSubmission(result.user_id)}>Unduh surat pengajuan</Button>
+                                              <Button className='rounded-4 border-dark fw-bold add-item-shadow' variant='success' disabled={!!isPDFLoading ? true : false} onClick={() => downloadPDFSubmission(result.user_id, result.permission_id)}>
+                                                <div style={{ width: "200px" }}>
+                                                  {
+                                                    !!isPDFLoading
+                                                      ?
+                                                      <>
+                                                        <Spinner variant="dark" size="sm" />
+                                                        <span className='ms-2 fw-bold'>Mengunduh...</span>
+                                                      </>
+                                                      :
+                                                      <span className='fw-bold'>Unduh surat pengajuan</span>
+                                                  }
+                                                </div>
+                                              </Button>
                                             </div>
                                             :
                                             result.agreement === "not approved"

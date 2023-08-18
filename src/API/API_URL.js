@@ -1,11 +1,11 @@
 const API_URL = (apiParam, apiParam2) => {
-  // const baseUrl = 'http://127.0.0.1:8000'
+  const baseUrl = 'http://127.0.0.1:8000'
   // const baseUrl = 'https://bedesagandasoli-1-j0924938.deta.app'
 
 
   
   // VPS idcloudhost
-  const baseUrl = 'https://siaga23.biz.id'
+  // const baseUrl = 'https://siaga23.biz.id'
 
   return {
     USER: {
@@ -56,7 +56,11 @@ const API_URL = (apiParam, apiParam2) => {
     },
     PERSONAL_LEAVE: {
       ADD_SUBMISSION: `${baseUrl}/api/personal-leave/submission`,
-      GET_PERSONAL_LEAVE_DATAS: `${baseUrl}/api/personal-leave/show-all-personal-leave`
+      GET_PERSONAL_LEAVE_DATAS: `${baseUrl}/api/personal-leave/single/show-personal-leave/${apiParam}`,
+      GET_PERSONAL_LEAVE_APPLY_DOC: `${baseUrl}/api/personal-leave/single/apply-docs/${apiParam}/${apiParam2}`,
+      GET_ALL_PERSONAL_LEAVE_DATAS: `${baseUrl}/api/personal-leave/multi/personal-leave`,
+      PERSONAL_LEAVE_APPROVING: `${baseUrl}/api/personal-leave/agreement/personal-leave`,
+      GET_PERSONAL_LEAVE_DOC: `${baseUrl}/api/user-permission/single/approvment-loading/${apiParam}/${apiParam2}`,
     },
     USER_PERMISSION: {
       ADD_SUBMISSION_PERMISSION: `${baseUrl}/api/user-permission/submission`,
@@ -65,7 +69,7 @@ const API_URL = (apiParam, apiParam2) => {
       GET_SINGLE_DATA: `${baseUrl}/api/user-permission/single/user-permission/${apiParam}/${apiParam2}`,
       GET_SINGLE_DATA_LIST: `${baseUrl}/api/user-permission/single/user-permission-list/${apiParam}`,
       PERMISSION_APPROVING: `${baseUrl}/api/user-permission/agreement/`,
-      GET_DOCS: `${baseUrl}/api/user-permission/single/doc/${apiParam}`,
+      GET_DOCS: `${baseUrl}/api/user-permission/single/doc/${apiParam}/${apiParam2}`,
     },
     USER_ROLE: {
       SHOW_USER_ROLES: `${baseUrl}/api/user-role/show-all-user-role`

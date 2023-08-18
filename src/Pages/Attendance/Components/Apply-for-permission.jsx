@@ -54,10 +54,10 @@ const ApplyForPermission = () => {
     }, 5000)
   }
 
-  const previewDocs = (item) => {
+  const downloadDocs = ( permission_id, item) => {
     setLoadingItem(item)
     setIsPDFLoading(true)
-    const url = API_URL(localData.id).USER_PERMISSION.GET_DOCS
+    const url = API_URL(localData.id, permission_id).USER_PERMISSION.GET_DOCS
     axios.get(url).then(response => {
       downloadPDF(response.data.docs)
       setIsPDFLoading(false)
@@ -216,7 +216,7 @@ const ApplyForPermission = () => {
                                         <p className="p-0 m-0 fw-bold">Disetujui <span className="text-success bi bi-check-circle-fill m-0 p-0" /> </p>
                                   }</td>
                                   <td colSpan={2}>
-                                    <Button className='d-flex justify-content-center align-items-center w-100 rounded-4 add-item-shadow border border-dark' variant={result.agreement !== "approved" ? 'secondary' : 'warning'} disabled={result.agreement !== "approved" || !!isPDFLoading ? true : false} onClick={() => previewDocs(i)}>
+                                    <Button className='d-flex justify-content-center align-items-center w-100 rounded-4 add-item-shadow border border-dark' variant={result.agreement !== "approved" ? 'secondary' : 'warning'} disabled={result.agreement !== "approved" || !!isPDFLoading ? true : false} onClick={() => downloadDocs(result.id,i)}>
                                       <div style={{ width: "130px" }}>
                                         {
                                           !!isPDFLoading && i === loadingItem

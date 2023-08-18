@@ -17,7 +17,7 @@ function FormEditProfile(props) {
   const [validated, setValidated] = useState(false)
   const [modalShow, setModalShow] = useState(false)
   const [userDetail, setUserDetail] = useState({})
-  const locaData = JSON.parse(localStorage.getItem('obj'))
+  const localData = JSON.parse(localStorage.getItem('obj'))
   const [openCollapse, setOpenCollapse] = useState(false)
   const [isSignatureUpdated, setIsSignatureUpdated] = useState(false)
   const [showSignature, setShowSignature] = useState(false)
@@ -32,7 +32,7 @@ function FormEditProfile(props) {
       e.preventDefault()
       setIsLoading(true)
       const data = {
-        user_id: locaData.id,
+        user_id: localData.id,
         first_name: e.target.first_name.value,
         last_name: e.target.last_name.value,
         alamat: e.target.alamat.value,
@@ -63,7 +63,7 @@ function FormEditProfile(props) {
 
   useEffect(() => {
     const getUserDetail = () => {
-      const url = API_URL(locaData.id).USER.GET_SINGLE_USER
+      const url = API_URL(localData.id).USER.GET_SINGLE_USER
       axios.get(url).then((response) => {
         props.user_detail({
           first_name: response.data.first_name,
@@ -94,7 +94,7 @@ function FormEditProfile(props) {
 
     getUserDetail()
 
-  }, [isLoading, showSignature]);
+  }, [isLoading, showSignature])
 
   return (
     <>
