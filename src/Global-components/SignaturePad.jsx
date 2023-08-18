@@ -33,11 +33,11 @@ const SignaturePad = (props) => {
   return (
     <>
       <div className='d-flex justify-content-center'>
-        <div className='rounded-4 border add-item-shadow bg-white' style={{ width: 400 }}>
+        <div className='rounded-4 border add-item-shadow bg-white' style={{ width: 300 }}>
           <SignatureCanvas
             ref={signatureRef}
             penColor="black"
-            canvasProps={{ width: 400, height: 400 }}
+            canvasProps={{ width: 300, height: 300 }}
           />
         </div>
       </div>
@@ -52,7 +52,7 @@ const SignaturePad = (props) => {
                 <span className='ms-2'>Menyimpan...</span>
               </div>
               :
-              "Simpan tanda tangan"
+              "Simpan"
           }
         </Button>
       </div>
