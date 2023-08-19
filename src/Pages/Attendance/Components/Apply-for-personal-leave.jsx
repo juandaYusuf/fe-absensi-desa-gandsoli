@@ -3,7 +3,6 @@ import { Alert, Button, Card, Form, Spinner, Table } from 'react-bootstrap'
 import API_URL from '../../../API/API_URL'
 import axios from 'axios'
 import PersonalLeavePDF from '../../../PDFFile/Personal-leave-PDF'
-import AgreementPersonalLeavePDF from '../../../PDFFile/Agreement-personal-leave-PDF'
 import ProgresBarLoadingVisual from '../../../Global-components/Progres-bar-loading-visual'
 import downloadPDF from './DownloadPDF'
 
@@ -377,13 +376,13 @@ const ApplyForPersonalLeave = () => {
                                         }
                                       </div>
                                     </Button>
-                                    <Button className='d-flex justify-content-center align-items-center w-50 fw-bold rounded-4 add-item-shadow border border-dark' variant={`${result.agreement !== 'approved' ? "secondary" : "warning"}`} disabled={result.agreement !== 'approved' ? true : false} onClick={downloadApprovedDoc(localData.id, result.id, i)}>
+                                    <Button className='d-flex justify-content-center align-items-center w-50 fw-bold rounded-4 add-item-shadow border border-dark' variant={`${result.agreement !== 'approved' ? "secondary" : "warning"}`} disabled={result.agreement !== 'approved' ? true : false} onClick={() => downloadApprovedDoc(localData.id, result.id, i)}>
                                       <div>
                                         {
                                           !!isDownloadApprovmentLoading && i === loadingItem
                                             ?
                                             <>
-                                              <Spinner variant="light" size="sm" />
+                                              <Spinner variant="dark" size="sm" />
                                               <span className='ms-2 fw-bold'>Mengunduh...</span>
                                             </>
                                             :
