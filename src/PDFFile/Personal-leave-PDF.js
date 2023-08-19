@@ -21,7 +21,7 @@ const PersonalLeavePDF = ({staf_name, role, email, alamat, reason, signature}, b
     {
       columns: [
         {
-          text: `Lampiran : Permohonan cuti melahirkan`,
+          text: `Lampiran : Permohonan cuti ${reason}`,
         },
         {
           width: 150,
