@@ -24,6 +24,7 @@ const ApplyForPersonalLeave = () => {
   const [personalLeaveHistory, setPersonalLeaveHistory] = useState([])
   const [reload, setReload] = useState(false)
   const [loadingItem, setLoadingItem] = useState(0)
+  const [isDownloadApprovmentLoading, setIsDownloadApprovmentLoading] = useState(false)
   const [isPDFLoading, setIsPDFLoading] = useState(false)
 
 
@@ -136,6 +137,17 @@ const ApplyForPersonalLeave = () => {
       setIsPDFLoading(false)
     })
   }
+
+  const downloadApprovedDoc = (staf_id, personal_leave_id, item) => {
+    setLoadingItem(item)
+    setIsDownloadApprovmentLoading(true)
+    const url = API_URL(staf_id, personal_leave_id).PERSONAL_LEAVE.GET_PERSONAL_LEAVE_DOC
+    axios.get(url).then(response => {
+      downloadPDF(response.data.agreement_docs)
+      setIsDownloadApprovmentLoading(false)
+    })
+  }
+
 
   useEffect(() => {
     if (personalLeaveCat === 'type1') {
@@ -365,7 +377,20 @@ const ApplyForPersonalLeave = () => {
                                         }
                                       </div>
                                     </Button>
-                                    <Button className='d-flex justify-content-center align-items-center w-50 fw-bold rounded-4 add-item-shadow border border-dark' variant={`${result.agreement !== 'approved' ? "secondary" : "warning"}`} disabled={result.agreement !== 'approved' ? true : false}>Unduh persetujuan</Button>
+                                    <Button className='d-flex justify-content-center align-items-center w-50 fw-bold rounded-4 add-item-shadow border border-dark' variant={`${result.agreement !== 'approved' ? "secondary" : "warning"}`} disabled={result.agreement !== 'approved' ? true : false} onClick={downloadApprovedDoc(localData.id, result.id, i)}>
+                                      <div>
+                                        {
+                                          !!isDownloadApprovmentLoading && i === loadingItem
+                                            ?
+                                            <>
+                                              <Spinner variant="light" size="sm" />
+                                              <span className='ms-2 fw-bold'>Mengunduh...</span>
+                                            </>
+                                            :
+                                            <span className='fw-bold'>Unduh persetujuan</span>
+                                        }
+                                      </div>
+                                    </Button>
                                   </div>
                                 </td>
                               </tr>
