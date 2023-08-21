@@ -100,7 +100,13 @@ const AgreementPermission = () => {
 
   return (
     <Card className='p-3 rounded-4 border-0 bg-transparent' style={{ minHeight: "400px" }}>
-      <h3 className='bi bi-arrow-up-left-circle'> Persetujuan izin</h3>
+      {
+        localData.role === "Kepala Desa"
+        ?
+        <h3 className='bi bi-arrow-up-left-circle'> Persetujuan izin</h3>
+        :
+        <h3 className='bi bi-arrow-up-left-circle'> Daftar izin staf</h3>
+      }
       <ButtonGroup className='w-100 mt-4 p-0 add-item-shadow rounded-4'>
         <Button
           className='add-item-shadow-success p-1'
@@ -287,7 +293,10 @@ const AgreementPermission = () => {
                                           }
                                         </tbody>
                                       </table>
-                                      <div className='w-100 d-flex gap-2 my-4'>
+                                      {
+                                        localData.role === "Kepala Desa"
+                                        ?
+                                        <div className='w-100 d-flex gap-2 my-4'>
                                         {
                                           result.agreement === "approved"
                                             ?
@@ -343,6 +352,9 @@ const AgreementPermission = () => {
                                               </>
                                         }
                                       </div>
+                                      : null
+                                      }
+                                      
                                     </div>
                                   </div>
                                 </div>

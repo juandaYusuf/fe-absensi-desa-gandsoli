@@ -9,7 +9,7 @@ const ScannerManager = () => {
   return (
     <SlideLeft>
       <Container className={` ${ThemingCangerFunc().gradient} add-box-shadow p-3 rounded-4`} style={ThemingCangerFunc("white").style} >
-        <h1>ScannerManager</h1>
+        <h3 className='bi bi-qr-code-scan'>Pemindaian</h3>
         <QRScannerMonitoring/>
       </Container>
     </SlideLeft>

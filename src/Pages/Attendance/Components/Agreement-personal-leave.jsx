@@ -139,7 +139,15 @@ const AgreementPersonalLeave = () => {
 
   return (
     <Card className='p-3 rounded-4 border-0 bg-transparent' style={{ minHeight: "400px" }}>
-      <h3 className='bi bi-arrow-up-left-circle'> Persetujuan cuti</h3>
+      {
+        localData.role === "Kepala Desa"
+        ?
+        <h3 className='bi bi-arrow-up-left-circle'> Persetujuan cuti</h3>
+        :
+        <h3 className='bi bi-arrow-up-left-circle'> Daftar cuti staf</h3>
+        
+
+      }
       <div className='rounded-4 add-item-shadow overflow-hidden my-3' style={{ minHeight: "450px", backgroundColor: "rgba(157, 157, 157, 0.11)" }}>
         <div className='h-100' style={{ overflowY: "auto" }}>
           <div style={{ minWidth: "928px" }}>
@@ -313,6 +321,9 @@ const AgreementPersonalLeave = () => {
                                         }
                                       </tbody>
                                     </table>
+                                    {
+                                      localData.role === "Kepala Desa"
+                                      ?
                                     <div className='w-100 d-flex gap-2 my-4'>
                                       {
                                         result.agreement === "waiting"
@@ -389,6 +400,8 @@ const AgreementPersonalLeave = () => {
                                         </div>
                                       </Button>
                                     </div>
+                                    :null
+                                    }
                                   </div>
                                 </div>
                               </div>

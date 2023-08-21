@@ -22,15 +22,15 @@ const Attendance = () => {
 
 
   useEffect(() => {
-    if (localData.role === 'Kepala Desa'){
+    if (localData.role === 'Kepala Desa') {
       setMenuIsActivate('agreement-permission')
-    }else if (localData.role === 'master'){
+    } else if (localData.role === 'master') {
       setMenuIsActivate('rule')
-    }else{
+    } else {
       setMenuIsActivate('leave')
     }
   }, [])
-  
+
 
 
   return (
@@ -116,6 +116,24 @@ const Attendance = () => {
                     <Card.Title className='bi bi-prescription2 fs-6 fw-bold'> Perizinan sakit</Card.Title>
                   </Card.Body>
                 </Card>
+
+                <Card
+                  className={`${menuIsActivate === 'agreement-permission' && 'default-card-menu-gradient'}  add-item-shadow rounded-4 cursor-pointer card-menu-gradient`}
+                  style={{ width: '18rem' }}
+                  onClick={() => { setMenuIsActivate('agreement-permission') }}>
+                  <Card.Body className='d-flex justify-content-center'>
+                    <Card.Title className='bi bi-prescription2 fs-6 fw-bold'> Daftar izin</Card.Title>
+                  </Card.Body>
+                </Card>
+
+                <Card
+                  className={`${menuIsActivate === 'agreement-leave' && 'default-card-menu-gradient'}  add-item-shadow rounded-4 cursor-pointer card-menu-gradient`}
+                  style={{ width: '18rem' }}
+                  onClick={() => { setMenuIsActivate('agreement-leave') }}>
+                  <Card.Body className='d-flex justify-content-center'>
+                    <Card.Title className='bi bi-prescription2 fs-6 fw-bold'> Daftar cuti</Card.Title>
+                  </Card.Body>
+                </Card>
               </>
           }
 
@@ -143,16 +161,16 @@ const Attendance = () => {
                     <Generator />
                     :
                     menuIsActivate === "sick"
-                    ?
-                    <SickUser />
-                    :
-                    menuIsActivate === "agreement-permission"
-                    ?
-                    <AgreementPermission/>
-                    :
-                    menuIsActivate === "agreement-leave"
-                    &&
-                    <AgreementPersonalLeave />
+                      ?
+                      <SickUser />
+                      :
+                      menuIsActivate === "agreement-permission"
+                        ?
+                        <AgreementPermission />
+                        :
+                        menuIsActivate === "agreement-leave"
+                        &&
+                        <AgreementPersonalLeave />
         }
       </div>
 

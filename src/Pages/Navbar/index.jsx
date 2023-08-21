@@ -42,19 +42,6 @@ const NavigationsBar = ({ children }) => {
   }
 
 
-  const registerOptions = (options) => {
-    if (options === "kepdes") {
-      navigateTo('/register-kepdes')
-    }
-    if (options === "admin") {
-      navigateTo('/register-admin')
-    }
-    if (options === "staf") {
-      navigateTo('/register-staf')
-    }
-  }
-
-
   const logOut = () => {
     localStorage.clear()
     navigateTo('/')
@@ -160,6 +147,7 @@ const NavigationsBar = ({ children }) => {
                     <>
                       <Link to="/dashboard" className={`m-0 fw-bold bi bi-tv cursor-pointer text-dark text-decoration-none ${currentUrl === "/dashboard" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Dashboard</Link>
                       <Link to="/register" className={`m-0 fw-bold bi bi-person-add cursor-pointer text-dark text-decoration-none ${currentUrl === "/register" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOnCamera")}> Registrasi</Link>
+                      <Link to="/berkas" className={`m-0 fw-bold bi bi-filetype-pdf cursor-pointer text-dark text-decoration-none ${currentUrl === "/berkas" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOnCamera")}> Berkas</Link>
                     </>
                   }
                   <Link to="/scanner-manager" className={`m-0 fw-bold bi bi-qr-code-scan cursor-pointer text-dark text-decoration-none ${currentUrl === "/scanner-manager" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOnCamera")}> QR Scanner</Link>
@@ -215,17 +203,12 @@ const NavigationsBar = ({ children }) => {
                   {
                     localData === "master"
                       ?
-                      <>
-                        {/* <Link to="/qr-generator" className={`m-0 fw-bold bi bi-qr-code cursor-pointer text-dark text-decoration-none ${currentUrl === "/qr-generator" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> QR Generator</Link> */}
-                        <Link to="/absensi" className={`m-0 fw-bold bi bi-journal-medical cursor-pointer text-dark text-decoration-none ${currentUrl === "/absensi" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> {localData === "master" ? "Absensi" : localData === "Kepala Desa" ? "Persetujuan" : "Pengajuan"} </Link>
-                        {/* <Link to="/setting" className={`m-0 fw-bold bi bi-gear cursor-pointer text-dark text-decoration-none ${currentUrl === "/setting" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOffCamera")}> Pengaturan</Link> */}
-                      </>
+                      <Link to="/berkas" className={`m-0 fw-bold bi bi-filetype-pdf cursor-pointer text-dark text-decoration-none ${currentUrl === "/berkas" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => setTurnOnCameraOnQRScannerPage("turnOnCamera")}> Berkas</Link>
                       :
                       <>
                         <div className={`m-0 fw-bold bi bi-person cursor-pointer text-dark text-decoration-none ${currentUrl === "/profile" ? "border-2 border-secondary border-bottom" : "border-2 border-bottom"}`} onClick={() => goToProfile()}> Profile</div>
                         <Button className='rounded-4 w-100' variant='outline-danger' onClick={() => logOut()}> Log Out</Button>
                       </>
-
                   }
                 </div>
               </div>
