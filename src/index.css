@@ -300,6 +300,11 @@ code {
   width: 50%;
 }
 
+.card-bg-gradient{
+  background: rgb(255,246,250);
+  background: linear-gradient(18deg, rgba(255,246,250,1) 0%, rgba(235,244,255,1) 100%);
+
+}
 
 
 /* ! ============================== RESPONSIVE ============================== */
