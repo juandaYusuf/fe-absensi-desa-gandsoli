@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import QRCode from 'qrcode'
 import { Alert, Button, Form, InputGroup, Spinner, Table } from 'react-bootstrap'
 import { BottomToTop, LeftToRight, RightToLeft, TopToBottom } from '../../../Page-transition/ComponentTransitions'
-// import UserGeoLocated from './GeoLocated'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import TableScannedIn from './Table-scanned-in'
@@ -28,31 +27,12 @@ const Generator = () => {
   const [modalOptions, setModalOptions] = useState('')
   const today = new Date()
   const hours = String(today.getHours()).padStart(2, '0')
-  // console.log(parseInt(hours)-1)
+  const [intervalTime, setIntervalTime] = useState('')
+  const [attendanceRuleDatas, setAttendanceRuleDatas] = useState({})
+  const [isQrCodeAuto, setIsQrCodeAuto] = useState(true)
+  const [showQrCodeAutomatically, setShowQrCodeAutomatically] = useState({ "show": false, "options": null })
+  const [combineTime, setCombineTime] = useState({"time_in": null, "time_out": null})
 
-
-  // let latitude = null
-  // let longitude = null
-  // let userCoordinate = UserGeoLocated()
-
-  // if (!!userCoordinate) {
-  //   if (userCoordinate.coordinate !== "please enable locations service" || userCoordinate.coordinate === "please enable locations service") {
-  //     latitude = userCoordinate.coordinate.latitude
-  //     longitude = userCoordinate.coordinate.longitude
-  //   }
-  // }
-
-  // function generateRandomString(length) {
-  //   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  //   let randomString = '';
-
-  //   for (let i = 0; i < length; i++) {
-  //     const randomIndex = Math.floor(Math.random() * characters.length);
-  //     randomString += characters.charAt(randomIndex);
-  //   }
-
-  //   return randomString;
-  // }
 
   const visitStafProfileByAdmin = (userID) => {
     localStorage.setItem('visit', JSON.stringify({ "id": userID }))
@@ -99,27 +79,107 @@ const Generator = () => {
         const QRCOdeResponse = await QRCode.toDataURL(`i${encrypted}`)
         setQrCodeGenerated(QRCOdeResponse)
       } else if (data_option === 'out') {
+        setModalOptions('out')
         const QRCOdeResponse = await QRCode.toDataURL(`o${encrypted}`)
-        // setQrCodeGenerated(intOpenQrCodeAt)
-        const currentHourse = parseInt(hours)
-        if (currentHourse >= intOpenQrCodeAt - 1) {
-          const QRCOdeResponse = await QRCode.toDataURL(`o${encrypted}`)
-          setQrCodeGenerated(QRCOdeResponse)
-          setModalOptions('out')
-        } else {
-          setQrCodeGenerated("")
-        }
+        setQrCodeGenerated(QRCOdeResponse)
       }
       setDisplayQRCode(true)
       setIsLoadingQRCode(false)
     } catch (err) {
-      // console.log(err)
     }
   }
 
+
+  const qrCodeVisibilityTimeChecker = ({ localIntHour, workStartAttRuleHour, workTimesUpAttHour }) => {
+    // Jam masuk
+    if (localIntHour >= workStartAttRuleHour - 1 && localIntHour < workTimesUpAttHour) {
+      setDisplayQRCode(true)
+      setShowQrCodeAutomatically({
+        "show": true,
+        "options": "in"
+      })
+    } else {
+      setDisplayQRCode(false)
+      setQrcodeStatus('')
+      setShowQrCodeAutomatically({
+        "show": false,
+        "options": null
+      })
+    }
+
+    // Jam keluar
+    if (localIntHour >= workTimesUpAttHour - 1) {
+      setDisplayQRCode(true)
+      setShowQrCodeAutomatically({
+        "show": true,
+        "options": "out"
+      })
+    } else {
+      setDisplayQRCode(false)
+      setQrcodeStatus('')
+      setShowQrCodeAutomatically({
+        "show": false,
+        "options": null
+      })
+    }
+  }
+
+  // Dapatkan jadwal masuk
+  const getAttendanceRules = () => {
+    const url = API_URL().ATTENDANCE_RULES.SHOW_ALL_ATTENDANCE_RULES
+    axios.get(url).then(({ data }) => {
+      data.forEach(items => {
+        if (items.usage === true) {
+          setAttendanceRuleDatas(items)
+        }
+      })
+    })
+  }
+
+  useEffect(() => getAttendanceRules(), [])
+
+  
+  useEffect(() => {
+    if (isQrCodeAuto === false) setQrcodeStatus('')
+    if (!attendanceRuleDatas.work_start_time || isQrCodeAuto === false) return
+    const [workStartAttRuleHour, workStartTimeAttRuleMinutes, workStartTimeAttRuleSecond] = attendanceRuleDatas.work_start_time.split(':').map(Number)
+    const [workTimesUpAttHour, workTimesUpAttRuleMinutes, workTimesUpAttRuleSecond] = attendanceRuleDatas.work_times_up.split(':').map(Number)
+    
+    const manipulateStartTime = workStartTimeAttRuleMinutes.toString()
+    const manipulateEndTime = workTimesUpAttRuleMinutes.toString()
+    setCombineTime({
+      "time_in": `${workStartAttRuleHour - 1}:${manipulateStartTime.padStart(2, '0')}`, 
+      "time_out": `${workTimesUpAttHour - 1}:${manipulateEndTime.padStart(2, '0')}`
+    })
+    const timerID = setInterval(() => {
+      let localTime = new Date().toLocaleTimeString([], { workStartAttRuleHour: '2-digit', workStartTimeAttRuleMinutes: '2-digit', workStartTimeAttRuleSecond: '2-digit', hour12: false })
+      const localIntHour = parseInt(localTime.split(':')[0])
+      qrCodeVisibilityTimeChecker({
+        'localIntHour': localIntHour,
+        'workStartAttRuleHour': workStartAttRuleHour,
+        'workTimesUpAttHour': workTimesUpAttHour
+      })
+
+      setIntervalTime(localTime)
+    }, 1000)
+
+    return () => clearInterval(timerID)
+  }, [attendanceRuleDatas.work_start_time, isQrCodeAuto])
+
+
+
+  useEffect(() => {
+    if (showQrCodeAutomatically.show === true && showQrCodeAutomatically.options === "in") {
+      generateQRCode("in")
+    } else if (showQrCodeAutomatically.show === true && showQrCodeAutomatically.options === "out") {
+      generateQRCode("out")
+    }
+  }, [showQrCodeAutomatically.options, isQrCodeAuto])
+
+
   useEffect(() => {
     const timer = countTimeOut > 0 && setInterval(() => setCountTimeOut(countTimeOut - 1), 1000)
-    return () => clearInterval(timer);
+    return () => clearInterval(timer)
   }, [countTimeOut])
 
 
@@ -141,17 +201,41 @@ const Generator = () => {
     <>
       <div className='d-flex justify-content-center overflow-hidden p-3'>
         <div className='d-flex flex-column gap-3' style={{ maxWidth: "400px", display: "flex", justifyContent: "center" }}>
-          <TopToBottom>
+          {
+            !isQrCodeAuto
+              ?
+              <div className='overflow-hidden' style={{ height: "80px" }}>
+                <TopToBottom>
+                  <div className='d-flex justify-content-center gap-2'>
+                    <Button className='add-item-shadow-success rounded-4' variant={qrcodeStatus === "in" ? 'success' : 'outline-success'} id="button-addon2" onClick={() => { generateQRCode("in") }}>
+                      <span className="fw-bold bi bi-qr-code"> QRCODE jam masuk</span>
+                    </Button>
+                    <Button className='add-item-shadow-warning rounded-4' variant={qrcodeStatus === "out" ? 'warning' : 'outline-warning'} id="button-addon2" onClick={() => { generateQRCode("out") }}>
+                      <span className="fw-bold bi bi-qr-code"> QRCODE jam keluar</span>
+                    </Button>
+                  </div>
+                </TopToBottom>
+              </div>
+              :
+              <div className='overflow-hidden' style={{ height: "80px" }}>
+                <BottomToTop>
+                  <p className='text-muted text-center m-0 p-0'>Qr Code masuk dan keluar akan ditampilkan 1 jam sebelum waktu masuk dan keluar secara otomatis</p>
+                  <p className='text-muted text-center m-0 p-0'>{attendanceRuleDatas.work_start_time} - {attendanceRuleDatas.work_times_up}</p>
+                </BottomToTop>
+              </div>
+          }
+          <div>
             <div className='d-flex justify-content-center gap-2'>
-              <Button className='add-item-shadow-success rounded-4' variant={qrcodeStatus === "in" ? 'success' : 'outline-success'} id="button-addon2" onClick={() => { generateQRCode("in") }}>
-                <span className="fw-bold bi bi-qr-code"> QRCODE jam masuk</span>
-              </Button>
-              <Button className='add-item-shadow-warning rounded-4' variant={qrcodeStatus === "out" ? 'warning' : 'outline-warning'} id="button-addon2" onClick={() => { generateQRCode("out") }}>
-                <span className="fw-bold bi bi-qr-code"> QRCODE jam keluar</span>
-              </Button>
+              <p>Tampilkan Qr Code secara otomatis</p>
+              <Form.Check
+                // prettier-ignore
+                onChange={(e) => setIsQrCodeAuto(e.target.checked)}
+                checked={isQrCodeAuto}
+                type="switch"
+                label={isQrCodeAuto ? "On" : "Off"}
+                id="custom-switch" />
             </div>
-          </TopToBottom>
-
+          </div>
           {
             qrcodeStatus === "in"
               ?
@@ -186,11 +270,23 @@ const Generator = () => {
                   {
                     isLoadingQRCode === true
                       ?
-                      <><p className='text-muted h5 fw-bold'>Memuat data...</p>
-                        <Spinner size='md' variant='secondary' /></>
+                      <>
+                        <p className='text-muted h5 fw-bold'>Memuat data...</p>
+                        <Spinner size='md' variant='secondary' />
+                      </>
                       :
-                      <><span className="text-muted h1 bi bi-qr-code" />
-                        <p className='text-center text-muted'>Klik tombol diatas untuk menampilkan QRCode </p></>
+                      isQrCodeAuto
+                      ?
+                      <>
+                        <p className='text-center text-muted'>{intervalTime ? intervalTime : "Memuat data..."}</p>
+                        <span className="text-muted h1 bi bi-qr-code" />
+                        <p className='text-center text-muted px-2'>QR Code masuk akan di tampilkan pada jam {combineTime.time_in} dan keluar pada jam {combineTime.time_out}</p>
+                      </>
+                      :
+                      <>
+                        <span className="text-muted h1 bi bi-qr-code" />
+                        <p className='text-center text-muted px-2'>Klik tombol diatas untuk menampilkan Qr Code</p>
+                      </>
                   }
                 </div>)
                 :

@@ -1,3 +1,5 @@
+// ! File ini ada kemungkinan akan di hapus dan telah pindah ke attendance
+
 import React, { useEffect, useState } from 'react'
 import QRCode from 'qrcode'
 import { Alert, Button, Form, InputGroup, Spinner, Table } from 'react-bootstrap'
@@ -79,9 +81,6 @@ const Generator = () => {
 
 
 
-
-
-
   const generateQRCode = async (data_option) => {
     setIsLoadingQRCode(true)
     setQrcodeStatus(data_option)
@@ -90,7 +89,6 @@ const Generator = () => {
     // Encrypt datanya
     const secretKey = data_option;
     const encrypted = CryptoJS.AES.encrypt(data, secretKey).toString();
-    // console.log(typeOf(await whichAttendanceRuleIsActivate()))
 
     // get waktu akhir kerja untuk dari attendace rule untuk validasi membuka qrcode sejam sebelum waktu berakhir kerja 
     const openQrCodeAt = await whichAttendanceRuleIsActivate()
@@ -116,9 +114,9 @@ const Generator = () => {
       setDisplayQRCode(true)
       setIsLoadingQRCode(false)
     } catch (err) {
-      // console.log(err)
     }
   }
+
 
   useEffect(() => {
     const timer = countTimeOut > 0 && setInterval(() => setCountTimeOut(countTimeOut - 1), 1000)
