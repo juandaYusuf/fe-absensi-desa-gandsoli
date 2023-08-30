@@ -161,7 +161,7 @@ const Generator = () => {
         'workTimesUpAttHour': workTimesUpAttHour
       })
 
-      setIntervalTime(localTime)
+      // setIntervalTime(localTime)
     }, 1000)
 
     return () => clearInterval(timerID)
@@ -279,7 +279,7 @@ const Generator = () => {
                       isQrCodeAuto
                       ?
                       <>
-                        <p className='text-center text-muted'>{intervalTime ? intervalTime : "Memuat data..."}</p>
+                        {/* <p className='text-center text-muted'>{intervalTime ? intervalTime : "Memuat data..."}</p> */}
                         <span className="text-muted h1 bi bi-qr-code" />
                         <p className='text-center text-muted px-2'>QR Code masuk akan di tampilkan pada jam {combineTime.time_in} dan keluar pada jam {combineTime.time_out}</p>
                       </>
