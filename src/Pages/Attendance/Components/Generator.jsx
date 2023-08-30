@@ -136,9 +136,10 @@ const Generator = () => {
     })
   }
 
+  // Jalankan fungsi getAttendanceRules pada saat pertamakali halaman di load
   useEffect(() => getAttendanceRules(), [])
 
-  
+
   useEffect(() => {
     if (isQrCodeAuto === false) setQrcodeStatus('')
     if (!attendanceRuleDatas.work_start_time || isQrCodeAuto === false) return
