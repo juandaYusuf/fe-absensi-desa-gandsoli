@@ -16,7 +16,7 @@ const CardListOfUser = () => {
 
 
   const visitStafProfileByAdmin = (userID) => {
-    localStorage.setItem('visit', JSON.stringify({ "id":  userID}))
+    localStorage.setItem('visit', JSON.stringify({ "id": userID }))
     navigateTo('/profile')
   }
 
@@ -44,7 +44,7 @@ const CardListOfUser = () => {
                 ?
                 (listOfUser.map((resultListOfUser) => {
                   return (
-                    <div key={resultListOfUser.id} className='add-item-shadow cursor-pointer w-100 mb-3 p-2 rounded-4 d-flex align-items-center justify-content-between gap-2 hover-card-list'  onClick={() => {visitStafProfileByAdmin(resultListOfUser.id)}} >
+                    <div key={resultListOfUser.id} className='add-item-shadow cursor-pointer w-100 mb-3 p-2 rounded-4 d-flex align-items-center justify-content-between gap-2 hover-card-list' onClick={() => { visitStafProfileByAdmin(resultListOfUser.id) }} >
                       <div className='d-flex align-items-center gap-2'>
                         <div className='bg-light border border-2 border-secodary border-secondary overflow-hidden rounded-circle d-flex justify-content-center align-items-center' style={{ height: "40px", width: "40px" }}>
                           {

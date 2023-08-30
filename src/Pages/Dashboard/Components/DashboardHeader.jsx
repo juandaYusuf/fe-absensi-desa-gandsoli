@@ -110,7 +110,7 @@ const DashboardHeader = () => {
         {
           !!userDatas.id
             ?
-            <h6 className='text-secondary mt-0 text-uppercase'>{`${userDatas.first_name} ${userDatas.last_name} (${userDatas.role})`}</h6>
+            <h6 className='text-secondary mt-0 text-uppercase'>{`${userDatas.first_name} ${userDatas.last_name}`}</h6>
             :
             <div style={{ width: "200px" }}>
               <Placeholder as="h6" animation="glow">
