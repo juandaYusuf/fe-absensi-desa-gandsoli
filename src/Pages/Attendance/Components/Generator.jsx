@@ -106,7 +106,7 @@ const Generator = () => {
         "options": null
       })
     }
-
+    
     // Jam keluar
     if (localIntHour >= workTimesUpAttHour - 1) {
       setDisplayQRCode(true)
@@ -114,14 +114,15 @@ const Generator = () => {
         "show": true,
         "options": "out"
       })
-    } else {
-      setDisplayQRCode(false)
-      setQrcodeStatus('')
-      setShowQrCodeAutomatically({
-        "show": false,
-        "options": null
-      })
-    }
+    } 
+    // else {
+    //   setDisplayQRCode(false)
+    //   setQrcodeStatus('')
+    //   setShowQrCodeAutomatically({
+    //     "show": false,
+    //     "options": null
+    //   })
+    // }
   }
 
   // Dapatkan jadwal masuk
@@ -141,7 +142,7 @@ const Generator = () => {
 
 
   useEffect(() => {
-    if (isQrCodeAuto === false) setQrcodeStatus('')
+    // if (isQrCodeAuto === false) setQrcodeStatus('')
     if (!attendanceRuleDatas.work_start_time || isQrCodeAuto === false) return
     const [workStartAttRuleHour, workStartTimeAttRuleMinutes, workStartTimeAttRuleSecond] = attendanceRuleDatas.work_start_time.split(':').map(Number)
     const [workTimesUpAttHour, workTimesUpAttRuleMinutes, workTimesUpAttRuleSecond] = attendanceRuleDatas.work_times_up.split(':').map(Number)
@@ -170,6 +171,7 @@ const Generator = () => {
 
 
   useEffect(() => {
+    console.log(showQrCodeAutomatically.show, showQrCodeAutomatically.options)
     if (showQrCodeAutomatically.show === true && showQrCodeAutomatically.options === "in") {
       generateQRCode("in")
     } else if (showQrCodeAutomatically.show === true && showQrCodeAutomatically.options === "out") {
